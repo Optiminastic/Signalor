@@ -1,20 +1,51 @@
-import { BadgeCheck, ChevronRight } from 'lucide-react'
+'use client'
 
-import { BLUE, CURRENT_USER } from '@/features/catalyst/constants'
+import { ChevronRight } from 'lucide-react'
+import Link from 'next/link'
 
-export function SidebarUser(): JSX.Element {
+import { useSession } from '@/lib/auth-client'
+
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/)
+  return ((parts[0]?.[0] ?? '') + (parts[1]?.[0] ?? '')).toUpperCase() || 'U'
+}
+
+/** Bottom user card — links to the profile page, shows the signed-in user. */
+export function SidebarUser({ collapsed }: { collapsed?: boolean }): JSX.Element {
+  const { data: session } = useSession()
+  const name = session?.user?.name?.trim() || 'Your account'
+  const email = session?.user?.email ?? 'Manage profile & billing'
+
+  if (collapsed) {
+    return (
+      <Link
+        href="/profile"
+        title={name}
+        aria-label={name}
+        className="mt-3 flex justify-center border-t border-[var(--cat-border-soft)] pt-3"
+      >
+        <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full bg-[#e04a3d] text-[12px] font-semibold text-white">
+          {initials(name)}
+        </span>
+      </Link>
+    )
+  }
+
   return (
-    <div className="mt-3.5 flex items-center gap-2.5 border-t border-[var(--cat-border-soft)] pt-3">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={CURRENT_USER.avatar} alt="" className="h-[34px] w-[34px] rounded-full" />
-      <span className="min-w-0 flex-1">
-        <div className="flex items-center gap-1 text-[13px] font-semibold text-[var(--cat-ink)]">
-          {CURRENT_USER.name}
-          <BadgeCheck size={13} style={{ color: BLUE }} />
-        </div>
-        <div className="text-xs text-[var(--cat-ink-3)]">{CURRENT_USER.email}</div>
+    <Link
+      href="/profile"
+      className="mt-3.5 flex items-center gap-2.5 rounded-md border-t border-[var(--cat-border-soft)] pt-3 transition-colors"
+    >
+      <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full bg-[#e04a3d] text-[12px] font-semibold text-white">
+        {initials(name)}
       </span>
-      <ChevronRight size={16} className="text-[var(--cat-ink-3)]" />
-    </div>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-[13px] font-semibold text-[var(--cat-ink)]">
+          {name}
+        </span>
+        <span className="block truncate text-xs text-[var(--cat-ink-3)]">{email}</span>
+      </span>
+      <ChevronRight size={16} className="shrink-0 text-[var(--cat-ink-3)]" />
+    </Link>
   )
 }

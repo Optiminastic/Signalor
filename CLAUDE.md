@@ -121,6 +121,37 @@ middleware.ts             # Next.js edge middleware (auth gating)
 
 ---
 
+## UI conventions
+
+### Progress / score / visibility bars — always use the segmented tick meter
+
+For ANY progress, score, percentage, or visibility indicator, use the **segmented
+tick bar** (a row of small vertical ticks that fill up to the value) — NOT a
+single solid/rounded fill bar.
+
+- Filled ticks: brand red (`#e04a3d` / `bg-primary`). Empty ticks: the surface's
+  muted token (`bg-neutral-200` in the main app, `bg-[var(--cat-hover)]` in the
+  dashboard). Tick: `h-3.5 w-[3px] rounded-[1px]`, gap `2px`.
+- Reference implementation: `TickBar` in
+  `features/catalyst/components/brands/BrandBits.tsx`. Reuse/adapt it; don't
+  reintroduce solid `rounded-full` fill bars.
+
+### Primary CTA button — always use the shared `PrimaryButton`
+
+For ANY brand-colored call-to-action (New brand, New Products, Connect Analytics,
+Create Task, Re-run audit, add buttons, etc.) use
+`PrimaryButton` from `features/catalyst/components/PrimaryButton.tsx` — do NOT
+hand-roll a `<button className="auth-cta-btn …">` or an inline `bg-[#e04a3d]`.
+
+- It standardizes height (`34px`), weight (`font-semibold`), radius, and icon
+  (`size 16`, `strokeWidth 2.2`). Pass the lucide icon via the `icon` prop and the
+  label as children: `<PrimaryButton icon={Plus}>New brand</PrimaryButton>`.
+- For a square icon-only CTA pass `iconOnly` (e.g. the competitors "add" button).
+- Secondary/outline controls (chips, dropdowns, filters) are also `34px` tall so
+  toolbars line up.
+
+---
+
 ## Server vs client components
 
 - **Default: server component.** No `"use client"` directive.

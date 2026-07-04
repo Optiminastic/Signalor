@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { GlobalBar } from '@/features/catalyst/components/GlobalBar'
 import { Sidebar } from '@/features/catalyst/components/Sidebar'
 
 const PANEL =
@@ -17,7 +18,10 @@ export function CatalystShell({ children }: CatalystShellProps): JSX.Element {
       style={{ background: 'var(--cat-canvas)' }}
     >
       <Sidebar />
-      <main className={PANEL}>{children}</main>
+      <main className={PANEL}>
+        <GlobalBar />
+        <div className="mt-3 flex min-h-0 flex-1 flex-col">{children}</div>
+      </main>
     </div>
   )
 }

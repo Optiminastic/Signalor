@@ -1,10 +1,19 @@
-import { env } from '@/lib/env'
+import { getOrganizations, type Organization } from '@/lib/api/organizations'
+import {
+  getSubscriptionStatus,
+  getUsage,
+  listInvoices,
+  type Invoice,
+  type Subscription,
+  type Usage,
+} from '@/lib/api/payments'
 import type { AccountType } from '@/stores/useOnboardingStore'
 
 /**
- * Account overview for the profile page — plan, usage/limits, projects, billing.
- * Mocked while NEXT_PUBLIC_USE_STUBS='true'; TODO(wire) composes the real
- * signalor endpoints (see notes in getAccountOverview).
+ * Account overview for the profile page. `loadAccountOverview` composes the real
+ * signalor endpoints server-side; each section independently falls back to
+ * SAMPLE_ACCOUNT when its call fails (e.g. backend unreachable), so the page
+ * always renders.
  */
 
 export interface UsageMetric {
@@ -27,6 +36,8 @@ export interface AccountInvoice {
   status: string
 }
 
+type PlanStatus = 'active' | 'trialing' | 'past_due' | 'canceled'
+
 export interface AccountOverview {
   user: { name: string; email: string; accountType: AccountType }
   plan: {
@@ -35,7 +46,7 @@ export interface AccountOverview {
     price: number
     currency: string
     interval: string
-    status: 'active' | 'trialing' | 'past_due' | 'canceled'
+    status: PlanStatus
     renewsOn: string | null
   }
   usage: { projects: UsageMetric; prompts: UsageMetric; runsThisMonth: number }
@@ -73,16 +84,79 @@ export const SAMPLE_ACCOUNT: AccountOverview = {
   ],
 }
 
-const USE_STUBS = env.NEXT_PUBLIC_USE_STUBS === 'true'
+function mapPlanStatus(status: string, isActive: boolean): PlanStatus {
+  if (status === 'trialing') return 'trialing'
+  if (status === 'past_due') return 'past_due'
+  if (isActive || status === 'active') return 'active'
+  return 'canceled'
+}
 
-export async function getAccountOverview(): Promise<AccountOverview> {
-  if (USE_STUBS) {
-    await new Promise(resolve => {
-      setTimeout(resolve, 450)
-    })
-    return SAMPLE_ACCOUNT
+function planFrom(sub: Subscription): AccountOverview['plan'] {
+  return {
+    key: sub.plan,
+    label: sub.plan_label,
+    price: sub.limits.price_gbp,
+    currency: sub.currency,
+    interval: 'month',
+    status: mapPlanStatus(sub.status, sub.is_active),
+    renewsOn: sub.current_period_end,
   }
-  // TODO(wire): compose from GET /api/payments/usage/, /api/payments/subscription/status/,
-  // GET /api/organizations/?email=, and GET /api/payments/invoices/ using the session email.
-  return SAMPLE_ACCOUNT
+}
+
+async function settled<T>(promise: Promise<T>): Promise<T | null> {
+  try {
+    return await promise
+  } catch {
+    return null
+  }
+}
+
+function usageFrom(usage: Usage | null): AccountOverview['usage'] {
+  if (!usage) return SAMPLE_ACCOUNT.usage
+  return {
+    projects: { used: usage.usage.projects, max: usage.limits.max_projects },
+    prompts: { used: usage.usage.prompts, max: usage.limits.max_prompts },
+    runsThisMonth: usage.usage.runs_this_month,
+  }
+}
+
+function projectsFrom(orgs: Organization[] | null): AccountProject[] {
+  if (!orgs) return SAMPLE_ACCOUNT.projects
+  return orgs.map(o => ({ id: o.id, name: o.name, url: o.url, createdAt: o.created_at }))
+}
+
+function invoicesFrom(invoices: Invoice[] | null): AccountInvoice[] {
+  if (!invoices) return SAMPLE_ACCOUNT.invoices
+  return invoices.map(i => ({
+    id: i.payment_id,
+    date: i.created_at ?? '',
+    amount: i.amount ?? 0,
+    currency: i.currency ?? 'USD',
+    status: i.status ?? 'unknown',
+  }))
+}
+
+/**
+ * Compose the profile overview from the real backend (server-side). Runs the
+ * calls in parallel; any section that fails uses the SAMPLE_ACCOUNT value.
+ */
+export async function loadAccountOverview(email: string, name?: string): Promise<AccountOverview> {
+  const [usage, sub, orgs, invoices] = await Promise.all([
+    settled(getUsage(email)),
+    settled(getSubscriptionStatus(email)),
+    settled(getOrganizations(email)),
+    settled(listInvoices(email)),
+  ])
+
+  const accountType = sub?.account_type ?? SAMPLE_ACCOUNT.user.accountType
+  const engines = usage?.limits.engines ?? sub?.limits.engines ?? SAMPLE_ACCOUNT.engines
+
+  return {
+    user: { name: name?.trim() || SAMPLE_ACCOUNT.user.name, email, accountType },
+    plan: sub ? planFrom(sub) : SAMPLE_ACCOUNT.plan,
+    usage: usageFrom(usage),
+    engines,
+    projects: projectsFrom(orgs),
+    invoices: invoicesFrom(invoices),
+  }
 }

@@ -1,5 +1,7 @@
 import { Bell, Calendar, ChevronDown, Plus, Search, SlidersHorizontal } from 'lucide-react'
 
+import { PrimaryButton } from '@/features/catalyst/components/PrimaryButton'
+
 /* White secondary chips — subtle border + soft shadow, compact height. */
 const CHIP =
   'inline-flex h-[34px] items-center gap-2 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-3 text-[13px] font-medium text-[var(--cat-ink)] shadow-sm transition-colors hover:bg-[var(--cat-hover)]'
@@ -23,9 +25,7 @@ export function TopbarActions(): JSX.Element {
       <button className={`${CHIP} hidden md:inline-flex`}>
         <SlidersHorizontal size={16} className="text-[var(--cat-ink-2)]" /> Filter by
       </button>
-      <button className="auth-cta-btn inline-flex h-[34px] shrink-0 items-center gap-2 rounded-md px-3.5 text-[13px] font-semibold text-white sm:px-4">
-        <Plus size={16} strokeWidth={2.2} /> New Products
-      </button>
+      <PrimaryButton icon={Plus}>New Products</PrimaryButton>
     </div>
   )
 }

@@ -1,7 +1,9 @@
 import { ChevronDown, Plus, Search } from 'lucide-react'
 
+import { PrimaryButton } from '@/features/catalyst/components/PrimaryButton'
+
 const DROP =
-  'inline-flex h-[38px] items-center gap-1.5 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-3 text-[13px] font-medium text-[var(--cat-ink)] transition-colors hover:bg-[var(--cat-hover)]'
+  'inline-flex h-[34px] items-center gap-1.5 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-3 text-[13px] font-medium text-[var(--cat-ink)] transition-colors hover:bg-[var(--cat-hover)]'
 
 export function CompetitorsToolbar(): JSX.Element {
   return (
@@ -13,7 +15,7 @@ export function CompetitorsToolbar(): JSX.Element {
         />
         <input
           placeholder="Search competitors..."
-          className="h-[38px] w-full rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] pr-3 pl-9 text-[13px] text-[var(--cat-ink)] placeholder:text-[var(--cat-ink-3)] focus:border-[#e04a3d] focus:outline-none"
+          className="h-[34px] w-full rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] pr-3 pl-9 text-[13px] text-[var(--cat-ink)] placeholder:text-[var(--cat-ink-3)] focus:border-[#e04a3d] focus:outline-none"
         />
       </div>
       <button className={DROP}>
@@ -24,12 +26,7 @@ export function CompetitorsToolbar(): JSX.Element {
         All scores
         <ChevronDown size={14} className="text-[var(--cat-ink-3)]" />
       </button>
-      <button
-        aria-label="Add competitor"
-        className="auth-cta-btn grid h-[38px] w-[38px] shrink-0 place-items-center rounded-md text-white"
-      >
-        <Plus size={17} strokeWidth={2.4} />
-      </button>
+      <PrimaryButton icon={Plus} iconOnly aria-label="Add competitor" />
     </div>
   )
 }

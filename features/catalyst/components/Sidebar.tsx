@@ -1,49 +1,48 @@
 'use client'
 
-import { LifeBuoy, Plus, Settings } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { useEffect } from 'react'
 
-import { NavItem } from '@/features/catalyst/components/NavItem'
-import { SidebarLogo } from '@/features/catalyst/components/SidebarLogo'
-import { SidebarUser } from '@/features/catalyst/components/SidebarUser'
-import { ThemeToggle } from '@/features/catalyst/components/ThemeToggle'
-import { WorkspaceSwitcher } from '@/features/catalyst/components/WorkspaceSwitcher'
-import { CHANNEL_NAV, MAIN_NAV } from '@/features/catalyst/constants'
+import { SidebarContent } from '@/features/catalyst/components/SidebarContent'
+import { useUiStore } from '@/stores/useUiStore'
 
-const SECTION =
-  'mt-4 mb-1.5 px-2 text-[11px] font-semibold tracking-wider text-[var(--cat-ink-3)] uppercase'
+const BASE =
+  'flex-none flex-col overflow-hidden rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] p-3 shadow-[0_1px_2px_rgba(16,24,40,.05)]'
 
 export function Sidebar(): JSX.Element {
+  const collapsed = useUiStore(s => s.collapsed)
+  const mobileOpen = useUiStore(s => s.mobileOpen)
+  const setMobileOpen = useUiStore(s => s.setMobileOpen)
+  const pathname = usePathname()
+
+  // Close the mobile drawer whenever the route changes.
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname, setMobileOpen])
+
   return (
-    <aside className="hidden w-[240px] flex-none flex-col rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] p-3 shadow-[0_1px_2px_rgba(16,24,40,.05)] lg:flex">
-      <SidebarLogo />
-      <WorkspaceSwitcher />
+    <>
+      <aside
+        className={`hidden transition-[width] duration-200 lg:flex ${BASE} ${collapsed ? 'w-[68px]' : 'w-[240px]'}`}
+      >
+        <SidebarContent collapsed={collapsed} />
+      </aside>
 
-      <div className={SECTION}>Main</div>
-      <nav className="flex flex-col gap-0.5">
-        {MAIN_NAV.map(item => (
-          <NavItem key={item.label} {...item} />
-        ))}
-      </nav>
-
-      <div className={`${SECTION} flex items-center justify-between`}>
-        Sales Channels
-        <Plus size={15} className="cursor-pointer" />
-      </div>
-      <nav className="flex flex-col gap-0.5">
-        {CHANNEL_NAV.map(item => (
-          <NavItem key={item.label} {...item} />
-        ))}
-      </nav>
-
-      <div className="flex-1" />
-
-      <nav className="flex flex-col gap-0.5">
-        <ThemeToggle />
-        <NavItem icon={Settings} label="Settings" href="#" />
-        <NavItem icon={LifeBuoy} label="Support" href="#" />
-      </nav>
-
-      <SidebarUser />
-    </aside>
+      {mobileOpen && (
+        <>
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setMobileOpen(false)}
+            className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          />
+          <aside
+            className={`fixed inset-y-2 left-2 z-50 flex w-[248px] shadow-xl lg:hidden ${BASE}`}
+          >
+            <SidebarContent collapsed={false} onClose={() => setMobileOpen(false)} />
+          </aside>
+        </>
+      )}
+    </>
   )
 }

@@ -1,7 +1,9 @@
 import { ChevronDown, Plus, UserRound } from 'lucide-react'
 
+import { PrimaryButton } from '@/features/catalyst/components/PrimaryButton'
+
 const DROP =
-  'inline-flex h-[36px] items-center gap-1.5 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-3 text-[13px] font-medium text-[var(--cat-ink)] transition-colors hover:bg-[var(--cat-hover)]'
+  'inline-flex h-[34px] items-center gap-1.5 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-3 text-[13px] font-medium text-[var(--cat-ink)] transition-colors hover:bg-[var(--cat-hover)]'
 
 export function TaskToolbarActions(): JSX.Element {
   return (
@@ -14,9 +16,7 @@ export function TaskToolbarActions(): JSX.Element {
         Priority
         <ChevronDown size={14} className="text-[var(--cat-ink-3)]" />
       </button>
-      <button className="auth-cta-btn inline-flex h-[36px] shrink-0 items-center gap-2 rounded-md px-3.5 text-[13px] font-semibold text-white">
-        <Plus size={16} strokeWidth={2.2} /> Create Task
-      </button>
+      <PrimaryButton icon={Plus}>Create Task</PrimaryButton>
     </div>
   )
 }

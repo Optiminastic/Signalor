@@ -4,6 +4,7 @@ import { TotalVisitorsCard } from '@/features/catalyst/components/cards/TotalVis
 import { UserRetentionCard } from '@/features/catalyst/components/cards/UserRetentionCard'
 import { VisitorsChannelsCard } from '@/features/catalyst/components/cards/VisitorsChannelsCard'
 import { WeeklyVisitorsCard } from '@/features/catalyst/components/cards/WeeklyVisitorsCard'
+import { WorldPresenceCard } from '@/features/catalyst/components/overview/WorldPresenceCard'
 import { Topbar } from '@/features/catalyst/components/Topbar'
 
 export function DashboardContent(): JSX.Element {
@@ -17,6 +18,7 @@ export function DashboardContent(): JSX.Element {
         <VisitorsChannelsCard />
         <UserRetentionCard />
         <WeeklyVisitorsCard />
+        <WorldPresenceCard />
       </section>
     </>
   )

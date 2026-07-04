@@ -1,0 +1,36 @@
+import Link from 'next/link'
+
+import { SignalorMark } from '@/components/SignalorMark'
+import { LandingNavMenu } from '@/features/landing/components/LandingNavMenu'
+
+function Logo(): JSX.Element {
+  return (
+    <Link href="/" className="flex items-center gap-2">
+      <SignalorMark className="h-7 w-7 text-[#e04a3d]" />
+      <span className="text-[19px] font-semibold tracking-tight text-[#171717]">Signalor</span>
+    </Link>
+  )
+}
+
+export function LandingNav(): JSX.Element {
+  return (
+    <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <Logo />
+      <LandingNavMenu />
+      <div className="flex items-center gap-2">
+        <Link
+          href="/sign-in"
+          className="hidden h-10 items-center rounded-md px-3.5 text-[14px] font-medium text-[#3f3f46] transition-colors hover:text-[#171717] sm:inline-flex"
+        >
+          Log in
+        </Link>
+        <Link
+          href="/sign-up"
+          className="auth-cta-btn inline-flex h-10 items-center rounded-md px-4 text-[14px] font-semibold text-white"
+        >
+          Sign up
+        </Link>
+      </div>
+    </nav>
+  )
+}

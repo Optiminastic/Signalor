@@ -1,27 +1,20 @@
-import { PanelLeft, Radio } from 'lucide-react'
+import { SignalorMark } from '@/components/SignalorMark'
 
-import { BRAND } from '@/features/catalyst/constants'
-
-/** Signalor app identity — the top-level brand above the workspace switcher. */
-export function SidebarLogo(): JSX.Element {
+/** Signalor app identity. Collapse/expand lives in the top bar, not here. */
+export function SidebarLogo({ collapsed }: { collapsed?: boolean }): JSX.Element {
+  if (collapsed) {
+    return (
+      <div className="flex flex-1 justify-center py-1">
+        <SignalorMark className="h-[26px] w-[26px] text-[#e04a3d]" />
+      </div>
+    )
+  }
   return (
-    <div className="flex items-center gap-2.5 px-1 pb-0.5">
-      <span
-        className="grid h-7 w-7 shrink-0 place-items-center rounded-md"
-        style={{ background: BRAND }}
-      >
-        <Radio size={16} strokeWidth={2} className="text-white" />
-      </span>
+    <div className="flex flex-1 items-center gap-2 px-1">
+      <SignalorMark className="h-[26px] w-[26px] shrink-0 text-[#e04a3d]" />
       <span className="text-[15px] font-semibold tracking-tight text-[var(--cat-ink)]">
         Signalor
       </span>
-      <button
-        type="button"
-        aria-label="Collapse sidebar"
-        className="ml-auto grid h-7 w-7 place-items-center rounded-md text-[var(--cat-ink-3)] transition-colors hover:bg-[var(--cat-hover)]"
-      >
-        <PanelLeft size={16} />
-      </button>
     </div>
   )
 }

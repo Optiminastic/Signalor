@@ -68,7 +68,8 @@ async function request<T>(method: string, path: string, cfg: RequestConfig = {})
       // Send better-auth session cookies to the backend when same-site.
       credentials: 'include',
       body: body !== undefined && body !== null ? JSON.stringify(body) : undefined,
-      signal,
+      // Fail fast (esp. for server-side fetches to an unreachable backend).
+      signal: signal ?? AbortSignal.timeout(10_000),
     })
   } catch {
     throw new ApiError('Cannot reach the server. Please try again.', 0)

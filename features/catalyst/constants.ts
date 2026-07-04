@@ -1,17 +1,17 @@
 import {
-  AppWindow,
   BarChart3,
-  Boxes,
-  Clock,
+  Blocks,
+  Building2,
   Eye,
   Facebook,
   Instagram,
   LayoutGrid,
+  Link2,
   ListChecks,
+  MessageSquareText,
   Network,
   Search,
   Store,
-  Tag,
   Users,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -72,22 +72,22 @@ export interface TableRow {
 
 /* --------------------------------------------------------------------- data */
 export const MAIN_NAV: NavEntry[] = [
-  { icon: LayoutGrid, label: 'Overview', href: '/catalyst' },
-  { icon: ListChecks, label: 'Tasks', href: '/catalyst/tasks', badge: 7 },
-  { icon: Eye, label: 'Visibility', href: '/catalyst/visibility' },
-  { icon: Network, label: 'Sitemap', href: '/catalyst/sitemap' },
-  { icon: Users, label: 'Competitors', href: '/catalyst/competitors' },
-  { icon: BarChart3, label: 'Analytics', href: '#' },
-  { icon: Boxes, label: 'Products', href: '#' },
-  { icon: Clock, label: 'Orders', href: '#' },
-  { icon: Tag, label: 'Discounts', href: '#' },
-  { icon: AppWindow, label: 'Apps', href: '#' },
+  { icon: LayoutGrid, label: 'Overview', href: '/dashboard' },
+  { icon: Building2, label: 'Brands', href: '/dashboard/brands' },
 ]
 
-export const CHANNEL_NAV: NavEntry[] = [
-  { icon: Facebook, label: 'Facebook', href: '#' },
-  { icon: Store, label: 'Online Store', href: '#' },
-  { icon: Instagram, label: 'Instagram', href: '#' },
+export const MONITORING_NAV: NavEntry[] = [
+  { icon: Eye, label: 'Visibility', href: '/dashboard/visibility' },
+  { icon: MessageSquareText, label: 'Prompt Tracker', href: '/dashboard/prompt-tracker' },
+  { icon: Network, label: 'Sitemap', href: '/dashboard/sitemap' },
+  { icon: Users, label: 'Competitors', href: '/dashboard/competitors' },
+  { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
+]
+
+export const OPTIMIZATION_NAV: NavEntry[] = [
+  { icon: ListChecks, label: 'Tasks', href: '/dashboard/tasks', badge: 7 },
+  { icon: Link2, label: 'Backlinks', href: '/dashboard/backlinks' },
+  { icon: Blocks, label: 'Integrations', href: '/dashboard/integrations' },
 ]
 
 export const SALES_LINE: number[] = [

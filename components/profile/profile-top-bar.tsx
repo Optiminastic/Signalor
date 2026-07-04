@@ -1,14 +1,16 @@
 'use client'
 
-import { ArrowLeft, LogOut } from 'lucide-react'
+import { ArrowLeft, LogOut, Moon, Sun } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
+import { useCatalystTheme } from '@/features/catalyst/components/CatalystThemeProvider'
 import { signOut } from '@/lib/auth-client'
 import { routes } from '@/lib/routes'
 
 export function ProfileTopBar(): JSX.Element {
   const router = useRouter()
+  const { dark, toggle } = useCatalystTheme()
 
   const handleSignOut = async (): Promise<void> => {
     await signOut().catch(() => {})
@@ -16,23 +18,35 @@ export function ProfileTopBar(): JSX.Element {
   }
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-neutral-200 bg-white/85 px-5 backdrop-blur">
+    <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-[var(--cat-border)] bg-[var(--cat-card)]/85 px-5 backdrop-blur">
       <Link
         href={routes.dashboard}
-        className="hover:text-foreground flex items-center gap-1.5 text-[13px] text-neutral-500 transition"
+        className="flex items-center gap-1.5 text-[13px] text-[var(--cat-ink-2)] transition hover:text-[var(--cat-ink)]"
       >
         <ArrowLeft className="h-4 w-4" />
         Dashboard
       </Link>
-      <span className="text-foreground text-[15px] font-semibold tracking-tight">Signalor</span>
-      <button
-        type="button"
-        onClick={handleSignOut}
-        className="hover:text-foreground flex items-center gap-1.5 text-[13px] text-neutral-500 transition"
-      >
-        <LogOut className="h-4 w-4" />
-        Sign out
-      </button>
+      <span className="text-[15px] font-semibold tracking-tight text-[var(--cat-ink)]">
+        Signalor
+      </span>
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label="Toggle theme"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-[var(--cat-ink-2)] transition hover:bg-[var(--cat-hover)] hover:text-[var(--cat-ink)]"
+        >
+          {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        </button>
+        <button
+          type="button"
+          onClick={handleSignOut}
+          className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[13px] text-[var(--cat-ink-2)] transition hover:bg-[var(--cat-hover)] hover:text-[var(--cat-ink)]"
+        >
+          <LogOut className="h-4 w-4" />
+          Sign out
+        </button>
+      </div>
     </header>
   )
 }

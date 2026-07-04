@@ -32,6 +32,14 @@ export async function checkOrganizationExists(email: string): Promise<boolean> {
   return checkResponseSchema.parse(data).exists
 }
 
+/** GET /api/organizations/?email= → the user's organizations/projects. */
+export async function getOrganizations(email: string): Promise<Organization[]> {
+  const data = await apiGet<unknown>('/api/organizations/', {
+    params: { email: normalizeEmail(email) },
+  })
+  return z.array(organizationSchema).parse(data)
+}
+
 /** POST /api/organizations/onboard/ → create the org (single-use onboarding token). */
 export async function createOrganization(
   payload: OnboardPayload,

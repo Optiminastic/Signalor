@@ -18,12 +18,12 @@ export function SectionCard({
   flush = false,
 }: SectionCardProps): JSX.Element {
   return (
-    <section className="shadow-input overflow-hidden rounded-xl border border-neutral-200 bg-white">
-      <header className="flex items-start justify-between gap-3 border-b border-neutral-200 px-5 py-4">
+    <section className="overflow-hidden rounded-xl border border-[var(--cat-border)] bg-[var(--cat-card)]">
+      <header className="flex items-start justify-between gap-3 border-b border-[var(--cat-border)] px-5 py-4">
         <div>
-          <h2 className="text-foreground text-[15px] font-semibold">{title}</h2>
+          <h2 className="text-[15px] font-semibold text-[var(--cat-ink)]">{title}</h2>
           {description && (
-            <p className="mt-0.5 text-xs font-light text-neutral-400">{description}</p>
+            <p className="mt-0.5 text-xs font-light text-[var(--cat-ink-3)]">{description}</p>
           )}
         </div>
         {action}

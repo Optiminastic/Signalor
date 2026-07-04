@@ -1,40 +1,46 @@
-'use client'
-
-import { useEffect, useState } from 'react'
+import { headers } from 'next/headers'
 
 import { BillingHistory } from '@/components/profile/billing-history'
+import { EnginesCard } from '@/components/profile/engines-card'
 import { PlanBilling } from '@/components/profile/plan-billing'
 import { ProfileHeader } from '@/components/profile/profile-header'
 import { ProfileTopBar } from '@/components/profile/profile-top-bar'
 import { ProjectsList } from '@/components/profile/projects-list'
-import { UsageLimits } from '@/components/profile/usage-limits'
-import { getAccountOverview, SAMPLE_ACCOUNT } from '@/services/account.service'
+import { StatTiles } from '@/components/profile/stat-tiles'
+import { CatalystThemeProvider } from '@/features/catalyst/components/CatalystThemeProvider'
+import { auth } from '@/lib/auth'
+import { loadAccountOverview, SAMPLE_ACCOUNT } from '@/services/account.service'
 
-export default function ProfilePage(): JSX.Element {
-  // Seed with sample data so the page renders instantly (SSR too); refresh from
-  // the API in the background once real wiring is enabled.
-  const [data, setData] = useState(SAMPLE_ACCOUNT)
+// Per-request data (session + backend), so never statically cached.
+export const dynamic = 'force-dynamic'
 
-  useEffect(() => {
-    let active = true
-    void getAccountOverview().then(overview => {
-      if (active) setData(overview)
-    })
-    return () => {
-      active = false
-    }
-  }, [])
+export default async function ProfilePage(): Promise<JSX.Element> {
+  const session = await auth.api.getSession({ headers: await headers() }).catch(() => null)
+  const email = session?.user?.email
+
+  const data = email
+    ? await loadAccountOverview(email, session?.user?.name).catch(() => SAMPLE_ACCOUNT)
+    : SAMPLE_ACCOUNT
 
   return (
-    <main className="min-h-svh bg-[#fafafa] font-sans">
-      <ProfileTopBar />
-      <div className="mx-auto max-w-3xl space-y-5 px-5 py-8">
-        <ProfileHeader user={data.user} planLabel={data.plan.label} />
-        <UsageLimits usage={data.usage} engines={data.engines} />
-        <PlanBilling plan={data.plan} />
-        <ProjectsList projects={data.projects} max={data.usage.projects.max} />
-        <BillingHistory invoices={data.invoices} />
-      </div>
-    </main>
+    <CatalystThemeProvider>
+      <main className="min-h-svh bg-[var(--cat-canvas)] font-sans">
+        <ProfileTopBar />
+        <div className="mx-auto max-w-5xl space-y-5 px-5 py-8">
+          <ProfileHeader user={data.user} planLabel={data.plan.label} />
+          <StatTiles usage={data.usage} />
+          <div className="grid gap-5 lg:grid-cols-2">
+            <div className="space-y-5">
+              <PlanBilling plan={data.plan} />
+              <BillingHistory invoices={data.invoices} />
+            </div>
+            <div className="space-y-5">
+              <ProjectsList projects={data.projects} max={data.usage.projects.max} />
+              <EnginesCard engines={data.engines} />
+            </div>
+          </div>
+        </div>
+      </main>
+    </CatalystThemeProvider>
   )
 }

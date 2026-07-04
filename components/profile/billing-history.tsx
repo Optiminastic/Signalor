@@ -9,19 +9,19 @@ function InvoiceRow({ invoice }: { invoice: AccountInvoice }): JSX.Element {
   return (
     <li className="flex items-center gap-3 px-5 py-3">
       <div className="min-w-0 flex-1">
-        <p className="text-foreground text-[13px] font-medium">{formatDate(invoice.date)}</p>
-        <p className="text-xs text-neutral-400">{invoice.id}</p>
+        <p className="text-[13px] font-medium text-[var(--cat-ink)]">{formatDate(invoice.date)}</p>
+        <p className="text-xs text-[var(--cat-ink-3)]">{invoice.id}</p>
       </div>
       <span className="rounded-full bg-[#047857]/10 px-2 py-0.5 text-[11px] font-medium text-[#047857] capitalize">
         {invoice.status}
       </span>
-      <span className="text-foreground w-16 text-right text-[13px] font-medium tabular-nums">
+      <span className="w-16 text-right text-[13px] font-medium text-[var(--cat-ink)] tabular-nums">
         {formatMoney(invoice.amount, invoice.currency)}
       </span>
       <button
         type="button"
         aria-label="Download invoice"
-        className="hover:text-foreground rounded-md p-1.5 text-neutral-400 transition hover:bg-neutral-100"
+        className="rounded-md p-1.5 text-[var(--cat-ink-3)] transition hover:bg-[var(--cat-hover)] hover:text-[var(--cat-ink)]"
       >
         <Download className="h-4 w-4" />
       </button>
@@ -33,7 +33,7 @@ function InvoiceRow({ invoice }: { invoice: AccountInvoice }): JSX.Element {
 export function BillingHistory({ invoices }: { invoices: AccountInvoice[] }): JSX.Element {
   return (
     <SectionCard title="Billing history" description="Download your past invoices." flush>
-      <ul className="divide-y divide-neutral-100">
+      <ul className="divide-y divide-[var(--cat-border-soft)]">
         {invoices.map(inv => (
           <InvoiceRow key={inv.id} invoice={inv} />
         ))}

@@ -1,0 +1,61 @@
+import { MoreHorizontal } from 'lucide-react'
+
+import { BarMeter } from '@/features/catalyst/components/visibility/BarMeter'
+import { MetricDelta } from '@/features/catalyst/components/visibility/MetricDelta'
+import { scoreColor } from '@/features/catalyst/visibility-data'
+import type { PlatformScore, SubStat } from '@/features/catalyst/visibility-data'
+
+function Head({ platform }: { platform: PlatformScore }): JSX.Element {
+  const { icon: Icon, name, score, badge } = platform
+  return (
+    <div className="flex items-center justify-between">
+      <span className="flex items-center gap-2">
+        <span className="grid h-7 w-7 place-items-center rounded-md bg-[var(--cat-hover)]">
+          <Icon size={14} style={{ color: scoreColor(score) }} />
+        </span>
+        <span className="text-[14px] font-semibold text-[var(--cat-ink)]">{name}</span>
+        {badge && (
+          <span
+            className="rounded-full border px-2 py-0.5 text-[10px] font-medium"
+            style={{ color: '#17A673', borderColor: 'rgba(23,166,115,.35)' }}
+          >
+            AI Analysis
+          </span>
+        )}
+      </span>
+      <MoreHorizontal size={16} className="text-[var(--cat-ink-3)]" />
+    </div>
+  )
+}
+
+function SubStats({ stats }: { stats: SubStat[] }): JSX.Element {
+  return (
+    <div className="grid grid-cols-3 gap-2 border-t border-[var(--cat-border-soft)] pt-3">
+      {stats.map(stat => (
+        <div key={stat.label}>
+          <div className="text-[15px] font-bold text-[var(--cat-ink)]">{stat.value}</div>
+          <div className="text-[11px] text-[var(--cat-ink-3)]">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export function PlatformScoreCard({ platform }: { platform: PlatformScore }): JSX.Element {
+  return (
+    <div className="flex flex-col gap-3 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] p-4">
+      <Head platform={platform} />
+      <div className="flex items-end gap-2.5">
+        <span className="text-[32px] leading-none font-bold tracking-tight text-[var(--cat-ink)]">
+          {platform.score}
+          <span className="ml-1 text-[15px] font-semibold text-[var(--cat-ink-3)]">/100</span>
+        </span>
+        <span className="mb-0.5">
+          <MetricDelta value={platform.delta} positive={platform.positive} />
+        </span>
+      </div>
+      <BarMeter value={platform.score} color={scoreColor(platform.score)} />
+      <SubStats stats={platform.substats} />
+    </div>
+  )
+}

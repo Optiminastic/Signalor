@@ -227,22 +227,24 @@ scrollable content panel). Each page supplies its own **pinned header + scroll b
 
 ---
 
-## 7c. The Visibility page (`/catalyst/visibility`)
+## 7c. The Visibility page (`/dashboard/visibility`)
 
-"Brand presence" — how AI engines surface the brand. Same shell (pinned header + scroll body).
+"Brand presence" — how AI engines surface the brand. A **card grid** in a health-app-inspired
+metric style: header (`icon + title + ⋯`), a **big number with a small unit** and a `MetricDelta`
+(↗ green / ↘ red, `—` when 0%), a mini viz, and a footer/sub-stats. All `cat-stagger`, theme-token
+driven, light + dark.
 
-- **Metric design — radial gauges (the signature viz here).** Each platform score is a **270°
-  `GaugeRing`** (arc fills clockwise, gap centered at bottom, rounded caps) with the number centered,
-  a small platform icon badge, and a status pill (`scoreStatus`: Strong / Moderate / Low / None).
-  Arc + status color come from `scoreColor` (≥70 green, ≥40 amber, else red). The **Overall** card
-  uses a **full `ScoreRing`** (not a gauge) so the headline reads distinct from the sub-scores. A
-  0-value gauge draws only its track (no cap dot).
-- **AI Engine & Platform Signals:** a `Share of Voice` bar chart (gridlines + per-engine bars),
-  a `Mention Split` donut (`ScoreRing`), and a `Platform Reach` list — split by `lg:border-l`.
-- **Platform Analysis:** `Google` / `Web` / `Reddit` cards sharing `AnalysisHeader` (icon badge +
-  name + green "AI Analysis" pill + `scoreColor` score). Reusable parts: `StatTile` (mini metric),
-  `BreakdownBar` (labelled meter), `VisChip` (on/off flags + count chips), `WebTopLinks`. Reddit is
-  an empty state.
+- **Signature viz — the `BarMeter`:** 44 thin bars, the first `value%` filled with the metric's hue
+  (`scoreColor`: ≥70 green, ≥40 amber, else red), the rest on `--cat-track`. Used by the Overall +
+  the three platform cards.
+- **Hero row:** `OverallVisibilityCard` (55/100 + BarMeter), `ShareOfVoiceCard` (2% avg SOV +
+  `MiniBars` per engine), `MentionsCard` (2 mentions + `Sparkline` — fixed-height area line with a
+  non-scaling stroke).
+- **Platform cards** (`PlatformScoreCard`, reused for Google / Web / Reddit): icon badge + name +
+  green "AI Analysis" pill, big `score/100` + delta, a `scoreColor` BarMeter, then a 3-up sub-stat
+  row (`#1 Brand Rank · 10 Indexed · 8/10 In SERP`, etc.). Reddit reads as an empty/zero state.
+- Shared primitives live in `components/visibility/`: `MetricDelta`, `BarMeter`, `Sparkline`,
+  `MiniBars`, `VisCardHead`.
 
 ---
 

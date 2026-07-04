@@ -1,5 +1,6 @@
 import { Layers, Play } from 'lucide-react'
 
+import { PrimaryButton } from '@/features/catalyst/components/PrimaryButton'
 import { BRAND, BRAND_SOFT } from '@/features/catalyst/constants'
 
 export function SitemapUrlBar(): JSX.Element {
@@ -19,9 +20,9 @@ export function SitemapUrlBar(): JSX.Element {
           https://signalor.ai/sitemap.xml
         </div>
       </div>
-      <button className="auth-cta-btn ml-auto inline-flex h-[34px] shrink-0 items-center gap-2 rounded-md px-3.5 text-[13px] font-semibold text-white">
-        <Play size={14} /> Re-run audit
-      </button>
+      <PrimaryButton icon={Play} className="ml-auto">
+        Re-run audit
+      </PrimaryButton>
     </div>
   )
 }

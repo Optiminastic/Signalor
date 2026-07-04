@@ -12,6 +12,7 @@ interface NavItemProps {
   label: string
   href: string
   badge?: number
+  collapsed?: boolean
 }
 
 function Trailing({ active, badge }: { active: boolean; badge?: number }): JSX.Element | null {
@@ -29,10 +30,33 @@ function Trailing({ active, badge }: { active: boolean; badge?: number }): JSX.E
   return null
 }
 
-export function NavItem({ icon: Icon, label, href, badge }: NavItemProps): JSX.Element {
+function isActive(pathname: string, href: string): boolean {
+  if (href === '#') return false
+  return pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
+}
+
+function NavRight({
+  collapsed,
+  active,
+  badge,
+}: {
+  collapsed?: boolean
+  active: boolean
+  badge?: number
+}): JSX.Element | null {
+  if (!collapsed) return <Trailing active={active} badge={badge} />
+  if (!badge) return null
+  return (
+    <span
+      className="absolute top-1 right-1 h-1.5 w-1.5 rounded-full"
+      style={{ background: BRAND }}
+    />
+  )
+}
+
+export function NavItem({ icon: Icon, label, href, badge, collapsed }: NavItemProps): JSX.Element {
   const pathname = usePathname()
-  const active =
-    href !== '#' && (pathname === href || (href !== '/catalyst' && pathname.startsWith(href)))
+  const active = isActive(pathname, href)
   const style = active
     ? { background: BRAND_SOFT, color: BRAND_STRONG }
     : { color: 'var(--cat-ink-2)' }
@@ -40,18 +64,19 @@ export function NavItem({ icon: Icon, label, href, badge }: NavItemProps): JSX.E
   return (
     <Link
       href={href}
-      className="relative flex items-center gap-3 rounded-md px-2.5 py-2 text-[14px] font-medium transition-colors hover:bg-[var(--cat-hover)]"
+      title={collapsed ? label : undefined}
+      className={`relative flex items-center rounded-md py-2 text-[14px] font-medium transition-colors hover:bg-[var(--cat-hover)] ${collapsed ? 'justify-center px-0' : 'gap-3 px-2.5'}`}
       style={style}
     >
       {active && (
         <span
-          className="absolute top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r"
-          style={{ left: -14, background: BRAND }}
+          className="absolute top-1/2 left-0 h-5 w-[3px] -translate-y-1/2 rounded-r"
+          style={{ background: BRAND }}
         />
       )}
-      <Icon size={18} strokeWidth={1.8} />
-      {label}
-      <Trailing active={active} badge={badge} />
+      <Icon size={18} strokeWidth={1.8} className="shrink-0" />
+      {!collapsed && label}
+      <NavRight collapsed={collapsed} active={active} badge={badge} />
     </Link>
   )
 }

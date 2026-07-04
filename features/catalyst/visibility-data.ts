@@ -1,19 +1,4 @@
-import {
-  CheckCircle2,
-  Chrome,
-  Globe,
-  Hash,
-  HelpCircle,
-  Layers,
-  Link2,
-  Linkedin,
-  MessageSquare,
-  Search,
-  TrendingUp,
-  Twitter,
-  Youtube,
-  Zap,
-} from 'lucide-react'
+import { Globe, MessageSquare, Search } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 import { GREEN, NEG, YELLOW } from '@/features/catalyst/constants'
@@ -25,7 +10,7 @@ export function scoreColor(value: number): string {
   return NEG
 }
 
-/** Score → short qualitative status shown under each gauge. */
+/** Score → short qualitative status. */
 export function scoreStatus(value: number): string {
   if (value >= 70) return 'Strong'
   if (value >= 40) return 'Moderate'
@@ -33,29 +18,20 @@ export function scoreStatus(value: number): string {
   return 'None'
 }
 
-/* -------------------------------------------------------------- top scores */
-export const OVERALL = {
-  brand: 'Signalor',
-  score: 55,
-  platformsDetected: 0,
-  platformsTotal: 6,
-}
-
-export interface ScoreCardData {
+export interface SubStat {
+  value: string
   label: string
-  icon: LucideIcon
-  value: number
-  unit: string
 }
 
-export const SCORE_CARDS: ScoreCardData[] = [
-  { label: 'Google Score', icon: Search, value: 75, unit: '/100' },
-  { label: 'Reddit Score', icon: MessageSquare, value: 0, unit: '/100' },
-  { label: 'Web Score', icon: Globe, value: 65, unit: '/100' },
-  { label: 'Coverage', icon: Zap, value: 0, unit: '%' },
-]
+/* ------------------------------------------------------------- hero metrics */
+export const OVERALL = {
+  score: 55,
+  delta: '2.4%',
+  positive: false,
+  detected: 0,
+  total: 6,
+}
 
-/* ------------------------------------------------------- AI engine signals */
 export interface SovBar {
   name: string
   value: number
@@ -70,89 +46,69 @@ export const SOV: SovBar[] = [
   { name: 'Bing', value: 0 },
 ]
 
-export const SIGNALS_META = { prompts: '2/80 prompts', avgSov: '2% avg SOV', mentions: 2 }
+export const SOV_META = { avg: '2%', prompts: '2 / 80 prompts', delta: '0.5%', positive: true }
 
-export interface ReachItem {
+export const MENTIONS = {
+  count: 2,
+  delta: '1',
+  positive: true,
+  platforms: 3,
+  trend: [1, 0, 1, 1, 2, 1, 2, 2, 3],
+}
+
+/* ------------------------------------------------------- platform score cards */
+export interface PlatformScore {
+  key: string
+  icon: LucideIcon
   name: string
-  icon: LucideIcon
+  score: number
+  delta: string
+  positive: boolean
+  badge: boolean
+  substats: [SubStat, SubStat, SubStat]
 }
 
-export const PLATFORM_REACH: ReachItem[] = [
-  { name: 'Google', icon: Chrome },
-  { name: 'Reddit', icon: MessageSquare },
-  { name: 'Quora', icon: HelpCircle },
-  { name: 'LinkedIn', icon: Linkedin },
-  { name: 'YouTube', icon: Youtube },
-  { name: 'X', icon: Twitter },
+export const PLATFORM_SCORES: PlatformScore[] = [
+  {
+    key: 'google',
+    icon: Search,
+    name: 'Google',
+    score: 75,
+    delta: '2.1%',
+    positive: true,
+    badge: true,
+    substats: [
+      { value: '#1', label: 'Brand Rank' },
+      { value: '10', label: 'Indexed' },
+      { value: '8/10', label: 'In SERP' },
+    ],
+  },
+  {
+    key: 'web',
+    icon: Globe,
+    name: 'Web',
+    score: 65,
+    delta: '0.8%',
+    positive: false,
+    badge: true,
+    substats: [
+      { value: '15', label: 'Mentions' },
+      { value: '3', label: 'Types' },
+      { value: '15', label: 'Domains' },
+    ],
+  },
+  {
+    key: 'reddit',
+    icon: MessageSquare,
+    name: 'Reddit',
+    score: 0,
+    delta: '0%',
+    positive: false,
+    badge: false,
+    substats: [
+      { value: '0', label: 'Threads' },
+      { value: '0', label: 'Upvotes' },
+      { value: '—', label: 'Sentiment' },
+    ],
+  },
 ]
-
-/* ----------------------------------------------------------- platform deep */
-export interface Tile {
-  icon: LucideIcon
-  value: string
-  label: string
-}
-export interface Bar {
-  label: string
-  value: number
-}
-export interface Flag {
-  label: string
-  on: boolean
-}
-export interface ByType {
-  label: string
-  count: number
-}
-export interface TopLink {
-  title: string
-  domain: string
-}
-
-export const GOOGLE = {
-  score: 75,
-  tiles: [
-    { icon: TrendingUp, value: '#1', label: 'Brand Rank' },
-    { icon: Search, value: '10', label: 'Indexed' },
-    { icon: CheckCircle2, value: '8/10', label: 'In SERP' },
-  ] as Tile[],
-  flags: [
-    { label: 'Knowledge', on: false },
-    { label: 'AI Overview', on: true },
-  ] as Flag[],
-  breakdown: [
-    { label: 'Site Index', value: 20 },
-    { label: 'Brand Dominance', value: 80 },
-    { label: 'Brand Search Rank', value: 100 },
-  ] as Bar[],
-}
-
-export const WEB = {
-  score: 65,
-  tiles: [
-    { icon: Hash, value: '15', label: 'Mentions' },
-    { icon: Layers, value: '3', label: 'Types' },
-    { icon: Link2, value: '15', label: 'Domains' },
-  ] as Tile[],
-  breakdown: [
-    { label: 'Mention Volume', value: 75 },
-    { label: 'Source Authority', value: 57 },
-    { label: 'Platform Diversity', value: 60 },
-  ] as Bar[],
-  byType: [
-    { label: 'Other', count: 7 },
-    { label: 'Review Sites', count: 5 },
-    { label: 'Social Media', count: 3 },
-  ] as ByType[],
-  topLinks: [
-    { title: 'Signalor AI | LinkedIn', domain: 'linkedin.com' },
-    { title: 'Signalor AI - Crunchbase Company Profile & Funding', domain: 'crunchbase.com' },
-    {
-      title: 'Signalor AI - AI-powered insights for your business | Product Hunt',
-      domain: 'producthunt.com',
-    },
-    { title: 'Signalor AI - StartupBase', domain: 'startupbase.io' },
-  ] as TopLink[],
-}
-
-export const REDDIT = { score: 0 }

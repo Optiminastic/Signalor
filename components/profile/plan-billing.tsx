@@ -9,7 +9,7 @@ const STATUS_STYLES: Record<string, string> = {
   active: 'bg-[#047857]/10 text-[#047857]',
   trialing: 'bg-primary/10 text-primary',
   past_due: 'bg-[#b45309]/10 text-[#b45309]',
-  canceled: 'bg-neutral-100 text-neutral-500',
+  canceled: 'bg-[var(--cat-hover)] text-[var(--cat-ink-2)]',
 }
 
 /** Current plan, price, status and billing actions. */
@@ -19,7 +19,7 @@ export function PlanBilling({ plan }: { plan: AccountOverview['plan'] }): JSX.El
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-foreground text-xl font-semibold tracking-tight">
+            <span className="text-xl font-semibold tracking-tight text-[var(--cat-ink)]">
               {plan.label}
             </span>
             <span
@@ -28,16 +28,16 @@ export function PlanBilling({ plan }: { plan: AccountOverview['plan'] }): JSX.El
               {plan.status.replace('_', ' ')}
             </span>
           </div>
-          <p className="mt-1 text-[13px] text-neutral-500">
+          <p className="mt-1 text-[13px] text-[var(--cat-ink-2)]">
             {formatMoney(plan.price, plan.currency)}
-            <span className="text-neutral-400">/{plan.interval}</span>
+            <span className="text-[var(--cat-ink-3)]">/{plan.interval}</span>
             {plan.renewsOn && <> · renews {formatDate(plan.renewsOn)}</>}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="shadow-input text-foreground inline-flex h-9 items-center gap-1.5 rounded-md border border-neutral-200 bg-white px-3.5 text-[13px] font-medium transition hover:bg-neutral-50"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-3.5 text-[13px] font-medium text-[var(--cat-ink)] transition hover:bg-[var(--cat-hover)]"
           >
             <CreditCard className="h-3.5 w-3.5" />
             Manage billing
