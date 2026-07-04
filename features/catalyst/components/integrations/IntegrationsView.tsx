@@ -5,7 +5,7 @@ export function IntegrationsView(): JSX.Element {
   const connectedCount = INTEGRATIONS.filter(i => i.connected).length
 
   return (
-    <div className="mx-auto w-full max-w-[1100px]">
+    <div className="w-full">
       <header className="mb-6">
         <h1 className="text-[22px] font-semibold tracking-tight text-[var(--cat-ink)]">
           Integrations

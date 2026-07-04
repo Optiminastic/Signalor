@@ -27,7 +27,7 @@ function Diamond({ style }: { style?: CSSProperties }): JSX.Element {
 /** Right-hand marketing panel. Hidden below the lg breakpoint. */
 export function AuthMarketingPanel(): JSX.Element {
   return (
-    <aside className="bg-muted relative hidden min-h-svh flex-col overflow-hidden border-l border-black/6 p-7 lg:flex xl:p-9">
+    <aside className="relative m-4 hidden flex-col overflow-hidden rounded-2xl border border-black/8 bg-gradient-to-br from-[#e04a3d]/22 via-[#e04a3d]/10 to-transparent p-7 shadow-sm lg:flex xl:m-6 xl:p-9">
       <div className="pointer-events-none absolute inset-0 opacity-25">
         <svg
           className="absolute top-1/2 left-1/2 h-[min(340px,72%)] w-[min(340px,72%)] -translate-x-1/2 -translate-y-[42%]"

@@ -1,8 +1,8 @@
-import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
-import { G2Badge } from '@/features/landing/components/G2Badge'
 import { Sparkle } from '@/features/landing/components/Sparkle'
+
+import { IntegrationBeams } from './LandingHeroIllstration'
 
 function SparkleBadge(): JSX.Element {
   return (
@@ -14,19 +14,12 @@ function SparkleBadge(): JSX.Element {
 
 function HeroCtas(): JSX.Element {
   return (
-    <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-      <button
-        type="button"
-        className="inline-flex h-12 items-center justify-center rounded-md border border-[#e4e4e7] bg-white px-6 text-[15px] font-semibold text-[#171717] shadow-sm transition-colors hover:bg-[#f6f6f6]"
-      >
-        Book a Demo
-      </button>
+    <div className="mt-9 flex items-center justify-center">
       <Link
-        href="/sign-up"
-        className="auth-cta-btn inline-flex h-12 items-center justify-center gap-2 rounded-md px-6 text-[15px] font-semibold text-white"
+        href="/sign-in"
+        className="auth-cta-btn inline-flex h-10 items-center rounded-md px-4 text-[14px] font-semibold text-white"
       >
-        Start Free Trial
-        <ArrowRight size={17} strokeWidth={2.2} />
+        Start now
       </Link>
     </div>
   )
@@ -49,7 +42,7 @@ export function Hero(): JSX.Element {
         traffic to your website that converts.
       </p>
       <HeroCtas />
-      <G2Badge />
+      <IntegrationBeams />
     </section>
   )
 }

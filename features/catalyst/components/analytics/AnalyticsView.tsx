@@ -54,7 +54,7 @@ function TopPagesPanel(): JSX.Element {
 
 export function AnalyticsView(): JSX.Element {
   return (
-    <div className="mx-auto w-full max-w-[1100px]">
+    <div className="w-full">
       <DashHeader
         title="Analytics"
         subtitle="How much traffic AI engines send you, and where it lands."

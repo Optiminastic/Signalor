@@ -68,7 +68,7 @@ function PromptRow({ item }: { item: TrackedPrompt }): JSX.Element {
 
 export function PromptTrackerView(): JSX.Element {
   return (
-    <div className="mx-auto w-full max-w-[1100px]">
+    <div className="w-full">
       <DashHeader
         title="Prompt Tracker"
         subtitle="Watch how AI engines answer the prompts that matter to your category."
