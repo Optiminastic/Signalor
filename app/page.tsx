@@ -1,5 +1,4 @@
 import { AnnouncementBar } from '@/features/landing/components/AnnouncementBar'
-import { GridBackdrop } from '@/features/landing/components/GridBackdrop'
 import { Hero } from '@/features/landing/components/Hero'
 import { LandingNav } from '@/features/landing/components/LandingNav'
 
@@ -48,12 +47,13 @@ const HOMEPAGE_FAQ = [
 
 export default function HomePage(): JSX.Element {
   return (
-    <div className="min-h-screen bg-[#fbfbfa] font-sans">
-      {/* new-signalor header + hero */}
-      <AnnouncementBar />
+    <div className="min-h-screen overflow-x-clip bg-[#fbfbfa] font-sans">
+      {/* new-signalor header + hero — gradient spans from the very top */}
       <div className="relative overflow-hidden">
-        <GridBackdrop />
+        <div className="hero-aurora pointer-events-none absolute inset-0 opacity-60" />
+        <div className="hero-grain pointer-events-none absolute inset-0" />
         <div className="relative z-10">
+          <AnnouncementBar />
           <LandingNav />
           <Hero />
         </div>

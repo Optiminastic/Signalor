@@ -7,6 +7,7 @@ import {
   Link2,
   ListChecks,
   MessageCircle,
+  PenLine,
   Search,
   Store,
   Users,
@@ -79,6 +80,7 @@ export const MONITORING_NAV: NavEntry[] = [
 
 export const OPTIMIZATION_NAV: NavEntry[] = [
   { icon: ListChecks, label: 'Tasks', href: '/dashboard/tasks', badge: 7 },
+  { icon: PenLine, label: 'Content', href: '/dashboard/optimisation' },
   { icon: Link2, label: 'Backlinks', href: '/dashboard/backlinks' },
   { icon: Blocks, label: 'Integrations', href: '/dashboard/integrations' },
 ]

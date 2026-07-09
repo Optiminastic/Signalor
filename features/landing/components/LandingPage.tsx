@@ -3,7 +3,6 @@ import { Faq } from '@/features/landing/components/Faq'
 import { FeaturesGrid } from '@/features/landing/components/FeaturesGrid'
 import { FloatingChat } from '@/features/landing/components/FloatingChat'
 import { Footer } from '@/features/landing/components/Footer'
-import { GridBackdrop } from '@/features/landing/components/GridBackdrop'
 import { Hero } from '@/features/landing/components/Hero'
 import { HowItWorks } from '@/features/landing/components/HowItWorks'
 import { IntegrationsStrip } from '@/features/landing/components/IntegrationsStrip'
@@ -15,10 +14,9 @@ import { WhySignalor } from '@/features/landing/components/WhySignalor'
 
 export function LandingPage(): JSX.Element {
   return (
-    <div className="min-h-screen bg-[#fbfbfa] font-sans">
+    <div className="min-h-screen overflow-x-clip bg-[#fbfbfa] font-sans">
       <AnnouncementBar />
       <div className="relative overflow-hidden">
-        <GridBackdrop />
         <div className="relative z-10">
           <LandingNav />
           <Hero />
