@@ -20,7 +20,7 @@ export function CatalystShell({ children }: CatalystShellProps): JSX.Element {
       <Sidebar />
       <main className={PANEL}>
         <GlobalBar />
-        <div className="mt-3 flex min-h-0 flex-1 flex-col">{children}</div>
+        <div className="mt-3 flex min-h-0 flex-1 flex-col overflow-y-auto pr-0.5">{children}</div>
       </main>
     </div>
   )

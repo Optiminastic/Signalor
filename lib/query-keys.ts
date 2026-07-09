@@ -23,4 +23,12 @@ export const queryKeys = {
       ['catalyst', 'integrations', email, orgId] as const,
     worldVisibility: (slug: string) => ['catalyst', 'world-visibility', slug] as const,
   },
+  runs: {
+    byOrg: (orgId: number) => ['runs', 'org', orgId] as const,
+    byEmail: (email: string) => ['runs', 'email', email] as const,
+  },
+  backlinks: {
+    auto: (slug: string) => ['backlinks', 'auto', slug] as const,
+    schedule: (slug: string) => ['backlinks', 'schedule', slug] as const,
+  },
 } as const

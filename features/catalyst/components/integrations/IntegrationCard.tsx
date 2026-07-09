@@ -1,45 +1,42 @@
-import { Check } from 'lucide-react'
+import { Settings2 } from 'lucide-react'
 
+import { ConnectSwitch } from '@/features/catalyst/components/integrations/ConnectSwitch'
 import type { Integration } from '@/features/catalyst/integrations-data'
 
 export function IntegrationCard({ item }: { item: Integration }): JSX.Element {
+  const { connected, accent } = item
   return (
-    <div className="flex flex-col rounded-lg border border-[var(--cat-border)] bg-[var(--cat-card)] p-4 shadow-sm">
-      <div className="flex items-start gap-3">
-        <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-md border border-[var(--cat-border)] bg-white">
+    <div
+      className={`group relative flex flex-col rounded-md border bg-[var(--cat-card)] p-3.5 transition-all duration-200 hover:-translate-y-px hover:shadow-[0_4px_14px_rgba(16,24,40,.07)] ${
+        connected
+          ? 'border-[rgba(47,190,126,0.4)] bg-[rgba(47,190,126,0.035)]'
+          : 'border-[var(--cat-border)]'
+      }`}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <span
+          className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-md"
+          style={{ background: `${accent}14` }}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={item.logo} alt="" className="h-6 w-6 object-contain" />
+          <img src={item.logo} alt="" className="h-5 w-5 object-contain" />
         </span>
-        <div className="min-w-0 flex-1">
-          <p className="text-[14px] font-semibold text-[var(--cat-ink)]">{item.name}</p>
-          {item.connected ? (
-            <span className="mt-0.5 inline-flex items-center gap-1 text-[11px] font-medium text-[#2FBE7E]">
-              <Check size={12} strokeWidth={2.5} />
-              Connected
-            </span>
-          ) : (
-            <span className="mt-0.5 text-[11px] font-medium text-[var(--cat-ink-3)]">
-              Not connected
-            </span>
+        <div className="flex items-center gap-1">
+          {connected && (
+            <button
+              type="button"
+              aria-label={`Manage ${item.name}`}
+              className="grid h-7 w-7 place-items-center rounded-md text-[var(--cat-ink-3)] transition-colors hover:bg-[var(--cat-hover)] hover:text-[var(--cat-ink)]"
+            >
+              <Settings2 size={15} strokeWidth={2} />
+            </button>
           )}
+          <ConnectSwitch defaultOn={connected} label={item.name} />
         </div>
       </div>
 
-      <p className="mt-3 flex-1 text-[13px] leading-relaxed text-[var(--cat-ink-2)]">
-        {item.description}
-      </p>
-
-      <button
-        type="button"
-        className={
-          item.connected
-            ? 'mt-4 h-9 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] text-[13px] font-medium text-[var(--cat-ink)] transition-colors hover:bg-[var(--cat-hover)]'
-            : 'mt-4 h-9 rounded-md text-[13px] font-medium text-white transition-colors'
-        }
-        style={item.connected ? undefined : { background: '#e04a3d' }}
-      >
-        {item.connected ? 'Manage' : 'Connect'}
-      </button>
+      <p className="mt-3 text-[13.5px] font-semibold text-[var(--cat-ink)]">{item.name}</p>
+      <p className="mt-1 text-[12px] leading-snug text-[var(--cat-ink-2)]">{item.description}</p>
     </div>
   )
 }

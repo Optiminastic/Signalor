@@ -120,7 +120,7 @@ export function PromptTrackerView(): JSX.Element {
   const { data, isLoading, isError } = usePrompts(slug)
 
   return (
-    <div className="mx-auto w-full max-w-[1100px]">
+    <div className="w-full">
       <DashHeader
         title="Prompt Tracker"
         subtitle="Watch how AI engines answer the prompts that matter to your category."

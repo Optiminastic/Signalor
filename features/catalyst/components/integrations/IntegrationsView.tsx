@@ -1,6 +1,7 @@
 'use client'
 
 import { IntegrationCard } from '@/features/catalyst/components/integrations/IntegrationCard'
+import { IntegrationsSummary } from '@/features/catalyst/components/integrations/IntegrationsSummary'
 import { INTEGRATION_GROUPS, INTEGRATIONS } from '@/features/catalyst/integrations-data'
 import { useIntegrations } from '@/hooks/useIntegrations'
 
@@ -10,12 +11,12 @@ export function IntegrationsView(): JSX.Element {
   const connectedCount = items.filter(i => i.connected).length
 
   return (
-    <div className="mx-auto w-full max-w-[1100px]">
-      <header className="mb-6">
-        <h1 className="text-[22px] font-semibold tracking-tight text-[var(--cat-ink)]">
+    <div className="w-full">
+      <header className="cat-rise mb-4">
+        <h1 className="text-[20px] font-semibold tracking-tight text-[var(--cat-ink)]">
           Integrations
         </h1>
-        <p className="mt-1 text-[13px] text-[var(--cat-ink-3)]">
+        <p className="mt-0.5 text-[13px] text-[var(--cat-ink-3)]">
           Connect your stack to power GEO analysis and auto-fixes ·{' '}
           <span className="font-medium text-[var(--cat-ink-2)]">
             {connectedCount} of {items.length} connected
@@ -23,7 +24,9 @@ export function IntegrationsView(): JSX.Element {
         </p>
       </header>
 
-      <div className="space-y-8">
+      <IntegrationsSummary connected={connectedCount} total={INTEGRATIONS.length} />
+
+      <div className="space-y-5">
         {INTEGRATION_GROUPS.map(group => (
           <section key={group}>
             <h2 className="mb-3 text-[11px] font-semibold tracking-wider text-[var(--cat-ink-3)] uppercase">

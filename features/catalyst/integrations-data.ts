@@ -7,6 +7,8 @@ export interface Integration {
   logo: string
   description: string
   connected: boolean
+  /** Brand accent used for the logo tint + hover accent line. */
+  accent: string
 }
 
 export const INTEGRATION_GROUPS: IntegrationGroup[] = [
@@ -24,6 +26,7 @@ export const INTEGRATIONS: Integration[] = [
     logo: '/logos/shopify.svg',
     description: 'Connect your store to auto-fix SEO/GEO issues and inject schema.',
     connected: true,
+    accent: '#95BF47',
   },
   {
     slug: 'wordpress',
@@ -32,6 +35,7 @@ export const INTEGRATIONS: Integration[] = [
     logo: '/logos/wordpress.svg',
     description: 'Install the Signalor plugin to apply fixes and serve llms.txt.',
     connected: false,
+    accent: '#21759B',
   },
   {
     slug: 'webflow',
@@ -40,6 +44,7 @@ export const INTEGRATIONS: Integration[] = [
     logo: '/logos/webflow.svg',
     description: 'Run GEO analysis on your Webflow site — no plugin required.',
     connected: false,
+    accent: '#146EF5',
   },
   {
     slug: 'framer',
@@ -48,6 +53,7 @@ export const INTEGRATIONS: Integration[] = [
     logo: '/logos/framer.svg',
     description: 'Connect your Framer site via the Signalor plugin.',
     connected: false,
+    accent: '#0055FF',
   },
   {
     slug: 'nextjs',
@@ -56,6 +62,7 @@ export const INTEGRATIONS: Integration[] = [
     logo: '/logos/nextjs.svg',
     description: 'Drop in the Signalor SDK to instrument your app.',
     connected: false,
+    accent: '#111827',
   },
   // ── Analytics ──────────────────────────────────────────────
   {
@@ -65,6 +72,7 @@ export const INTEGRATIONS: Integration[] = [
     logo: '/logos/google-analytics.svg',
     description: 'Track AI-referral traffic from ChatGPT, Perplexity and more.',
     connected: true,
+    accent: '#E8710A',
   },
   {
     slug: 'search-console',
@@ -73,6 +81,7 @@ export const INTEGRATIONS: Integration[] = [
     logo: '/logos/search-console.svg',
     description: 'Monitor indexing, impressions and search performance.',
     connected: false,
+    accent: '#458CF5',
   },
   // ── Automation & alerts ────────────────────────────────────
   {
@@ -82,6 +91,7 @@ export const INTEGRATIONS: Integration[] = [
     logo: '/logos/slack.svg',
     description: 'Get visibility drops and task updates in your channels.',
     connected: false,
+    accent: '#4A154B',
   },
   {
     slug: 'zapier',
@@ -90,5 +100,6 @@ export const INTEGRATIONS: Integration[] = [
     logo: '/logos/zapier.svg',
     description: 'Pipe Signalor events into 6,000+ apps and workflows.',
     connected: false,
+    accent: '#FF4A00',
   },
 ]

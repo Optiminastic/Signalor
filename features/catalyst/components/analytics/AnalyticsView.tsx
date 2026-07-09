@@ -67,7 +67,7 @@ export function AnalyticsView(): JSX.Element {
   const gaConnected = connected.has('google-analytics')
 
   return (
-    <div className="mx-auto w-full max-w-[1100px]">
+    <div className="w-full">
       <DashHeader
         title="Analytics"
         subtitle="How much traffic AI engines send you, and where it lands."
