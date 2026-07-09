@@ -29,6 +29,13 @@ export const auth = betterAuth({
     requireEmailVerification: false,
     minPasswordLength: 8,
   },
+  // Allow account self-deletion (immediate, no email step) — the Profile
+  // danger zone calls authClient.deleteUser() then the backend hard-delete.
+  user: {
+    deleteUser: {
+      enabled: true,
+    },
+  },
   socialProviders,
   plugins: [
     emailOTP({

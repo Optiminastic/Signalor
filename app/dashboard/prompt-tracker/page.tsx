@@ -1,10 +1,7 @@
-import { CatalystShell } from '@/features/catalyst/components/CatalystShell'
-import { PromptTrackerView } from '@/features/catalyst/components/prompt-tracker/PromptTrackerView'
+import { redirect } from 'next/navigation'
 
-export default function PromptTrackerPage(): JSX.Element {
-  return (
-    <CatalystShell>
-      <PromptTrackerView />
-    </CatalystShell>
-  )
+// Prompt Tracking is now a tab inside Visibility (Monitoring). Keep this route
+// working by redirecting to the consolidated tabbed page.
+export default function PromptTrackerRedirect(): never {
+  redirect('/dashboard/visibility?tab=prompts')
 }

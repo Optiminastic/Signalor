@@ -16,8 +16,8 @@ import type { SearchItem } from '@/features/catalyst/search-data'
 
 /** ⌘K to focus, Esc + outside-click to close. */
 function useSearchShortcuts(
-  input: RefObject<HTMLInputElement>,
-  wrap: RefObject<HTMLDivElement>,
+  input: RefObject<HTMLInputElement | null>,
+  wrap: RefObject<HTMLDivElement | null>,
   setOpen: Dispatch<SetStateAction<boolean>>,
 ): void {
   useEffect(() => {
@@ -62,7 +62,7 @@ function handleNav(e: ReactKeyboardEvent, ctx: NavContext): void {
 }
 
 interface SearchInputProps {
-  inputRef: RefObject<HTMLInputElement>
+  inputRef: RefObject<HTMLInputElement | null>
   query: string
   onChange: (value: string) => void
   onFocus: () => void

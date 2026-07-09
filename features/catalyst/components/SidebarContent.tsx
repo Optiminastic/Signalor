@@ -1,5 +1,6 @@
 import { Settings, User, X } from 'lucide-react'
 
+import { AgencyNavSection } from '@/features/catalyst/components/AgencyNavSection'
 import { NavItem } from '@/features/catalyst/components/NavItem'
 import { SidebarLogo } from '@/features/catalyst/components/SidebarLogo'
 import { SidebarUser } from '@/features/catalyst/components/SidebarUser'
@@ -67,6 +68,7 @@ export function SidebarContent({ collapsed, onClose }: SidebarContentProps): JSX
         <NavSection title="Main" items={MAIN_NAV} collapsed={collapsed} />
         <NavSection title="Monitoring" items={MONITORING_NAV} collapsed={collapsed} />
         <NavSection title="Optimization" items={OPTIMIZATION_NAV} collapsed={collapsed} />
+        <AgencyNavSection collapsed={collapsed} />
       </div>
 
       <nav className="mt-2 flex flex-col gap-0.5 border-t border-[var(--cat-border-soft)] pt-2">

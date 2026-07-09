@@ -98,32 +98,6 @@
   }
 }
 
-/* Twinkling background pixels (loading / analysis screens). */
-@keyframes pixel-twinkle {
-  0%,
-  100% {
-    opacity: 0.04;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.28;
-    transform: scale(1.5);
-  }
-}
-
-/* Radar "blip" — an expanding ring pulse, like a detected signal. */
-@keyframes radar-ping {
-  0% {
-    transform: translate(-50%, -50%) scale(0.4);
-    opacity: 0.55;
-  }
-  80%,
-  100% {
-    transform: translate(-50%, -50%) scale(2.6);
-    opacity: 0;
-  }
-}
-
 /* Signalor brand CTA button — ported from signalor.ai auth screens */
 .auth-cta-btn {
   color: #ffffff;

@@ -1,10 +1,7 @@
-import { CatalystShell } from '@/features/catalyst/components/CatalystShell'
-import { SitemapView } from '@/features/catalyst/components/sitemap/SitemapView'
+import { redirect } from 'next/navigation'
 
-export default function CatalystSitemapPage(): JSX.Element {
-  return (
-    <CatalystShell>
-      <SitemapView />
-    </CatalystShell>
-  )
+// Sitemap is now a tab inside Visibility (Monitoring). Keep this route working
+// by redirecting to the consolidated tabbed page.
+export default function SitemapRedirect(): never {
+  redirect('/dashboard/visibility?tab=sitemap')
 }

@@ -1,10 +1,14 @@
+import { Suspense } from 'react'
+
 import { CatalystShell } from '@/features/catalyst/components/CatalystShell'
-import { VisibilityView } from '@/features/catalyst/components/visibility/VisibilityView'
+import { MonitoringTabs } from '@/features/catalyst/components/monitoring/MonitoringTabs'
 
 export default function CatalystVisibilityPage(): JSX.Element {
   return (
     <CatalystShell>
-      <VisibilityView />
+      <Suspense>
+        <MonitoringTabs />
+      </Suspense>
     </CatalystShell>
   )
 }

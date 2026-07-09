@@ -1,15 +1,11 @@
 import {
-  BarChart3,
   Blocks,
-  Building2,
   Eye,
   Facebook,
   Instagram,
   LayoutGrid,
   Link2,
   ListChecks,
-  MessageSquareText,
-  Network,
   Search,
   Store,
   Users,
@@ -71,17 +67,13 @@ export interface TableRow {
 }
 
 /* --------------------------------------------------------------------- data */
-export const MAIN_NAV: NavEntry[] = [
-  { icon: LayoutGrid, label: 'Overview', href: '/dashboard' },
-  { icon: Building2, label: 'Brands', href: '/dashboard/brands' },
-]
+export const MAIN_NAV: NavEntry[] = [{ icon: LayoutGrid, label: 'Overview', href: '/dashboard' }]
 
+// Visibility now hosts Prompt Tracking, Sitemap and Analytics as in-page tabs
+// (see MonitoringTabs), so they are no longer separate sidebar entries.
 export const MONITORING_NAV: NavEntry[] = [
   { icon: Eye, label: 'Visibility', href: '/dashboard/visibility' },
-  { icon: MessageSquareText, label: 'Prompt Tracker', href: '/dashboard/prompt-tracker' },
-  { icon: Network, label: 'Sitemap', href: '/dashboard/sitemap' },
   { icon: Users, label: 'Competitors', href: '/dashboard/competitors' },
-  { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
 ]
 
 export const OPTIMIZATION_NAV: NavEntry[] = [

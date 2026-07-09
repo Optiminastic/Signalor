@@ -14,8 +14,6 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
-import { COMPETITORS } from '@/features/catalyst/competitors-data'
-
 export interface SearchItem {
   type: string
   label: string
@@ -111,15 +109,7 @@ const PAGE_ITEMS: SearchItem[] = [
   },
 ]
 
-const BRANDS: SearchItem[] = COMPETITORS.map(c => ({
-  type: 'Competitor',
-  label: c.name,
-  sublabel: c.domain,
-  href: '/dashboard/competitors',
-  icon: Users,
-}))
-
-export const SEARCH_INDEX: SearchItem[] = [...PAGE_ITEMS, ...BRANDS]
+export const SEARCH_INDEX: SearchItem[] = PAGE_ITEMS
 
 /** Case-insensitive substring match over label + sublabel; top 8. */
 export function searchIndex(query: string): SearchItem[] {
