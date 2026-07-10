@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
-import { JsonLd } from '@legacy/components/seo/json-ld'
-import { breadcrumbJsonLd, buildMetadata, SITE_BRAND, SITE_URL } from '@legacy/lib/seo'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { breadcrumbJsonLd, buildMetadata, SITE_BRAND, SITE_URL } from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Blog, GEO playbooks, AI visibility research',

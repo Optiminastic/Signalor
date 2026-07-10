@@ -2,14 +2,14 @@ import type { Metadata } from 'next'
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { LandingFaq } from '@legacy/components/landing/landing-faq'
-import { PromptTrackingFeaturesGrid } from '@legacy/components/landing/prompt-tracking-features-grid'
-import { PromptTrackingHero } from '@legacy/components/landing/prompt-tracking-hero'
-import { PromptTrackingWhySection } from '@legacy/components/landing/prompt-tracking-why-section'
-import { JsonLd } from '@legacy/components/seo/json-ld'
-import { RelatedLinks } from '@legacy/components/seo/related-links'
-import { PROMPT_TRACKING_HUB_FAQ } from '@legacy/lib/landing-prompt-tracking-content'
-import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@legacy/lib/seo'
+import { LandingFaq } from '@/features/site/components/landing/landing-faq'
+import { PromptTrackingFeaturesGrid } from '@/features/site/components/landing/prompt-tracking-features-grid'
+import { PromptTrackingHero } from '@/features/site/components/landing/prompt-tracking-hero'
+import { PromptTrackingWhySection } from '@/features/site/components/landing/prompt-tracking-why-section'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { RelatedLinks } from '@/features/site/components/seo/related-links'
+import { PROMPT_TRACKING_HUB_FAQ } from '@/features/site/lib/landing-prompt-tracking-content'
+import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'AI Prompt Monitoring: Track Brand Mentions in ChatGPT & Gemini',

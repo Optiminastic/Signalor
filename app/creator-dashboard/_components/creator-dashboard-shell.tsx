@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   DashboardAppFrame,
   type DashboardAppSection,
-} from '@legacy/app/dashboard/[slug]/_components/dashboard-app-frame'
+} from '@/features/site/app/dashboard/[slug]/_components/dashboard-app-frame'
 import {
   ChevronDown,
   ChevronUp,
@@ -15,12 +15,12 @@ import {
   Settings,
   Sparkles,
   type LucideIcon,
-} from '@legacy/components/icons'
-import { OverviewIcon } from '@legacy/components/icons/nav'
-import LogoComp from '@legacy/components/LogoComp'
-import { UserAvatar } from '@legacy/components/ui/user-avatar'
-import { authClient, useSession } from '@legacy/lib/auth-client'
-import { cn } from '@legacy/lib/utils'
+} from '@/features/site/components/icons'
+import { OverviewIcon } from '@/features/site/components/icons/nav'
+import LogoComp from '@/features/site/components/LogoComp'
+import { UserAvatar } from '@/features/site/components/ui/user-avatar'
+import { authClient, useSession } from '@/features/site/lib/auth-client'
+import { cn } from '@/features/site/lib/utils'
 
 import { CreatorProvider, useCreator } from './creator-context'
 

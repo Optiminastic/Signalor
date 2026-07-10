@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
-import { JsonLd } from '@legacy/components/seo/json-ld'
-import { INTEGRATIONS_FAQ } from '@legacy/lib/landing-integrations-feature-content'
-import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@legacy/lib/seo'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { INTEGRATIONS_FAQ } from '@/features/site/lib/landing-integrations-feature-content'
+import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'GEO Recommendations: AI Fix Queue for Shopify & WordPress',

@@ -2,9 +2,9 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { RelatedLinks } from '@legacy/components/seo/related-links'
-import { CompetitorsInline } from '@legacy/components/tools/competitors-inline'
-import { ToolPage } from '@legacy/components/tools/tool-page'
+import { RelatedLinks } from '@/features/site/components/seo/related-links'
+import { CompetitorsInline } from '@/features/site/components/tools/competitors-inline'
+import { ToolPage } from '@/features/site/components/tools/tool-page'
 
 export default function CompetitorsAnalysisToolPage() {
   return (

@@ -2,11 +2,11 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { LandingFaq } from '@legacy/components/landing/landing-faq'
-import { PromptTrackingFeaturesGrid } from '@legacy/components/landing/prompt-tracking-features-grid'
-import { PromptTrackingHero } from '@legacy/components/landing/prompt-tracking-hero'
-import { PromptTrackingWhySection } from '@legacy/components/landing/prompt-tracking-why-section'
-import { RelatedLinks } from '@legacy/components/seo/related-links'
+import { LandingFaq } from '@/features/site/components/landing/landing-faq'
+import { PromptTrackingFeaturesGrid } from '@/features/site/components/landing/prompt-tracking-features-grid'
+import { PromptTrackingHero } from '@/features/site/components/landing/prompt-tracking-hero'
+import { PromptTrackingWhySection } from '@/features/site/components/landing/prompt-tracking-why-section'
+import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import {
   CONTENT_SIGNALS_CAPABILITY_ROWS,
   CONTENT_SIGNALS_FAQ,
@@ -18,7 +18,7 @@ import {
   CONTENT_SIGNALS_PILLAR_ROWS,
   CONTENT_SIGNALS_PROOF_METRICS,
   CONTENT_SIGNALS_WHY,
-} from '@legacy/lib/landing-content-signals-content'
+} from '@/features/site/lib/landing-content-signals-content'
 
 export default function ContentSignalsPage() {
   return (

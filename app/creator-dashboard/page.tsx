@@ -3,11 +3,11 @@
 import Link from 'next/link'
 import { useState } from 'react'
 
-import { Check, Copy, ExternalLink, Loader2 } from '@legacy/components/icons'
-import { Button } from '@legacy/components/ui/button'
-import type { CommissionRow } from '@legacy/lib/api/partners-program'
-import { flagEmoji } from '@legacy/lib/countries'
-import { cn } from '@legacy/lib/utils'
+import { Check, Copy, ExternalLink, Loader2 } from '@/features/site/components/icons'
+import { Button } from '@/features/site/components/ui/button'
+import type { CommissionRow } from '@/features/site/lib/api/partners-program'
+import { flagEmoji } from '@/features/site/lib/countries'
+import { cn } from '@/features/site/lib/utils'
 
 import { useCreator } from './_components/creator-context'
 

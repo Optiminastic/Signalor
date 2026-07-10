@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { groq } from 'next-sanity'
 
-import { SITE_URL } from '@legacy/lib/seo'
-import { client } from '@legacy/sanity/lib/client'
+import { SITE_URL } from '@/features/site/lib/seo'
+import { client } from '@/features/site/sanity/lib/client'
 
 export const revalidate = 3600
 

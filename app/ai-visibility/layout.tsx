@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
-import { JsonLd } from '@legacy/components/seo/json-ld'
-import { CONTENT_SIGNALS_FAQ } from '@legacy/lib/landing-content-signals-content'
-import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@legacy/lib/seo'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { CONTENT_SIGNALS_FAQ } from '@/features/site/lib/landing-content-signals-content'
+import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'AI Visibility Scoring: Schema, Trust & Citation Signals',

@@ -2,10 +2,10 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { LandingFaq } from '@legacy/components/landing/landing-faq'
-import { PromptTrackingFeaturesGrid } from '@legacy/components/landing/prompt-tracking-features-grid'
-import { PromptTrackingHero } from '@legacy/components/landing/prompt-tracking-hero'
-import { PromptTrackingWhySection } from '@legacy/components/landing/prompt-tracking-why-section'
+import { LandingFaq } from '@/features/site/components/landing/landing-faq'
+import { PromptTrackingFeaturesGrid } from '@/features/site/components/landing/prompt-tracking-features-grid'
+import { PromptTrackingHero } from '@/features/site/components/landing/prompt-tracking-hero'
+import { PromptTrackingWhySection } from '@/features/site/components/landing/prompt-tracking-why-section'
 import {
   REPORTING_CAPABILITY_ROWS,
   REPORTING_FAQ,
@@ -17,7 +17,7 @@ import {
   REPORTING_PILLAR_ROWS,
   REPORTING_PROOF_METRICS,
   REPORTING_WHY,
-} from '@legacy/lib/landing-reporting-content'
+} from '@/features/site/lib/landing-reporting-content'
 
 export default function ExplorerPage() {
   return (

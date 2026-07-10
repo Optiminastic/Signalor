@@ -2,9 +2,9 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { RelatedLinks } from '@legacy/components/seo/related-links'
-import { SchemaValidatorInline } from '@legacy/components/tools/schema-validator-inline'
-import { ToolPage } from '@legacy/components/tools/tool-page'
+import { RelatedLinks } from '@/features/site/components/seo/related-links'
+import { SchemaValidatorInline } from '@/features/site/components/tools/schema-validator-inline'
+import { ToolPage } from '@/features/site/components/tools/tool-page'
 
 export default function SchemaValidatorToolPage() {
   return (

@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
-import { getMyCreatorProfile, type CreatorMeResponse } from '@legacy/lib/api/partners-program'
-import { useSession } from '@legacy/lib/auth-client'
+import { getMyCreatorProfile, type CreatorMeResponse } from '@/features/site/lib/api/partners-program'
+import { useSession } from '@/features/site/lib/auth-client'
 
 interface CreatorContextValue {
   profile: CreatorMeResponse | null

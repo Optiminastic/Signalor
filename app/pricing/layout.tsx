@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
-import { JsonLd } from '@legacy/components/seo/json-ld'
-import { PRICING_FAQ_ITEMS } from '@legacy/lib/pricing-marketing-content'
-import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_BRAND, SITE_URL } from '@legacy/lib/seo'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { PRICING_FAQ_ITEMS } from '@/features/site/lib/pricing-marketing-content'
+import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_BRAND, SITE_URL } from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Pricing, GEO + AEO platform plans',

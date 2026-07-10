@@ -7,12 +7,12 @@ import { useActiveProject } from '@/hooks/useActiveProject'
 import { useBrandPath } from '@/hooks/useBrandPath'
 import { useContentOptimisation, type ContentOptimisation } from '@/hooks/useContentOptimisation'
 
-import { AlertCircle, ExternalLink, FileText, X } from '@legacy/components/icons'
-import { BrowserChrome } from '@legacy/components/optimisation/browser-chrome'
-import { ElementEditor } from '@legacy/components/optimisation/element-editor'
-import { PageIframe } from '@legacy/components/optimisation/page-iframe'
-import { RawFilesPanel } from '@legacy/components/optimisation/raw-files-panel'
-import type { PreviewElement } from '@legacy/lib/api/content-optimisation'
+import { AlertCircle, ExternalLink, FileText, X } from '@/features/site/components/icons'
+import { BrowserChrome } from '@/features/site/components/optimisation/browser-chrome'
+import { ElementEditor } from '@/features/site/components/optimisation/element-editor'
+import { PageIframe } from '@/features/site/components/optimisation/page-iframe'
+import { RawFilesPanel } from '@/features/site/components/optimisation/raw-files-panel'
+import type { PreviewElement } from '@/features/site/lib/api/content-optimisation'
 
 interface PreviewFields {
   previewImage: string

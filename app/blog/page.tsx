@@ -3,13 +3,13 @@ import Link from 'next/link'
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { ArrowRight, Clock } from '@legacy/components/icons'
-import { HeroBackgroundGrid } from '@legacy/components/landing/hero-background-grid'
-import { ScreenHR } from '@legacy/components/ui/intersection-diamonds'
-import { BLOG_CATEGORIES, BLOG_STATS, type BlogPost } from '@legacy/lib/landing-blog-content'
-import { cn } from '@legacy/lib/utils'
-import { client } from '@legacy/sanity/lib/client'
-import { ALL_POSTS_QUERY, type SanityBlogPost } from '@legacy/sanity/lib/queries'
+import { ArrowRight, Clock } from '@/features/site/components/icons'
+import { HeroBackgroundGrid } from '@/features/site/components/landing/hero-background-grid'
+import { ScreenHR } from '@/features/site/components/ui/intersection-diamonds'
+import { BLOG_CATEGORIES, BLOG_STATS, type BlogPost } from '@/features/site/lib/landing-blog-content'
+import { cn } from '@/features/site/lib/utils'
+import { client } from '@/features/site/sanity/lib/client'
+import { ALL_POSTS_QUERY, type SanityBlogPost } from '@/features/site/sanity/lib/queries'
 
 export const revalidate = 60
 

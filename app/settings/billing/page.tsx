@@ -1,8 +1,8 @@
 'use client'
 
-import { AppSidebar } from '@legacy/components/navigation/app-sidebar'
-import { SettingsNav } from '@legacy/components/settings/settings-nav'
-import { Card, CardDescription, CardHeader, CardTitle } from '@legacy/components/ui/card'
+import { AppSidebar } from '@/features/site/components/navigation/app-sidebar'
+import { SettingsNav } from '@/features/site/components/settings/settings-nav'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/features/site/components/ui/card'
 
 export default function BillingSettingsPage() {
   return (

@@ -9,13 +9,13 @@ import {
   FieldLabel,
   PAYOUT_METHODS,
   SocialPlatformsField,
-} from '@legacy/components/creator/creator-form-fields'
-import { Check, Loader2, Save } from '@legacy/components/icons'
-import { Button } from '@legacy/components/ui/button'
-import { Input } from '@legacy/components/ui/input'
-import { updateMyCreatorProfile } from '@legacy/lib/api/partners-program'
-import type { AudienceSize, PayoutMethod, SocialEntry } from '@legacy/lib/api/partners-program'
-import { cn } from '@legacy/lib/utils'
+} from '@/features/site/components/creator/creator-form-fields'
+import { Check, Loader2, Save } from '@/features/site/components/icons'
+import { Button } from '@/features/site/components/ui/button'
+import { Input } from '@/features/site/components/ui/input'
+import { updateMyCreatorProfile } from '@/features/site/lib/api/partners-program'
+import type { AudienceSize, PayoutMethod, SocialEntry } from '@/features/site/lib/api/partners-program'
+import { cn } from '@/features/site/lib/utils'
 
 import { useCreator } from '../_components/creator-context'
 

@@ -18,8 +18,8 @@ import {
   type ContentPage,
   type ContentPageFields,
   type PreviewElement,
-} from '@legacy/lib/api/content-optimisation'
-import { getGithubStatus, openContentPr } from '@legacy/lib/api/github'
+} from '@/features/site/lib/api/content-optimisation'
+import { getGithubStatus, openContentPr } from '@/features/site/lib/api/github'
 
 export type ApplyMode = 'cms' | 'github' | 'none'
 

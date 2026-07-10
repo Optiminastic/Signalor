@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { groq, createClient } from 'next-sanity'
 
-import { apiVersion, dataset, projectId } from '@legacy/sanity/env'
+import { apiVersion, dataset, projectId } from '@/features/site/sanity/env'
 
 // Bypass the CDN so newly published posts appear immediately
 const freshClient = createClient({
