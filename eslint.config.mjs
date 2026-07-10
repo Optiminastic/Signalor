@@ -23,10 +23,10 @@ const config = [
       '*.config.mjs',
       '*.config.js',
       '*.config.ts',
-      // Vendored ranking-fe mirror (used via the @fe/* alias) — it follows the
-      // old app's conventions, not this project's strict lint rules. Still
-      // type-checked by tsc; just not linted here.
-      'fe/**',
+      // Ported ranking-fe marketing/site stack (features/site) — it follows the old
+      // app's conventions, not this project's strict lint rules. Still type-checked
+      // by tsc; just not linted here.
+      'features/site/**',
       // Sanity Studio config/schemas (generated/tool-owned, default exports etc.)
       'sanity.cli.ts',
       'sanity/**',
@@ -76,10 +76,7 @@ const config = [
         'error',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-          pathGroups: [
-            { pattern: '@/**', group: 'internal', position: 'before' },
-            { pattern: '@fe/**', group: 'internal', position: 'after' },
-          ],
+          pathGroups: [{ pattern: '@/**', group: 'internal', position: 'before' }],
           pathGroupsExcludedImportTypes: ['builtin'],
           'newlines-between': 'always',
           alphabetize: { order: 'asc', caseInsensitive: true },
@@ -143,10 +140,10 @@ const config = [
     },
   },
 
-  // Ported marketing/tools pages import heavily from the @fe/* mirror; multi-line
-  // @fe imports trigger import/order false-positives ("empty line within group")
-  // that --fix can't resolve. Import ordering there is cosmetic — the core app
-  // (features/**, lib/**, services/**) keeps strict import/order.
+  // Ported marketing/tools pages import heavily from features/site; multi-line
+  // @/features/site imports trigger import/order false-positives ("empty line within
+  // group") that --fix can't resolve. Import ordering there is cosmetic — the core app
+  // (lib/**, services/**, non-site features) keeps strict import/order.
   {
     files: ['app/**/*.tsx', 'app/**/*.ts'],
     rules: {

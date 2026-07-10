@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
-import { JsonLd } from '@fe/components/seo/json-ld'
-import { breadcrumbJsonLd, buildMetadata } from '@fe/lib/seo'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { breadcrumbJsonLd, buildMetadata } from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'About Signalor',

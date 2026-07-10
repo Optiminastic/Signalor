@@ -7,12 +7,12 @@ import { useActiveProject } from '@/hooks/useActiveProject'
 import { useBrandPath } from '@/hooks/useBrandPath'
 import { useContentOptimisation, type ContentOptimisation } from '@/hooks/useContentOptimisation'
 
-import { AlertCircle, ExternalLink, FileText, X } from '@fe/components/icons'
-import { BrowserChrome } from '@fe/components/optimisation/browser-chrome'
-import { ElementEditor } from '@fe/components/optimisation/element-editor'
-import { PageIframe } from '@fe/components/optimisation/page-iframe'
-import { RawFilesPanel } from '@fe/components/optimisation/raw-files-panel'
-import type { PreviewElement } from '@fe/lib/api/content-optimisation'
+import { AlertCircle, ExternalLink, FileText, X } from '@/features/site/components/icons'
+import { BrowserChrome } from '@/features/site/components/optimisation/browser-chrome'
+import { ElementEditor } from '@/features/site/components/optimisation/element-editor'
+import { PageIframe } from '@/features/site/components/optimisation/page-iframe'
+import { RawFilesPanel } from '@/features/site/components/optimisation/raw-files-panel'
+import type { PreviewElement } from '@/features/site/lib/api/content-optimisation'
 
 interface PreviewFields {
   previewImage: string

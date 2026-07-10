@@ -1,15 +1,15 @@
 import { Hero } from '@/features/landing/components/Hero'
 import { LandingNav } from '@/features/landing/components/LandingNav'
 
-import { LandingFaq } from '@fe/components/landing/landing-faq'
-import { LandingFeaturesGrid } from '@fe/components/landing/landing-features-grid'
-import { LandingFooter } from '@fe/components/landing/landing-footer'
-import { LandingHowItWorks } from '@fe/components/landing/landing-how-it-works'
-import { LandingIntegrationsStrip } from '@fe/components/landing/landing-integrations-strip'
-import { LandingNewsletter } from '@fe/components/landing/landing-newsletter'
-import { LandingPricingTeaser } from '@fe/components/landing/landing-pricing-teaser'
-import { LandingTestimonials } from '@fe/components/landing/landing-testimonials'
-import { LandingWhySignalor } from '@fe/components/landing/landing-why-signalor'
+import { LandingFaq } from '@/features/site/components/landing/landing-faq'
+import { LandingFeaturesGrid } from '@/features/site/components/landing/landing-features-grid'
+import { LandingFooter } from '@/features/site/components/landing/landing-footer'
+import { LandingHowItWorks } from '@/features/site/components/landing/landing-how-it-works'
+import { LandingIntegrationsStrip } from '@/features/site/components/landing/landing-integrations-strip'
+import { LandingNewsletter } from '@/features/site/components/landing/landing-newsletter'
+import { LandingPricingTeaser } from '@/features/site/components/landing/landing-pricing-teaser'
+import { LandingTestimonials } from '@/features/site/components/landing/landing-testimonials'
+import { LandingWhySignalor } from '@/features/site/components/landing/landing-why-signalor'
 
 const HOMEPAGE_FAQ = [
   {

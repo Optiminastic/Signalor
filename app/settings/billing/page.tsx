@@ -1,8 +1,8 @@
 'use client'
 
-import { AppSidebar } from '@fe/components/navigation/app-sidebar'
-import { SettingsNav } from '@fe/components/settings/settings-nav'
-import { Card, CardDescription, CardHeader, CardTitle } from '@fe/components/ui/card'
+import { AppSidebar } from '@/features/site/components/navigation/app-sidebar'
+import { SettingsNav } from '@/features/site/components/settings/settings-nav'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/features/site/components/ui/card'
 
 export default function BillingSettingsPage() {
   return (

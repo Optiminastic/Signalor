@@ -5,13 +5,13 @@ import { useState } from 'react'
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { Check } from '@fe/components/icons'
-import { Button } from '@fe/components/ui/button'
-import { Input } from '@fe/components/ui/input'
-import { Label } from '@fe/components/ui/label'
-import { SignalorLoader } from '@fe/components/ui/signalor-loader'
-import { submitEnterpriseLead } from '@fe/lib/api/enterprise'
-import { cn } from '@fe/lib/utils'
+import { Check } from '@/features/site/components/icons'
+import { Button } from '@/features/site/components/ui/button'
+import { Input } from '@/features/site/components/ui/input'
+import { Label } from '@/features/site/components/ui/label'
+import { SignalorLoader } from '@/features/site/components/ui/signalor-loader'
+import { submitEnterpriseLead } from '@/features/site/lib/api/enterprise'
+import { cn } from '@/features/site/lib/utils'
 
 const SUPPORT_LEVELS = [
   { value: '', label: 'Select…' },
