@@ -4,14 +4,15 @@ import Link from 'next/link'
 
 import { DataState } from '@/features/catalyst/components/DataState'
 import { useActiveProject } from '@/hooks/useActiveProject'
+import { useBrandPath } from '@/hooks/useBrandPath'
 import { useContentOptimisation, type ContentOptimisation } from '@/hooks/useContentOptimisation'
 
-import { AlertCircle, ExternalLink, FileText, X } from '@fe/components/icons'
-import { BrowserChrome } from '@fe/components/optimisation/browser-chrome'
-import { ElementEditor } from '@fe/components/optimisation/element-editor'
-import { PageIframe } from '@fe/components/optimisation/page-iframe'
-import { RawFilesPanel } from '@fe/components/optimisation/raw-files-panel'
-import type { PreviewElement } from '@fe/lib/api/content-optimisation'
+import { AlertCircle, ExternalLink, FileText, X } from '@/features/site/components/icons'
+import { BrowserChrome } from '@/features/site/components/optimisation/browser-chrome'
+import { ElementEditor } from '@/features/site/components/optimisation/element-editor'
+import { PageIframe } from '@/features/site/components/optimisation/page-iframe'
+import { RawFilesPanel } from '@/features/site/components/optimisation/raw-files-panel'
+import type { PreviewElement } from '@/features/site/lib/api/content-optimisation'
 
 interface PreviewFields {
   previewImage: string
@@ -80,6 +81,7 @@ function ChromeHeader({ co }: { co: ContentOptimisation }): JSX.Element {
 
 /** The "how edits apply" banner line — GitHub PR, connect-prompt, or nothing. */
 function ModeHint({ co }: { co: ContentOptimisation }): JSX.Element | null {
+  const brandPath = useBrandPath()
   if (!co.pageFields || co.applyMode === 'cms') return null
   if (co.applyMode === 'github') {
     return (
@@ -97,7 +99,7 @@ function ModeHint({ co }: { co: ContentOptimisation }): JSX.Element | null {
       <AlertCircle className="size-3.5" />
       <span>Click any element to edit. To apply, connect WordPress/Shopify or a GitHub repo.</span>
       <Link
-        href="/dashboard/integrations"
+        href={brandPath('integrations')}
         className="text-primary inline-flex items-center gap-0.5 font-semibold hover:underline"
       >
         Connect <ExternalLink className="size-3" />

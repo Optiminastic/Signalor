@@ -2,9 +2,9 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { RelatedLinks } from '@fe/components/seo/related-links'
-import { DomainRatingInline } from '@fe/components/tools/domain-rating-inline'
-import { ToolPage } from '@fe/components/tools/tool-page'
+import { RelatedLinks } from '@/features/site/components/seo/related-links'
+import { DomainRatingInline } from '@/features/site/components/tools/domain-rating-inline'
+import { ToolPage } from '@/features/site/components/tools/tool-page'
 
 export default function DomainRatingToolPage() {
   return (

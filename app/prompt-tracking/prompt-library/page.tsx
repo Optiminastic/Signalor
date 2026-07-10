@@ -1,22 +1,23 @@
-import type { Metadata } from "next";
-import { ListChecks } from "@fe/components/icons";
+import type { Metadata } from 'next'
 
-import { FeatureDetailHero } from "@fe/components/landing/feature-detail-hero";
-import { IntegrationDetailCta } from "@fe/components/landing/integration-detail-cta";
-import { LandingFaq } from "@fe/components/landing/landing-faq";
-import { MarketingShell } from "@/features/landing/components/MarketingShell";
+import { MarketingShell } from '@/features/landing/components/MarketingShell'
+
+import { ListChecks } from '@/features/site/components/icons'
+import { FeatureDetailHero } from '@/features/site/components/landing/feature-detail-hero'
+import { IntegrationDetailCta } from '@/features/site/components/landing/integration-detail-cta'
+import { LandingFaq } from '@/features/site/components/landing/landing-faq'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
 import {
   PROMPT_LIBRARY_PAGE,
   PROMPT_TRACKING_LIBRARY_FAQ,
-} from "@fe/lib/landing-prompt-tracking-content";
-import { JsonLd } from "@fe/components/seo/json-ld";
-import { breadcrumbJsonLd, buildMetadata, faqJsonLd } from "@fe/lib/seo";
+} from '@/features/site/lib/landing-prompt-tracking-content'
+import { breadcrumbJsonLd, buildMetadata, faqJsonLd } from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
-  title: "Prompt library, prompt tracking",
+  title: 'Prompt library, prompt tracking',
   description: PROMPT_LIBRARY_PAGE.subhead,
-  path: "/prompt-tracking/prompt-library",
-});
+  path: '/prompt-tracking/prompt-library',
+})
 
 export default function PromptLibraryPage() {
   return (
@@ -24,9 +25,9 @@ export default function PromptLibraryPage() {
       <JsonLd
         id="ld-prompt-library-breadcrumb"
         data={breadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Prompt tracking", path: "/prompt-tracking" },
-          { name: "Prompt library", path: "/prompt-tracking/prompt-library" },
+          { name: 'Home', path: '/' },
+          { name: 'Prompt tracking', path: '/prompt-tracking' },
+          { name: 'Prompt library', path: '/prompt-tracking/prompt-library' },
         ])}
       />
       <JsonLd id="ld-prompt-library-faq" data={faqJsonLd([...PROMPT_TRACKING_LIBRARY_FAQ])} />
@@ -46,5 +47,5 @@ export default function PromptLibraryPage() {
         items={[...PROMPT_TRACKING_LIBRARY_FAQ]}
       />
     </MarketingShell>
-  );
+  )
 }

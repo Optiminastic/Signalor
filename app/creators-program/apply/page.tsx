@@ -15,9 +15,9 @@ import {
   Copy,
   Loader2,
   Search,
-} from '@fe/components/icons'
-import { Button } from '@fe/components/ui/button'
-import { Input } from '@fe/components/ui/input'
+} from '@/features/site/components/icons'
+import { Button } from '@/features/site/components/ui/button'
+import { Input } from '@/features/site/components/ui/input'
 import {
   applyToCreatorsProgram,
   checkCreatorExists,
@@ -25,8 +25,8 @@ import {
   type CreatorApplyResponse,
   type PayoutMethod,
   type SocialEntry,
-} from '@fe/lib/api/partners-program'
-import { useSession } from '@fe/lib/auth-client'
+} from '@/features/site/lib/api/partners-program'
+import { useSession } from '@/features/site/lib/auth-client'
 
 // Field-level error messages flow straight to the inline error banner.
 // Putting the schema next to the form keeps validation rules close to the UI.
@@ -40,8 +40,8 @@ const applyFormSchema = z.object({
   payout_method: z.enum(['wise', 'paypal', 'bank', 'crypto', 'other']),
   payout_details: z.string().trim().min(3, 'Add the details we need to pay you.'),
 })
-import { COUNTRIES, flagEmoji } from '@fe/lib/countries'
-import { cn } from '@fe/lib/utils'
+import { COUNTRIES, flagEmoji } from '@/features/site/lib/countries'
+import { cn } from '@/features/site/lib/utils'
 
 interface PlatformDef {
   key: string

@@ -5,15 +5,15 @@ import { use, useEffect, useState } from 'react'
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { ArrowRight, Check, Copy, Loader2 } from '@fe/components/icons'
-import { ScreenHR } from '@fe/components/ui/intersection-diamonds'
+import { ArrowRight, Check, Copy, Loader2 } from '@/features/site/components/icons'
+import { ScreenHR } from '@/features/site/components/ui/intersection-diamonds'
 import {
   getCreatorStats,
   type CommissionRow,
   type CreatorStatsResponse,
-} from '@fe/lib/api/partners-program'
-import { countryByCode, flagEmoji } from '@fe/lib/countries'
-import { cn } from '@fe/lib/utils'
+} from '@/features/site/lib/api/partners-program'
+import { countryByCode, flagEmoji } from '@/features/site/lib/countries'
+import { cn } from '@/features/site/lib/utils'
 
 interface PageParams {
   code: string

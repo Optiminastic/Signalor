@@ -4,21 +4,21 @@ import { notFound } from 'next/navigation'
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { ArrowLeft, ArrowRight, Clock } from '@fe/components/icons'
-import { HeroBackgroundGrid } from '@fe/components/landing/hero-background-grid'
-import { JsonLd } from '@fe/components/seo/json-ld'
-import { ScreenHR } from '@fe/components/ui/intersection-diamonds'
-import type { BlogPost } from '@fe/lib/landing-blog-content'
-import { buildMetadata, breadcrumbJsonLd, articleJsonLd, SITE_URL } from '@fe/lib/seo'
-import { cn } from '@fe/lib/utils'
-import { client } from '@fe/sanity/lib/client'
+import { ArrowLeft, ArrowRight, Clock } from '@/features/site/components/icons'
+import { HeroBackgroundGrid } from '@/features/site/components/landing/hero-background-grid'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { ScreenHR } from '@/features/site/components/ui/intersection-diamonds'
+import type { BlogPost } from '@/features/site/lib/landing-blog-content'
+import { buildMetadata, breadcrumbJsonLd, articleJsonLd, SITE_URL } from '@/features/site/lib/seo'
+import { cn } from '@/features/site/lib/utils'
+import { client } from '@/features/site/sanity/lib/client'
 import {
   POST_BY_SLUG_QUERY,
   ALL_POST_SLUGS_QUERY,
   ALL_POSTS_NAV_QUERY,
   type SanityBlogPost,
   type AdjacentPost,
-} from '@fe/sanity/lib/queries'
+} from '@/features/site/sanity/lib/queries'
 
 export const revalidate = 60
 
@@ -264,7 +264,7 @@ function PortableTextContent({ value }: { value: PTValue[] }) {
       if (src) {
         nodes.push(
           <figure key={img._key ?? i} className="my-8">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {}
             <img
               src={src}
               alt={img.alt ?? ''}
@@ -376,7 +376,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ blog_
         <div className="mx-auto max-w-7xl">
           {post.coverImage?.url && (
             <figure className="mb-10">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {}
               <img
                 src={post.coverImage.url}
                 alt={post.coverImage.alt ?? post.title}

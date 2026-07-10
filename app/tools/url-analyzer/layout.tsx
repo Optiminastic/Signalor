@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
-import { JsonLd } from '@fe/components/seo/json-ld'
-import { AGGREGATE_RATING, breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@fe/lib/seo'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { AGGREGATE_RATING, breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Free GEO Score & AI Visibility Checker: URL Analyzer',

@@ -1,15 +1,15 @@
-import { AnnouncementBar } from '@/features/landing/components/AnnouncementBar'
-import { Faq } from '@/features/landing/components/Faq'
-import { FeaturesGrid } from '@/features/landing/components/FeaturesGrid'
-import { Footer } from '@/features/landing/components/Footer'
 import { Hero } from '@/features/landing/components/Hero'
-import { HowItWorks } from '@/features/landing/components/HowItWorks'
-import { IntegrationsStrip } from '@/features/landing/components/IntegrationsStrip'
 import { LandingNav } from '@/features/landing/components/LandingNav'
-import { Newsletter } from '@/features/landing/components/Newsletter'
-import { PricingTeaser } from '@/features/landing/components/PricingTeaser'
-import { Testimonials } from '@/features/landing/components/Testimonials'
-import { WhySignalor } from '@/features/landing/components/WhySignalor'
+
+import { LandingFaq } from '@/features/site/components/landing/landing-faq'
+import { LandingFeaturesGrid } from '@/features/site/components/landing/landing-features-grid'
+import { LandingFooter } from '@/features/site/components/landing/landing-footer'
+import { LandingHowItWorks } from '@/features/site/components/landing/landing-how-it-works'
+import { LandingIntegrationsStrip } from '@/features/site/components/landing/landing-integrations-strip'
+import { LandingNewsletter } from '@/features/site/components/landing/landing-newsletter'
+import { LandingPricingTeaser } from '@/features/site/components/landing/landing-pricing-teaser'
+import { LandingTestimonials } from '@/features/site/components/landing/landing-testimonials'
+import { LandingWhySignalor } from '@/features/site/components/landing/landing-why-signalor'
 
 const HOMEPAGE_FAQ = [
   {
@@ -52,22 +52,21 @@ export default function HomePage(): JSX.Element {
         <div className="hero-aurora pointer-events-none absolute inset-0 opacity-60" />
         <div className="hero-grain pointer-events-none absolute inset-0" />
         <div className="relative z-10">
-          <AnnouncementBar />
           <LandingNav />
           <Hero />
         </div>
       </div>
 
       {/* the rest of the landing — ranking-fe sections */}
-      <HowItWorks />
-      <FeaturesGrid />
-      <Testimonials />
-      <WhySignalor />
-      <IntegrationsStrip />
-      <PricingTeaser />
-      <Faq items={HOMEPAGE_FAQ} />
-      <Newsletter />
-      <Footer />
+      <LandingHowItWorks />
+      <LandingFeaturesGrid />
+      <LandingTestimonials />
+      <LandingWhySignalor />
+      <LandingIntegrationsStrip />
+      <LandingPricingTeaser />
+      <LandingFaq items={HOMEPAGE_FAQ} />
+      <LandingNewsletter />
+      <LandingFooter />
     </div>
   )
 }
