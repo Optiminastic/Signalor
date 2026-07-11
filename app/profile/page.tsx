@@ -39,9 +39,9 @@ export default async function ProfilePage(): Promise<JSX.Element> {
             <div className="space-y-5">
               <ProjectsList projects={data.projects} max={data.usage.projects.max} />
               <EnginesCard engines={data.engines} />
-              <TeamCard />
             </div>
           </div>
+          <TeamCard />
           <DangerZone email={data.user.email} />
         </div>
       </main>
