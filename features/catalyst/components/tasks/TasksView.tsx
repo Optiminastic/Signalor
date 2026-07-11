@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react'
 
+import { AutoFixProvider } from '@/features/catalyst/components/autofix/AutoFixContext'
 import { DataState } from '@/features/catalyst/components/DataState'
 import { TaskStatCards } from '@/features/catalyst/components/tasks/TaskStatCards'
 import { TasksToolbar } from '@/features/catalyst/components/tasks/TasksToolbar'
@@ -91,7 +92,7 @@ export function TasksView(): JSX.Element {
   )
 
   return (
-    <>
+    <AutoFixProvider>
       <TasksToolbar tabs={data?.tabs ?? EMPTY_TABS} />
       <TaskBoard
         data={data}
@@ -101,6 +102,6 @@ export function TasksView(): JSX.Element {
         assignableEmails={assignableEmails}
         mut={mut}
       />
-    </>
+    </AutoFixProvider>
   )
 }

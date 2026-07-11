@@ -397,6 +397,9 @@ export const userActionSchema = z.object({
   assignee_email: z.string().optional().default(''),
   score_improvement: z.number().nullable().optional(),
   created_at: z.string().optional().default(''),
+  // FK to the Recommendation this task was materialised from — lets the Tasks
+  // table trigger the same auto-fix (looked up by recommendation id).
+  recommendation: z.number().nullable().optional(),
 })
 export type UserAction = z.infer<typeof userActionSchema>
 

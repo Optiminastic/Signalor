@@ -23,6 +23,8 @@ export interface TaskItem {
   priority: Priority
   /** 0 = Not Started, 100 = Done, else "N% Completed". */
   progress: number
+  /** Linked Recommendation id — the key for Auto-fix (undefined = not fixable). */
+  recommendationId?: number
 }
 
 export interface StatCard {

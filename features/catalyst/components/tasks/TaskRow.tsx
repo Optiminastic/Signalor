@@ -1,5 +1,7 @@
 import { Check, GripVertical } from 'lucide-react'
 
+import { useTaskFix } from '@/features/catalyst/components/autofix/AutoFixContext'
+import { AutoFixControl } from '@/features/catalyst/components/autofix/AutoFixControl'
 import { AssigneeStack } from '@/features/catalyst/components/tasks/AssigneeStack'
 import { PriorityTag } from '@/features/catalyst/components/tasks/PriorityTag'
 import { ProgressCell } from '@/features/catalyst/components/tasks/ProgressCell'
@@ -87,6 +89,12 @@ function AssigneeCell({
   )
 }
 
+function AutoFixCell({ recommendationId }: { recommendationId?: number }): JSX.Element {
+  const fix = useTaskFix(recommendationId)
+  if (!fix) return <span className="text-[var(--cat-ink-3)]">—</span>
+  return <AutoFixControl state={fix.state} onFix={fix.onFix} />
+}
+
 export function TaskRow(props: TaskRowProps): JSX.Element {
   const { row } = props
   const done = row.progress === 100
@@ -110,6 +118,9 @@ export function TaskRow(props: TaskRowProps): JSX.Element {
       </td>
       <td className="px-3 py-2.5">
         <ProgressCell value={row.progress} />
+      </td>
+      <td className="px-3 py-2.5">
+        <AutoFixCell recommendationId={row.recommendationId} />
       </td>
     </tr>
   )

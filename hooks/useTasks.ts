@@ -47,6 +47,7 @@ function toTask(action: UserAction, project: ProjectRef): TaskItem {
     due: formatDate(action.created_at),
     priority: priorityOf(action.points_value),
     progress: progressOf(action.status),
+    recommendationId: action.recommendation ?? undefined,
   }
 }
 
