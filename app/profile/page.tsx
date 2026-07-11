@@ -8,6 +8,7 @@ import { ProfileHeader } from '@/components/profile/profile-header'
 import { ProfileTopBar } from '@/components/profile/profile-top-bar'
 import { ProjectsList } from '@/components/profile/projects-list'
 import { StatTiles } from '@/components/profile/stat-tiles'
+import { TeamCard } from '@/components/profile/team-card'
 import { CatalystThemeProvider } from '@/features/catalyst/components/CatalystThemeProvider'
 import { auth } from '@/lib/auth'
 import { loadAccountOverview, SAMPLE_ACCOUNT } from '@/services/account.service'
@@ -38,6 +39,7 @@ export default async function ProfilePage(): Promise<JSX.Element> {
             <div className="space-y-5">
               <ProjectsList projects={data.projects} max={data.usage.projects.max} />
               <EnginesCard engines={data.engines} />
+              <TeamCard />
             </div>
           </div>
           <DangerZone email={data.user.email} />
