@@ -59,6 +59,7 @@ export function UrlStep(): JSX.Element {
         name: companyName,
         url: value.trim(),
         email: session?.user?.email ?? '',
+        platform,
       })
       if (!result.ok) {
         setError(result.error ?? 'Failed. Please try again.')

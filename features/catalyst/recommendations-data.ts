@@ -11,6 +11,8 @@ export interface Recommendation {
   effort: string
   status: RecStatus
   auto: boolean
+  /** Analyzer finding code — the key the GitHub PR auto-fix needs. */
+  findingCode: string
 }
 
 export const PRIORITY_STYLE: Record<Priority, string> = {

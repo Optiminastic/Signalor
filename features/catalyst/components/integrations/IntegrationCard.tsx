@@ -1,6 +1,5 @@
 import { Settings2 } from 'lucide-react'
 
-import { ConnectSwitch } from '@/features/catalyst/components/integrations/ConnectSwitch'
 import type { Integration } from '@/features/catalyst/integrations-data'
 
 export function IntegrationCard({ item }: { item: Integration }): JSX.Element {
@@ -21,8 +20,11 @@ export function IntegrationCard({ item }: { item: Integration }): JSX.Element {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={item.logo} alt="" className="h-5 w-5 object-contain" />
         </span>
-        <div className="flex items-center gap-1">
-          {connected && (
+        {connected && (
+          <div className="flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[rgba(47,190,126,0.12)] px-2 py-0.5 text-[11px] font-semibold text-[#2fbe7e]">
+              Connected
+            </span>
             <button
               type="button"
               aria-label={`Manage ${item.name}`}
@@ -30,9 +32,8 @@ export function IntegrationCard({ item }: { item: Integration }): JSX.Element {
             >
               <Settings2 size={15} strokeWidth={2} />
             </button>
-          )}
-          <ConnectSwitch defaultOn={connected} label={item.name} />
-        </div>
+          </div>
+        )}
       </div>
 
       <p className="mt-3 text-[13.5px] font-semibold text-[var(--cat-ink)]">{item.name}</p>

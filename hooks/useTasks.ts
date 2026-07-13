@@ -11,6 +11,7 @@ import type {
   StatusTab,
   TaskItem,
 } from '@/features/catalyst/tasks-data'
+import { statusKeyOf } from '@/features/catalyst/tasks-data'
 import { getActions, type UserAction } from '@/lib/api/analyzer'
 import { syncActions } from '@/lib/api/tasks'
 
@@ -47,6 +48,8 @@ function toTask(action: UserAction, project: ProjectRef): TaskItem {
     due: formatDate(action.created_at),
     priority: priorityOf(action.points_value),
     progress: progressOf(action.status),
+    statusKey: statusKeyOf(action.status),
+    recommendationId: action.recommendation ?? undefined,
   }
 }
 
@@ -85,11 +88,11 @@ function buildTabs(actions: UserAction[]): StatusTab[] {
   const count = (s: string): number => actions.filter(a => a.status === s).length
   const completed = count('completed') + count('verified')
   return [
-    { label: 'To Do', count: count('pending') },
-    { label: 'In Progress', count: count('in_progress') },
-    { label: 'Overdue', count: 0 },
-    { label: 'Completed', count: completed },
-    { label: 'All', count: actions.length, active: true },
+    { label: 'To Do', count: count('pending'), key: 'todo' },
+    { label: 'In Progress', count: count('in_progress'), key: 'in_progress' },
+    { label: 'Overdue', count: 0, key: 'overdue' },
+    { label: 'Completed', count: completed, key: 'completed' },
+    { label: 'All', count: actions.length, key: 'all' },
   ]
 }
 

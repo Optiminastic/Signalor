@@ -8,6 +8,7 @@ import { ProfileHeader } from '@/components/profile/profile-header'
 import { ProfileTopBar } from '@/components/profile/profile-top-bar'
 import { ProjectsList } from '@/components/profile/projects-list'
 import { StatTiles } from '@/components/profile/stat-tiles'
+import { TeamCard } from '@/components/profile/team-card'
 import { CatalystThemeProvider } from '@/features/catalyst/components/CatalystThemeProvider'
 import { auth } from '@/lib/auth'
 import { loadAccountOverview, SAMPLE_ACCOUNT } from '@/services/account.service'
@@ -40,6 +41,7 @@ export default async function ProfilePage(): Promise<JSX.Element> {
               <EnginesCard engines={data.engines} />
             </div>
           </div>
+          <TeamCard />
           <DangerZone email={data.user.email} />
         </div>
       </main>

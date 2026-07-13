@@ -1,14 +1,22 @@
 'use client'
 
-import { Check, Zap } from 'lucide-react'
+import { Check } from 'lucide-react'
 
+import { AutoFixControl } from '@/features/catalyst/components/autofix/AutoFixControl'
 import { DashHeader, DashStatRow } from '@/features/catalyst/components/dash/DashStat'
 import { DataState } from '@/features/catalyst/components/DataState'
 import { PRIORITY_STYLE, type Recommendation } from '@/features/catalyst/recommendations-data'
 import { useActiveProject } from '@/hooks/useActiveProject'
+import { useAutoFix, type FixState } from '@/hooks/useAutoFix'
 import { useRecommendations } from '@/hooks/useRecommendations'
 
-function RecAction({ item }: { item: Recommendation }): JSX.Element {
+interface RecActionProps {
+  item: Recommendation
+  state: FixState
+  onFix: () => void
+}
+
+function RecAction({ item, state, onFix }: RecActionProps): JSX.Element {
   if (item.status === 'done') {
     return (
       <span className="inline-flex items-center gap-1 text-[12px] font-medium text-[#2FBE7E]">
@@ -18,16 +26,7 @@ function RecAction({ item }: { item: Recommendation }): JSX.Element {
     )
   }
   if (item.auto) {
-    return (
-      <button
-        type="button"
-        className="inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-[12px] font-medium text-white"
-        style={{ background: '#e04a3d' }}
-      >
-        <Zap size={13} />
-        Auto fix
-      </button>
-    )
+    return <AutoFixControl state={state} onFix={onFix} />
   }
   return (
     <button
@@ -39,7 +38,7 @@ function RecAction({ item }: { item: Recommendation }): JSX.Element {
   )
 }
 
-function RecRow({ item }: { item: Recommendation }): JSX.Element {
+function RecRow({ item, state, onFix }: RecActionProps): JSX.Element {
   return (
     <div className="flex items-center gap-4 px-4 py-3.5">
       <span
@@ -62,15 +61,16 @@ function RecRow({ item }: { item: Recommendation }): JSX.Element {
         </div>
       </div>
       <div className="shrink-0">
-        <RecAction item={item} />
+        <RecAction item={item} state={state} onFix={onFix} />
       </div>
     </div>
   )
 }
 
 export function RecommendationsView(): JSX.Element {
-  const { slug, isLoading: projectLoading } = useActiveProject()
+  const { slug, email, activeOrg, isLoading: projectLoading } = useActiveProject()
   const { data, isLoading, isError } = useRecommendations(slug)
+  const autofix = useAutoFix({ slug, email, orgId: activeOrg?.id })
 
   return (
     <div className="mx-auto w-full max-w-[1100px]">
@@ -92,7 +92,14 @@ export function RecommendationsView(): JSX.Element {
             </div>
             <div className="divide-y divide-[var(--cat-border)] overflow-hidden rounded-lg border border-[var(--cat-border)] bg-[var(--cat-card)]">
               {data.recommendations.map(r => (
-                <RecRow key={r.id} item={r} />
+                <RecRow
+                  key={r.id}
+                  item={r}
+                  state={autofix.stateFor(r.id)}
+                  onFix={() => {
+                    void autofix.runFix({ id: r.id, findingCode: r.findingCode })
+                  }}
+                />
               ))}
             </div>
           </>

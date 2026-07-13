@@ -264,6 +264,9 @@ export const recommendationSchema = z.object({
   // but older runs may store a bare number — accept either.
   impact_estimate: z.union([z.number(), z.string()]).nullable().optional(),
   category: z.string().optional().default(''),
+  // Analyzer finding code (e.g. "no_llms_txt", "no_jsonld") — needed to trigger
+  // the GitHub PR auto-fix, which keys off finding codes.
+  finding_code: z.string().optional().default(''),
   can_auto_fix: z.boolean().optional().default(false),
   code_fixable: z.boolean().optional().default(false),
   difficulty: z.string().nullable().optional(),
@@ -394,6 +397,9 @@ export const userActionSchema = z.object({
   assignee_email: z.string().optional().default(''),
   score_improvement: z.number().nullable().optional(),
   created_at: z.string().optional().default(''),
+  // FK to the Recommendation this task was materialised from — lets the Tasks
+  // table trigger the same auto-fix (looked up by recommendation id).
+  recommendation: z.number().nullable().optional(),
 })
 export type UserAction = z.infer<typeof userActionSchema>
 

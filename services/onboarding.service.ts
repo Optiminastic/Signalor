@@ -33,6 +33,8 @@ export interface CreateOrganizationInput {
   name: string
   url: string
   email: string
+  /** Platform selected during onboarding, persisted on the org. */
+  platform?: string
 }
 
 /** Shape of the onboard endpoint's 409 body: the existing org to switch to. */

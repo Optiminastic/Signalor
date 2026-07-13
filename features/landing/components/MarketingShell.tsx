@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { AnnouncementBar } from '@/features/landing/components/AnnouncementBar'
 import { Footer } from '@/features/landing/components/Footer'
 import { LandingNav } from '@/features/landing/components/LandingNav'
 
@@ -17,7 +16,6 @@ interface MarketingShellProps {
 export function MarketingShell({ children }: MarketingShellProps): JSX.Element {
   return (
     <div className="min-h-screen bg-[#fbfbfa] font-sans">
-      <AnnouncementBar />
       <LandingNav />
       {children}
       <Footer />

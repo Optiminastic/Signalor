@@ -10,6 +10,8 @@ const organizationSchema = z.object({
   url: z.string(),
   owner_email: z.string(),
   created_at: z.string(),
+  // Platform the site is built on, chosen during onboarding (may be blank).
+  platform: z.string().optional().default(''),
 })
 
 export type Organization = z.infer<typeof organizationSchema>
@@ -20,6 +22,8 @@ export interface OnboardPayload {
   name: string
   url: string
   email: string
+  /** Platform selected during onboarding (shopify | wordpress | webflow | framer | nextjs). */
+  platform?: string
 }
 
 function normalizeEmail(email: string): string {

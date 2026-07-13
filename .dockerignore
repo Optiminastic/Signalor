@@ -1,0 +1,10 @@
+# Keep the image build context small. Source is bind-mounted at dev runtime;
+# node_modules / .next are named volumes seeded from the image build.
+node_modules
+.next
+.git
+.turbo
+npm-debug.log*
+pnpm-debug.log*
+# NOTE: .env is intentionally NOT ignored — the dev container reads it from the
+# bind-mounted /app for Neon DATABASE_URL, Better Auth, and NEXT_PUBLIC_* vars.

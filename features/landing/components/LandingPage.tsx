@@ -1,4 +1,3 @@
-import { AnnouncementBar } from '@/features/landing/components/AnnouncementBar'
 import { Faq } from '@/features/landing/components/Faq'
 import { FeaturesGrid } from '@/features/landing/components/FeaturesGrid'
 import { FloatingChat } from '@/features/landing/components/FloatingChat'
@@ -15,7 +14,6 @@ import { WhySignalor } from '@/features/landing/components/WhySignalor'
 export function LandingPage(): JSX.Element {
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fbfbfa] font-sans">
-      <AnnouncementBar />
       <div className="relative overflow-hidden">
         <div className="relative z-10">
           <LandingNav />

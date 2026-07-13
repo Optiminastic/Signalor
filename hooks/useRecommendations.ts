@@ -56,6 +56,7 @@ function toRec(rec: ApiRecommendation): Recommendation {
     // Per-run completion tracking isn't modelled yet — everything starts open.
     status: 'open',
     auto: rec.can_auto_fix || rec.code_fixable,
+    findingCode: rec.finding_code,
   }
 }
 
