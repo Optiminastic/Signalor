@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 
 import { BillingHistory } from '@/components/profile/billing-history'
@@ -8,9 +9,19 @@ import { ProfileHeader } from '@/components/profile/profile-header'
 import { ProfileTopBar } from '@/components/profile/profile-top-bar'
 import { ProjectsList } from '@/components/profile/projects-list'
 import { StatTiles } from '@/components/profile/stat-tiles'
+import { TeamCard } from '@/components/profile/team-card'
 import { CatalystThemeProvider } from '@/features/catalyst/components/CatalystThemeProvider'
 import { auth } from '@/lib/auth'
+import { buildMetadata } from '@/features/site/lib/seo'
 import { loadAccountOverview, SAMPLE_ACCOUNT } from '@/services/account.service'
+
+// Private account page - keep it out of search indexes.
+export const metadata: Metadata = buildMetadata({
+  title: 'Profile',
+  description: 'Manage your Signalor account, plan, and projects.',
+  path: '/profile',
+  noindex: true,
+})
 
 // Per-request data (session + backend), so never statically cached.
 export const dynamic = 'force-dynamic'
@@ -40,6 +51,7 @@ export default async function ProfilePage(): Promise<JSX.Element> {
               <EnginesCard engines={data.engines} />
             </div>
           </div>
+          <TeamCard />
           <DangerZone email={data.user.email} />
         </div>
       </main>

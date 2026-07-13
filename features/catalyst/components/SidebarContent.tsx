@@ -2,7 +2,6 @@
 
 import { Share2, Sparkles, X } from 'lucide-react'
 
-import { AgencyNavSection } from '@/features/catalyst/components/AgencyNavSection'
 import { NavGroup } from '@/features/catalyst/components/NavGroup'
 import { NavItem } from '@/features/catalyst/components/NavItem'
 import { SidebarLogo } from '@/features/catalyst/components/SidebarLogo'
@@ -82,7 +81,6 @@ export function SidebarContent({ collapsed, onClose }: SidebarContentProps): JSX
         </div>
         <NavSection title="Monitoring" items={MONITORING_NAV} collapsed={collapsed} />
         <NavSection title="Optimization" items={optimizationNav} collapsed={collapsed} />
-        <AgencyNavSection collapsed={collapsed} />
         {collapsed && <div className="mx-1 my-2 h-px bg-[var(--cat-border-soft)]" />}
         <div className={collapsed ? '' : 'mt-1'}>
           <NavGroup icon={Share2} label="Socials" items={SOCIALS_NAV} collapsed={collapsed} />

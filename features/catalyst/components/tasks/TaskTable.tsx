@@ -3,7 +3,16 @@ import { ChevronsUpDown } from 'lucide-react'
 import { TaskRow } from '@/features/catalyst/components/tasks/TaskRow'
 import type { TaskItem } from '@/features/catalyst/tasks-data'
 
-const COLS = ['Task', 'Project', 'Description', 'Assignee', 'Due Date', 'Priority', 'Progress']
+const COLS = [
+  'Task',
+  'Project',
+  'Description',
+  'Assignee',
+  'Due Date',
+  'Priority',
+  'Progress',
+  'Auto-fix',
+]
 
 function TaskTableHead(): JSX.Element {
   return (
