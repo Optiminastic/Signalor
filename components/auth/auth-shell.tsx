@@ -4,10 +4,10 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 const DEFAULT_EYEBROW = 'Answer-engine visibility'
-const DEFAULT_HEADLINE = 'See how your brand shows up in AI search, and fix what holds you back.'
+const DEFAULT_HEADLINE = 'See how your brand shows up in AI chat, and fix what holds you back.'
 
 interface AuthMarketingPanelProps {
-  /** Right-panel background image. Defaults to the sign-in/up sunset visual. */
+  /** Right-panel illustration. Defaults to the sign-in/up hands visual. */
   imageSrc?: string
   /** Small uppercase kicker above the headline. */
   eyebrow?: string
@@ -16,31 +16,29 @@ interface AuthMarketingPanelProps {
 }
 
 /**
- * Right-hand marketing panel: an inset, large-radius visual with the eyebrow +
- * headline anchored bottom-right. Hidden below the lg breakpoint.
+ * Right-hand marketing panel: the illustration sits contained on a matching
+ * light-gray surface with the eyebrow + headline anchored bottom-right. Hidden
+ * below the lg breakpoint.
  */
 export function AuthMarketingPanel({
-  imageSrc = '/auth-visual.jpg',
+  imageSrc = '/auth-illustration.png',
   eyebrow = DEFAULT_EYEBROW,
   headline = DEFAULT_HEADLINE,
 }: AuthMarketingPanelProps): JSX.Element {
   return (
     <aside className="relative hidden min-h-svh p-3 lg:flex xl:p-4">
-      <div className="relative flex flex-1 flex-col justify-end overflow-hidden rounded-[16px] p-10 xl:p-14">
-        <Image
-          src={imageSrc}
-          alt=""
-          fill
-          priority
-          sizes="50vw"
-          className="pointer-events-none object-cover select-none"
-        />
-
-        {/* Soft scrim so the bottom-right copy stays legible over darker imagery. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-2/3 bg-gradient-to-t from-white/70 via-white/25 to-transparent"
-        />
+      <div className="relative flex flex-1 flex-col overflow-hidden rounded-[16px] bg-[#ebe9ea] p-10 xl:p-14">
+        {/* Illustration, fully contained so nothing is cropped. */}
+        <div className="relative flex-1">
+          <Image
+            src={imageSrc}
+            alt="Illustration of hands holding phones"
+            fill
+            priority
+            sizes="50vw"
+            className="pointer-events-none object-contain object-center select-none"
+          />
+        </div>
 
         <div className="relative z-10 ml-auto max-w-md text-right">
           <p className="text-[10px] font-medium tracking-[0.14em] text-neutral-700/80 uppercase">

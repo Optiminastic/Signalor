@@ -1,4 +1,5 @@
 import {
+  BadgeCheck,
   Blocks,
   Eye,
   Facebook,
@@ -76,6 +77,7 @@ export const MAIN_NAV: NavEntry[] = [{ icon: LayoutGrid, label: 'Overview', href
 export const MONITORING_NAV: NavEntry[] = [
   { icon: Eye, label: 'Visibility', href: 'visibility' },
   { icon: Users, label: 'Competitors', href: 'competitors' },
+  { icon: BadgeCheck, label: 'Brand Profile', href: 'brand-profile' },
 ]
 
 export const OPTIMIZATION_NAV: NavEntry[] = [

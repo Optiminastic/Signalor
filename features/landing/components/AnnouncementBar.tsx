@@ -1,10 +1,15 @@
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
+interface AnnouncementBarProps {
+  /** Tailwind classes for the wrapper's spacing; overrides the default bottom margin. */
+  className?: string
+}
+
 /** Rounded, contained brand promo banner floating above the nav. */
-export function AnnouncementBar(): JSX.Element {
+export function AnnouncementBar({ className = 'mb-7 sm:mb-8' }: AnnouncementBarProps): JSX.Element {
   return (
-    <div className="mb-7 px-3 sm:mb-8 sm:px-4">
+    <div className={`px-3 sm:px-4 ${className}`}>
       <Link
         href="/sign-up"
         className="mx-auto flex w-fit items-center justify-center gap-1.5 rounded-full bg-[#e04a3d] px-5 py-1.5 text-center text-[13px] font-medium text-white shadow-sm transition-opacity hover:opacity-90 sm:py-2 sm:text-sm"

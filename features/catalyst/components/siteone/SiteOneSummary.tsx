@@ -43,10 +43,11 @@ function StatTile({ label, value, tone }: StatTileProps): JSX.Element {
 
 /** Top-of-tab KPI row: overall SiteOne score plus crawl issue + latency counts. */
 export function SiteOneSummary({ report }: SiteOneSummaryProps): JSX.Element {
-  const { counts, performance } = report
+  const { counts, performance, stats } = report
   const overall = report.overall_score
+  const execTime = stats.execution_time_s ? `${stats.execution_time_s.toFixed(1)}s` : '-'
   return (
-    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
+    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-8">
       <StatTile
         label="Overall"
         value={overall === null || overall === undefined ? '-' : `${overall.toFixed(1)}/10`}
@@ -56,10 +57,12 @@ export function SiteOneSummary({ report }: SiteOneSummaryProps): JSX.Element {
       <StatTile label="Redirects" value={String(counts.redirects)} />
       <StatTile label="Security" value={String(counts.security_findings)} />
       <StatTile label="Pages crawled" value={String(counts.pages_crawled)} />
+      <StatTile label="Total size" value={stats.total_size_formatted || '-'} />
       <StatTile
         label="Avg / P90 req"
         value={`${formatMs(performance.request_ms_avg)} / ${formatMs(performance.request_ms_p90)}`}
       />
+      <StatTile label="Crawl time" value={execTime} />
     </div>
   )
 }

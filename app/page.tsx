@@ -95,9 +95,8 @@ export default function HomePage(): JSX.Element {
       <JsonLd id="ld-home-product" data={homeProductJsonLd} />
       <JsonLd id="ld-home-sitenav" data={siteNavigationJsonLd()} />
 
-      {/* new-signalor header + hero — gradient spans from the very top */}
-      <div className="relative overflow-hidden">
-        <div className="hero-aurora pointer-events-none absolute inset-0 opacity-60" />
+      {/* new-signalor header + hero */}
+      <div className="hero-sand relative overflow-hidden">
         <div className="hero-grain pointer-events-none absolute inset-0" />
         <div className="relative z-10">
           <LandingNav />
