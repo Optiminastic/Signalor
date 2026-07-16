@@ -6,7 +6,13 @@ import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { AppSidebar } from '@/features/site/components/navigation/app-sidebar'
 import { SettingsNav } from '@/features/site/components/settings/settings-nav'
 import { Button } from '@/features/site/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/features/site/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/features/site/components/ui/card'
 import { Input } from '@/features/site/components/ui/input'
 import { getOrFetchOnboardingToken } from '@/features/site/lib/api/onboarding-security'
 import {

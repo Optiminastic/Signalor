@@ -9,7 +9,10 @@ import { MarketingShell } from '@/features/landing/components/MarketingShell'
 import { track } from '@/features/site/amplitude'
 import { Check, Clock, Crown, Rocket, Zap } from '@/features/site/components/icons'
 import { LandingFaq } from '@/features/site/components/landing/landing-faq'
-import { AudienceToggle, type PricingAudience } from '@/features/site/components/pricing/audience-toggle'
+import {
+  AudienceToggle,
+  type PricingAudience,
+} from '@/features/site/components/pricing/audience-toggle'
 import { CurrencyToggle } from '@/features/site/components/pricing/currency-toggle'
 import { PricingHero } from '@/features/site/components/pricing/pricing-hero'
 import { PricingStatsSection } from '@/features/site/components/pricing/pricing-stats-section'
@@ -28,7 +31,10 @@ import {
 import { useSession } from '@/features/site/lib/auth-client'
 import { routes } from '@/features/site/lib/config'
 import { useCurrency, formatPrice } from '@/features/site/lib/hooks/use-currency'
-import { POST_CHECKOUT_REDIRECT_KEY, safeInternalReturnPath } from '@/features/site/lib/internal-nav'
+import {
+  POST_CHECKOUT_REDIRECT_KEY,
+  safeInternalReturnPath,
+} from '@/features/site/lib/internal-nav'
 import { PRICING_FAQ_ITEMS } from '@/features/site/lib/pricing-marketing-content'
 import { useOrgStore } from '@/features/site/lib/stores/org-store'
 import { cn } from '@/features/site/lib/utils'

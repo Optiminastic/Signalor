@@ -1,4 +1,7 @@
-import { getContentPageFields, type ContentPageFields } from '@/features/site/lib/api/content-optimisation'
+import {
+  getContentPageFields,
+  type ContentPageFields,
+} from '@/features/site/lib/api/content-optimisation'
 import { getGithubJobs } from '@/features/site/lib/api/github'
 
 const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms))

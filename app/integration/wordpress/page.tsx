@@ -11,7 +11,13 @@ import {
   INTEGRATION_DETAIL_FAQ,
   WORDPRESS_INTEGRATION_PAGE,
 } from '@/features/site/lib/landing-integration-content'
-import { AGGREGATE_RATING, breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@/features/site/lib/seo'
+import {
+  AGGREGATE_RATING,
+  breadcrumbJsonLd,
+  buildMetadata,
+  faqJsonLd,
+  SITE_URL,
+} from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'WordPress plugin, GEO scoring & schema fixes',
