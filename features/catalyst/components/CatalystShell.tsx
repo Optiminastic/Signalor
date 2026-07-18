@@ -4,7 +4,7 @@ import { GlobalBar } from '@/features/catalyst/components/GlobalBar'
 import { Sidebar } from '@/features/catalyst/components/Sidebar'
 
 const PANEL =
-  'flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-md border border-[var(--cat-border)] bg-[var(--cat-content)] px-3.5 pt-3.5 pb-3.5 shadow-[0_1px_2px_rgba(16,24,40,.05)]'
+  'cat-vt-panel flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-md border border-[var(--cat-border)] bg-[var(--cat-content)] px-3.5 pt-3.5 pb-3.5 shadow-[0_1px_2px_rgba(16,24,40,.05)]'
 
 interface CatalystShellProps {
   children: ReactNode
@@ -20,7 +20,9 @@ export function CatalystShell({ children }: CatalystShellProps): JSX.Element {
       <Sidebar />
       <main className={PANEL}>
         <GlobalBar />
-        <div className="mt-3 flex min-h-0 flex-1 flex-col overflow-y-auto pr-0.5">{children}</div>
+        <div className="mt-3 flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto pr-0.5">
+          {children}
+        </div>
       </main>
     </div>
   )

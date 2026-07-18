@@ -95,22 +95,22 @@ export function OnboardingFlow({ mode }: OnboardingFlowProps): JSX.Element {
       <div className="space-y-1.5">
         <div className="flex items-baseline justify-between gap-3">
           <h1 className="text-foreground text-xl font-semibold tracking-tight">{title}</h1>
-          <span className="shrink-0 text-[11px] text-neutral-400 tabular-nums">
+          <span className="text-muted-foreground shrink-0 text-[11px] tabular-nums">
             Step {stepIndex + 1}/{order.length}
           </span>
         </div>
-        <p className="text-[13px] leading-relaxed font-light text-neutral-400">{description}</p>
+        <p className="text-muted-foreground text-[11px] leading-relaxed">{description}</p>
       </div>
 
       <div className="mt-5">{StepComponent && <StepComponent />}</div>
 
-      <p className="mt-6 text-center text-xs text-neutral-500">
+      <p className="text-muted-foreground mt-6 text-center text-xs">
         {mode === 'sign-up' ? (
           <>
             Already have an account?{' '}
             <Link
               href={routes.signIn}
-              className="text-foreground hover:decoration-foreground font-medium underline decoration-neutral-300 underline-offset-2"
+              className="text-primary hover:text-primary/80 font-semibold transition-colors"
             >
               Sign in
             </Link>
@@ -120,7 +120,7 @@ export function OnboardingFlow({ mode }: OnboardingFlowProps): JSX.Element {
             Don&apos;t have an account?{' '}
             <Link
               href={routes.signUp}
-              className="text-foreground hover:decoration-foreground font-medium underline decoration-neutral-300 underline-offset-2"
+              className="text-primary hover:text-primary/80 font-semibold transition-colors"
             >
               Sign up
             </Link>

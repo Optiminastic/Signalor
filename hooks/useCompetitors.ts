@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
-import type { Competitor, Relation } from '@/features/catalyst/competitors-data'
+import { domainOf, relationFor, type Competitor } from '@/features/catalyst/competitors-data'
 import { BRAND } from '@/features/catalyst/constants'
 import { getCompetitors, type Competitor as ApiCompetitor } from '@/lib/api/analyzer'
 import { queryKeys } from '@/lib/query-keys'
@@ -27,17 +27,6 @@ export interface MineBrand {
   score: number
 }
 
-function domainOf(url: string): string {
-  return url
-    .replace(/^https?:\/\//, '')
-    .replace(/\/.*$/, '')
-    .replace(/^www\./, '')
-}
-
-function relationFor(tier: string): Relation {
-  return tier.includes('1') ? 'direct' : 'indirect'
-}
-
 function scoreOf(competitor: ApiCompetitor): number {
   return Math.round(competitor.composite_score ?? competitor.relevance_score ?? 0)
 }
@@ -52,16 +41,19 @@ function adapt(apiComps: ApiCompetitor[], mine: MineBrand | undefined): Competit
       domain: domainOf(mine.url),
       score: Math.round(mine.score),
       relation: 'mine',
+      positioning: '',
     })
   }
   apiComps.forEach((competitor, index) => {
     out.push({
+      id: competitor.id,
       name: competitor.name,
       initial: (competitor.name[0] ?? '?').toUpperCase(),
       color: PALETTE[index % PALETTE.length],
       domain: domainOf(competitor.url),
       score: scoreOf(competitor),
       relation: relationFor(competitor.tier),
+      positioning: competitor.positioning,
     })
   })
   return out

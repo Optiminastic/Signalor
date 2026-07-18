@@ -4,6 +4,8 @@ import { useState } from 'react'
 
 import { signInWithGoogle } from '@/services/auth.service'
 
+import { AUTH_SECONDARY_BUTTON } from './field-styles'
+
 interface GoogleButtonProps {
   callbackUrl?: string
 }
@@ -23,7 +25,7 @@ export function GoogleButton({ callbackUrl }: GoogleButtonProps): JSX.Element {
       type="button"
       onClick={handleClick}
       disabled={loading}
-      className="shadow-input text-foreground flex h-10 w-full items-center justify-center gap-2 rounded-md border border-neutral-200 bg-white text-[13px] font-medium transition hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-60"
+      className={AUTH_SECONDARY_BUTTON}
     >
       <GoogleIcon />
       {loading ? 'Redirecting…' : 'Google'}

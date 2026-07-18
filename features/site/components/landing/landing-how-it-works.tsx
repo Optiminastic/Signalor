@@ -7,7 +7,11 @@ import { ScreenHR } from "@/features/site/components/ui/intersection-diamonds";
 
 export function LandingHowItWorks() {
   return (
-    <section className="relative bg-transparent" aria-labelledby="how-it-works-heading">
+    <section
+      id="how-it-works"
+      className="relative bg-transparent"
+      aria-labelledby="how-it-works-heading"
+    >
       <ScreenHR />
       <div className="mx-auto max-w-7xl px-6 pb-12 pt-14 lg:px-12 lg:pb-14 lg:pt-16">
         <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
@@ -34,7 +38,7 @@ export function LandingHowItWorks() {
 
       <ScreenHR />
 
-      <div className="mx-auto max-w-7xl bg-black-10">
+      <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 divide-y divide-black/6 md:grid-cols-2 md:divide-x md:divide-y-0 lg:grid-cols-4">
           {HOW_IT_WORKS_STEPS.map((s) => (
             <StepCard key={s.n} step={s} />
@@ -49,9 +53,9 @@ export function LandingHowItWorks() {
 
 function StepCard({ step }: { step: HowItWorksStep }) {
   return (
-    <div className="flex flex-col gap-6 bg-white px-6 py-12 md:px-8 md:py-14 lg:px-8">
+    <div className="group flex flex-col gap-6 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-14 lg:px-8">
       <div className="flex items-center gap-3">
-        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-[11px] font-bold text-primary">
+        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-[11px] font-bold text-primary transition-colors group-hover:bg-primary/15">
           {step.n}
         </span>
         <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">

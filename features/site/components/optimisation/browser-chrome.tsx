@@ -7,6 +7,7 @@ import {
   RotateCw,
   Loader2,
   Globe2,
+  Check,
   ChevronDown,
   Lock,
 } from "@/features/site/components/icons";
@@ -31,6 +32,87 @@ function getPath(fullUrl: string, base: string): string {
     return fullUrl.slice(base.length) || "/";
   }
   return fullUrl;
+}
+
+/** The classic three window dots — purely decorative, sells the browser frame. */
+function TrafficLights() {
+  return (
+    <span className="mr-0.5 flex shrink-0 items-center gap-1.5 pl-1" aria-hidden>
+      <span className="size-2.5 rounded-full bg-[#FF5F57]/80" />
+      <span className="size-2.5 rounded-full bg-[#FEBC2E]/80" />
+      <span className="size-2.5 rounded-full bg-[#28C840]/80" />
+    </span>
+  );
+}
+
+function NavButton({
+  onClick,
+  disabled,
+  label,
+  children,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(
+        "flex size-8 items-center justify-center rounded-full transition",
+        disabled
+          ? "cursor-not-allowed text-muted-foreground/35"
+          : "text-foreground/80 hover:bg-muted hover:text-foreground active:scale-95",
+      )}
+      aria-label={label}
+    >
+      {children}
+    </button>
+  );
+}
+
+function PagesMenu({
+  pages,
+  url,
+  onPick,
+}: {
+  pages: ContentPage[];
+  url: string;
+  onPick: (url: string) => void;
+}) {
+  return (
+    <div className="absolute left-0 right-0 top-full z-30 mt-1.5 max-h-72 overflow-y-auto rounded-lg border border-border bg-popover py-1 shadow-xl">
+      <p className="select-none px-3 pb-1 pt-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+        Crawled pages
+      </p>
+      {pages.slice(0, 50).map((p) => {
+        const active = p.url === url;
+        return (
+          <button
+            key={p.url}
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => onPick(p.url)}
+            className={cn(
+              "flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition",
+              active ? "bg-muted/60" : "hover:bg-muted/40",
+            )}
+          >
+            <span className="min-w-0 flex-1">
+              <span className="block truncate font-medium text-foreground">{p.path || "/"}</span>
+              <span className="block truncate text-[11px] text-muted-foreground">
+                {p.title || p.url}
+              </span>
+            </span>
+            {active ? <Check className="size-3.5 shrink-0 text-primary" /> : null}
+          </button>
+        );
+      })}
+    </div>
+  );
 }
 
 export function BrowserChrome({
@@ -62,110 +144,81 @@ export function BrowserChrome({
   }, [open]);
 
   return (
-    <div className="flex items-center gap-2 px-3 py-2">
-      <button
-        type="button"
-        onClick={onBack}
-        disabled={!canGoBack}
-        className={cn(
-          "flex size-8 items-center justify-center rounded-md transition",
-          canGoBack
-            ? "text-foreground hover:bg-muted"
-            : "cursor-not-allowed text-muted-foreground/40",
-        )}
-        aria-label="Back"
-      >
+    <div className="relative flex items-center gap-1.5 px-3 py-2">
+      <TrafficLights />
+      <NavButton onClick={onBack} disabled={!canGoBack} label="Back">
         <ArrowLeft className="size-4" />
-      </button>
-      <button
-        type="button"
-        onClick={onForward}
-        disabled={!canGoForward}
-        className={cn(
-          "flex size-8 items-center justify-center rounded-md transition",
-          canGoForward
-            ? "text-foreground hover:bg-muted"
-            : "cursor-not-allowed text-muted-foreground/40",
-        )}
-        aria-label="Forward"
-      >
+      </NavButton>
+      <NavButton onClick={onForward} disabled={!canGoForward} label="Forward">
         <ArrowRight className="size-4" />
-      </button>
-      <button
-        type="button"
-        onClick={onRefresh}
-        disabled={isLoading}
-        className="flex size-8 items-center justify-center rounded-md text-foreground transition hover:bg-muted disabled:opacity-50"
-        aria-label="Refresh"
-      >
+      </NavButton>
+      <NavButton onClick={onRefresh} disabled={isLoading} label="Refresh">
         {isLoading ? <Loader2 className="size-4 animate-spin" /> : <RotateCw className="size-4" />}
-      </button>
+      </NavButton>
 
-      {/* URL bar — domain locked, path editable */}
-      <div className="relative flex-1" ref={wrapperRef}>
-        <div className="flex h-9 items-center gap-1.5 rounded-full border border-border bg-muted/35 px-3">
-          <Globe2 className="size-3.5 shrink-0 text-muted-foreground" />
+      {/* URL bar — domain locked, path shown, pages menu on the right */}
+      <div className="relative ml-1 flex-1" ref={wrapperRef}>
+        <div className="flex h-9 items-center gap-1.5 rounded-full border border-border/80 bg-muted/30 px-1.5 pr-2 shadow-[inset_0_1px_2px_rgba(16,24,40,0.04)] transition-colors hover:border-border hover:bg-muted/45">
           {baseUrl ? (
             <>
               <span
-                className="flex shrink-0 select-none items-center gap-1 whitespace-nowrap rounded bg-muted/60 px-1.5 py-0.5 text-xs font-medium text-muted-foreground/80"
+                className="flex shrink-0 select-none items-center gap-1.5 whitespace-nowrap rounded-full bg-background px-2.5 py-1 text-xs font-medium text-foreground/80 shadow-sm ring-1 ring-border/60"
                 title="Domain locked to your project URL"
               >
-                <Lock className="size-2.5 shrink-0" />
-                {baseUrl}
+                <Lock className="size-3 shrink-0 text-success" />
+                {baseUrl.replace(/^https?:\/\//, "")}
               </span>
-              <span className="min-w-0 truncate text-[13px] text-foreground select-none">
+              <span className="min-w-0 select-none truncate text-[13px] font-medium text-foreground">
                 {currentPath || "/"}
               </span>
             </>
           ) : (
-            <span className="min-w-0 truncate text-[13px] text-muted-foreground select-none">
+            <span className="flex min-w-0 select-none items-center gap-1.5 truncate pl-1 text-[13px] text-muted-foreground">
+              <Globe2 className="size-3.5 shrink-0" />
               {url || "No URL configured"}
             </span>
           )}
 
-          {/* Pages dropdown toggle */}
           {pages.length > 0 ? (
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => setOpen((v) => !v)}
-              className="ml-auto flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
+              className={cn(
+                "ml-auto flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] transition",
+                open
+                  ? "border-primary/40 bg-primary/10 text-primary"
+                  : "border-transparent text-muted-foreground hover:border-border hover:bg-background hover:text-foreground hover:shadow-sm",
+              )}
               aria-label="Browse site pages"
+              aria-expanded={open}
               title="Browse site pages"
             >
-              <span className="font-medium">{pages.length} pages</span>
+              <span className="font-medium tabular-nums">{pages.length} pages</span>
               <ChevronDown className={cn("size-3 transition", open && "rotate-180")} />
             </button>
           ) : null}
         </div>
 
-        {/* Pages dropdown */}
         {open && pages.length > 0 ? (
-          <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-72 overflow-y-auto rounded-md border border-border bg-popover py-1 shadow-lg">
-            {pages.slice(0, 50).map((p) => (
-              <button
-                key={p.url}
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => {
-                  setOpen(false);
-                  onUrlChange(p.url);
-                }}
-                className={cn(
-                  "flex w-full flex-col items-start gap-0.5 px-3 py-2 text-left text-xs transition",
-                  p.url === url ? "bg-muted/60" : "hover:bg-muted/40",
-                )}
-              >
-                <span className="truncate font-medium text-foreground">{p.path || "/"}</span>
-                <span className="truncate text-[11px] text-muted-foreground">
-                  {p.title || p.url}
-                </span>
-              </button>
-            ))}
-          </div>
+          <PagesMenu
+            pages={pages}
+            url={url}
+            onPick={(next) => {
+              setOpen(false);
+              onUrlChange(next);
+            }}
+          />
         ) : null}
       </div>
+
+      {/* Browser-style loading shimmer along the chrome's bottom edge. */}
+      {isLoading ? (
+        <span
+          className="absolute inset-x-0 -bottom-px h-[2px] animate-pulse bg-gradient-to-r from-primary/0 via-primary/70 to-primary/0"
+          aria-hidden
+        />
+      ) : null}
     </div>
   );
 }

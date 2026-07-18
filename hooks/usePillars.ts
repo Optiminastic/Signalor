@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getRunDetail, type PageScore, type RunDetail } from '@/lib/api/analyzer'
 
 /** The six GEO scoring pillars, in the order they render around the radar. */
-const PILLARS: { key: keyof PageScore; label: string }[] = [
+export const GEO_PILLARS: { key: keyof PageScore; label: string }[] = [
   { key: 'content_score', label: 'Content' },
   { key: 'schema_score', label: 'Schema' },
   { key: 'eeat_score', label: 'E-E-A-T' },
@@ -26,14 +26,14 @@ export interface PillarStats {
 }
 
 /** The brand's own root page (matches the run url); falls back to the first page. */
-function brandPage(detail: RunDetail): PageScore | undefined {
+export function brandRootPage(detail: RunDetail): PageScore | undefined {
   if (detail.page_scores.length === 0) return undefined
   return detail.page_scores.find(p => p.url === detail.url) ?? detail.page_scores[0]
 }
 
 function adapt(detail: RunDetail): PillarStats {
-  const page = brandPage(detail)
-  const pillars: Pillar[] = PILLARS.map(p => ({
+  const page = brandRootPage(detail)
+  const pillars: Pillar[] = GEO_PILLARS.map(p => ({
     label: p.label,
     score: Math.round((page?.[p.key] as number | null | undefined) ?? 0),
   }))

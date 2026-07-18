@@ -98,8 +98,8 @@ export function OtpInput({
           onPaste={e => handlePaste(i, e)}
           onFocus={e => e.target.select()}
           className={cn(
-            'shadow-input text-foreground h-12 w-11 rounded-md border border-neutral-200 bg-white text-center text-lg font-semibold transition outline-none',
-            'focus:border-primary focus:ring-ring/50 focus:ring-2 focus:ring-offset-2 focus:ring-offset-white disabled:opacity-60',
+            'text-foreground bg-card ring-foreground/10 h-12 w-11 rounded-md text-center text-lg font-semibold shadow ring-1 transition outline-none',
+            'focus:ring-primary/60 focus:ring-2 disabled:opacity-60',
           )}
         />
       ))}

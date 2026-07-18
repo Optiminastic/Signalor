@@ -41,7 +41,7 @@ function TaskBoard({
   mut,
 }: TaskBoardProps): JSX.Element {
   return (
-    <div className="mt-3 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto pr-0.5">
+    <div className="mt-3 flex min-w-0 flex-col gap-3">
       <DataState
         isLoading={isLoading}
         isError={isError}

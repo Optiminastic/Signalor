@@ -102,6 +102,20 @@
   /* Shopify Polaris-style input bevel — subtle recessed top + hairline depth.
      Generates the `shadow-input` utility. */
   --shadow-input: inset 0 1px 2px 0 rgba(26, 26, 26, 0.07), 0 1px 1px 0 rgba(26, 26, 26, 0.03);
+  /* Typing-caret blink for landing mini-illustrations (`animate-blink`). */
+  --animate-blink: blink 1.1s steps(2, start) infinite;
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  /* Gentle vertical drift for floating hero logos (`animate-float`). */
+  --animate-float: float 5s ease-in-out infinite alternate;
+  @keyframes float {
+    to {
+      transform: translateY(-8px);
+    }
+  }
 }
 
 @layer base {
@@ -889,6 +903,24 @@
 @media (prefers-reduced-motion: reduce) {
   .cat-rise,
   .cat-stagger > * {
+    animation: none;
+  }
+}
+
+/* Page-to-page cross-fade (View Transitions API). Only the dashboard content
+   panel is named, so the sidebar stays fixed while pages swap; the incoming
+   page's cat-rise / cat-stagger supplies the entrance motion. */
+.cat-vt-panel {
+  view-transition-name: cat-panel;
+}
+::view-transition-old(cat-panel),
+::view-transition-new(cat-panel) {
+  animation-duration: 0.28s;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(cat-panel),
+  ::view-transition-new(cat-panel) {
     animation: none;
   }
 }

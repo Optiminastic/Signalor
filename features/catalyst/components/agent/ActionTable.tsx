@@ -1,14 +1,14 @@
-import { Eye, FileText, Layout } from 'lucide-react'
+import { FileText, Globe, Layout } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
-import { AGENT_ACTIONS, CATEGORY_META } from '@/features/catalyst/agent-data'
 import { ActionRow } from '@/features/catalyst/components/agent/ActionRow'
 import { AgentSectionPanel } from '@/features/catalyst/components/agent/AgentSectionPanel'
+import type { AgentAction } from '@/lib/api/agent'
 
-const PILLAR_ICON: Record<'Content' | 'On-site' | 'Intel', LucideIcon> = {
+const GROUP_ICON: Record<string, LucideIcon> = {
   Content: FileText,
   'On-site': Layout,
-  Intel: Eye,
+  'Off-page': Globe,
 }
 
 function ColumnHeader(): JSX.Element {
@@ -16,24 +16,25 @@ function ColumnHeader(): JSX.Element {
     <div className="flex items-center gap-3 border-b border-[var(--cat-border-soft)] px-4 py-2 text-[10px] font-semibold tracking-wide text-[var(--cat-ink-3)] uppercase">
       <span className="w-8 shrink-0" />
       <span className="flex-1">Action</span>
-      <span className="hidden w-[70px] shrink-0 text-right md:block">Reach</span>
       <span className="w-[52px] shrink-0 text-right">Impact</span>
       <span className="hidden w-[56px] shrink-0 text-right lg:block">Effort</span>
-      <span className="w-[132px] shrink-0" />
+      <span className="w-[104px] shrink-0" />
     </div>
   )
 }
 
-export function ActionTable({ pillar }: { pillar: 'Content' | 'On-site' | 'Intel' }): JSX.Element {
-  const items = AGENT_ACTIONS.filter(a => CATEGORY_META[a.category].pillar === pillar).sort(
-    (a, b) => a.points - b.points,
-  )
+interface ActionTableProps {
+  group: string
+  actions: AgentAction[]
+}
+
+export function ActionTable({ group, actions }: ActionTableProps): JSX.Element {
   return (
-    <AgentSectionPanel icon={PILLAR_ICON[pillar]} title={pillar} count={items.length}>
+    <AgentSectionPanel icon={GROUP_ICON[group] ?? Layout} title={group} count={actions.length}>
       <ColumnHeader />
       <div className="divide-y divide-[var(--cat-border-soft)]">
-        {items.map(a => (
-          <ActionRow key={a.id} action={a} />
+        {actions.map(a => (
+          <ActionRow key={a.action_id} action={a} />
         ))}
       </div>
     </AgentSectionPanel>

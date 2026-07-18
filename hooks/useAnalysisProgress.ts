@@ -10,6 +10,8 @@ import { routes } from '@/lib/routes'
 interface AnalysisProgress {
   progress: number
   done: boolean
+  /** Raw run phase: pending | crawling | analyzing | scoring | complete. */
+  status: string
 }
 
 /**
@@ -23,6 +25,7 @@ export function useAnalysisProgress(): AnalysisProgress {
   const email = session?.user?.email
   const [progress, setProgress] = useState(0)
   const [complete, setComplete] = useState(false)
+  const [status, setStatus] = useState('pending')
   const tick = useRef(0)
 
   useEffect(() => {
@@ -33,6 +36,7 @@ export function useAnalysisProgress(): AnalysisProgress {
         const latest = (await getRuns(email))[0]
         if (!active || !latest) return
         setProgress(p => Math.max(p, latest.progress ?? 0))
+        setStatus(latest.status)
         if (latest.status === 'complete') {
           setProgress(100)
           setComplete(true)
@@ -70,5 +74,5 @@ export function useAnalysisProgress(): AnalysisProgress {
     return () => clearTimeout(t)
   }, [complete, router])
 
-  return { progress, done: complete || progress >= 100 }
+  return { progress, done: complete || progress >= 100, status }
 }

@@ -34,7 +34,7 @@ export function LandingNewsletter() {
                 Subscribe to our newsletter
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                New GEO tactics every Thursday, one email, one tactic, zero fluff.
+                New GEO tactics every Thursday: one email, one tactic, zero fluff.
               </p>
             </div>
           </div>
@@ -52,6 +52,9 @@ export function LandingNewsletter() {
             >
               <input
                 type="email"
+                name="email"
+                autoComplete="email"
+                aria-label="Email address"
                 required
                 placeholder="Your email here…"
                 className="h-10 min-w-0 flex-1 rounded-md border border-border bg-white/80 px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 sm:w-64"

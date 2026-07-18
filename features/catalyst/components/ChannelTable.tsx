@@ -1,3 +1,5 @@
+import { EngineLogo } from '@/features/catalyst/components/EngineLogo'
+
 export interface ChannelTableRow {
   name: string
   color: string
@@ -20,7 +22,7 @@ export function ChannelTable({ rows }: { rows: ChannelTableRow[] }): JSX.Element
           <tr key={row.name}>
             <td className="py-[7px]">
               <span className="flex items-center gap-2 font-medium text-[var(--cat-ink)]">
-                <i className="h-2.5 w-2.5 rounded-full" style={{ background: row.color }} />
+                <EngineLogo name={row.name} size={18} color={row.color} />
                 {row.name}
               </span>
             </td>

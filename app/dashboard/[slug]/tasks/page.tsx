@@ -1,10 +1,11 @@
-import { CatalystShell } from '@/features/catalyst/components/CatalystShell'
-import { TasksView } from '@/features/catalyst/components/tasks/TasksView'
+import { redirect } from 'next/navigation'
 
-export default function CatalystTasksPage(): JSX.Element {
-  return (
-    <CatalystShell>
-      <TasksView />
-    </CatalystShell>
-  )
+/** Tasks merged into the Actions page — old links land on the All Tasks tab. */
+export default async function CatalystTasksPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<never> {
+  const { slug } = await params
+  redirect(`/dashboard/${slug}/actions?tab=tasks`)
 }

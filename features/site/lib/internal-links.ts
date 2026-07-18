@@ -45,6 +45,16 @@ const CATALOG: Record<string, RelatedLink> = {
     title: 'Free GEO & AI-visibility tools',
     desc: 'All free, no-signup checks: GEO score, llms.txt, schema, competitors & DR.',
   },
+  '/for-agencies': {
+    href: '/for-agencies',
+    title: 'AI search for agencies',
+    desc: 'Track GEO and AI share of voice across your whole client roster from one workspace.',
+  },
+  '/for-brands': {
+    href: '/for-brands',
+    title: 'AI search for brands',
+    desc: 'See how AI engines cite your brand and ship the fixes that win more mentions.',
+  },
   '/tools/url-analyzer': {
     href: '/tools/url-analyzer',
     title: 'Free URL analyzer',
@@ -183,6 +193,13 @@ const RELATED: Record<string, string[]> = {
     '/ai-visibility',
     '/pricing',
   ],
+  '/for-agencies': [
+    '/ai-visibility',
+    '/prompt-tracking',
+    '/solutions/competitive-lens',
+    '/pricing',
+  ],
+  '/for-brands': ['/ai-visibility', '/prompt-tracking', '/recommendations', '/pricing'],
 }
 
 /** Curated related links for a given page path (empty array if none configured). */

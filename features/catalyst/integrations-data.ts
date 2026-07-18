@@ -6,10 +6,18 @@ export interface Integration {
   group: IntegrationGroup
   logo: string
   description: string
-  connected: boolean
   /** Brand accent used for the logo tint + hover accent line. */
   accent: string
 }
+
+/**
+ * A catalog entry plus live connection state from the backend.
+ *
+ * `connected` deliberately lives here and not on `Integration`: the catalog is a
+ * static list, and a hardcoded flag on it can only ever be a guess that drifts
+ * from reality (Google Analytics shipped as `connected: true` for everyone).
+ */
+export type IntegrationWithStatus = Integration & { connected: boolean }
 
 export const INTEGRATION_GROUPS: IntegrationGroup[] = [
   'Platforms',
@@ -25,7 +33,6 @@ export const INTEGRATIONS: Integration[] = [
     group: 'Platforms',
     logo: '/logos/shopify.svg',
     description: 'Connect your store to auto-fix SEO/GEO issues and inject schema.',
-    connected: true,
     accent: '#95BF47',
   },
   {
@@ -34,7 +41,6 @@ export const INTEGRATIONS: Integration[] = [
     group: 'Platforms',
     logo: '/logos/wordpress.svg',
     description: 'Install the Signalor plugin to apply fixes and serve llms.txt.',
-    connected: false,
     accent: '#21759B',
   },
   {
@@ -43,7 +49,6 @@ export const INTEGRATIONS: Integration[] = [
     group: 'Platforms',
     logo: '/logos/webflow.svg',
     description: 'Run GEO analysis on your Webflow site — no plugin required.',
-    connected: false,
     accent: '#146EF5',
   },
   {
@@ -52,7 +57,6 @@ export const INTEGRATIONS: Integration[] = [
     group: 'Platforms',
     logo: '/logos/framer.svg',
     description: 'Connect your Framer site via the Signalor plugin.',
-    connected: false,
     accent: '#0055FF',
   },
   {
@@ -61,7 +65,6 @@ export const INTEGRATIONS: Integration[] = [
     group: 'Platforms',
     logo: '/logos/nextjs.svg',
     description: 'Drop in the Signalor SDK to instrument your app.',
-    connected: false,
     accent: '#111827',
   },
   // ── Analytics ──────────────────────────────────────────────
@@ -71,7 +74,6 @@ export const INTEGRATIONS: Integration[] = [
     group: 'Analytics',
     logo: '/logos/google-analytics.svg',
     description: 'Track AI-referral traffic from ChatGPT, Perplexity and more.',
-    connected: true,
     accent: '#E8710A',
   },
   {
@@ -80,7 +82,6 @@ export const INTEGRATIONS: Integration[] = [
     group: 'Analytics',
     logo: '/logos/search-console.svg',
     description: 'Monitor indexing, impressions and search performance.',
-    connected: false,
     accent: '#458CF5',
   },
   // ── Automation & alerts ────────────────────────────────────
@@ -90,7 +91,6 @@ export const INTEGRATIONS: Integration[] = [
     group: 'Automation & alerts',
     logo: '/logos/slack.svg',
     description: 'Get visibility drops and task updates in your channels.',
-    connected: false,
     accent: '#4A154B',
   },
   {
@@ -99,7 +99,6 @@ export const INTEGRATIONS: Integration[] = [
     group: 'Automation & alerts',
     logo: '/logos/zapier.svg',
     description: 'Pipe Signalor events into 6,000+ apps and workflows.',
-    connected: false,
     accent: '#FF4A00',
   },
 ]

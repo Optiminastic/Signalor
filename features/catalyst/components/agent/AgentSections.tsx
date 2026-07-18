@@ -1,8 +1,6 @@
 import { ActionTable } from '@/features/catalyst/components/agent/ActionTable'
-import { CommunitiesSection } from '@/features/catalyst/components/agent/CommunitiesSection'
-import { DirectoriesSection } from '@/features/catalyst/components/agent/DirectoriesSection'
-import { PartnershipsSection } from '@/features/catalyst/components/agent/PartnershipsSection'
-import { PrSection } from '@/features/catalyst/components/agent/PrSection'
+import { DataState } from '@/features/catalyst/components/DataState'
+import type { AgentPlan } from '@/lib/api/agent'
 
 function GroupHeading({ children }: { children: string }): JSX.Element {
   return (
@@ -13,19 +11,28 @@ function GroupHeading({ children }: { children: string }): JSX.Element {
   )
 }
 
-export function AgentSections(): JSX.Element {
+interface AgentSectionsProps {
+  plan: AgentPlan | undefined
+  isLoading: boolean
+  isError: boolean
+}
+
+export function AgentSections({ plan, isLoading, isError }: AgentSectionsProps): JSX.Element {
+  const groups = plan?.groups.filter(g => g.actions.length > 0) ?? []
   return (
     <div className="flex flex-col gap-4">
       <GroupHeading>Today’s actions</GroupHeading>
-      <ActionTable pillar="Content" />
-      <ActionTable pillar="On-site" />
-      <GroupHeading>Off-page opportunities</GroupHeading>
-      <CommunitiesSection />
-      <PartnershipsSection />
-      <DirectoriesSection />
-      <PrSection />
-      <GroupHeading>Competitor intel</GroupHeading>
-      <ActionTable pillar="Intel" />
+      <DataState
+        isLoading={isLoading}
+        isError={isError}
+        isEmpty={groups.length === 0}
+        emptyTitle="You’re all caught up"
+        emptyHint="No open tasks for this brand. Run an analysis or refresh the plan to surface new work."
+      >
+        {groups.map(g => (
+          <ActionTable key={g.pillar} group={g.pillar} actions={g.actions} />
+        ))}
+      </DataState>
     </div>
   )
 }

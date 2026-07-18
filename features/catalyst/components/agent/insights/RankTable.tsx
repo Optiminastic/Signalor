@@ -1,4 +1,4 @@
-import type { RankRow } from '@/features/catalyst/agent-insights-data'
+import type { RankRow } from '@/features/catalyst/components/agent/insights/types'
 
 interface RankTableProps {
   rows: RankRow[]

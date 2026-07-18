@@ -26,7 +26,7 @@ export function Topbar(): JSX.Element {
   const subtitle = activeOrg ? `${activeOrg.name} · Welcome back 👋` : 'Welcome back 👋'
 
   return (
-    <div className="cat-rise flex shrink-0 flex-wrap items-center gap-x-3 gap-y-3 border-b border-[var(--cat-border)] pb-4">
+    <div className="cat-rise relative z-30 flex shrink-0 flex-wrap items-center gap-x-3 gap-y-3 border-b border-[var(--cat-border)] pb-4">
       <div className="flex min-w-0 items-center gap-2.5">
         <Avatar image={user?.image ?? undefined} initial={initial} />
         <div className="min-w-0">

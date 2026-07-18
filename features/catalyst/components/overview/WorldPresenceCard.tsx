@@ -1,11 +1,14 @@
-import { Globe, MoreHorizontal } from 'lucide-react'
+'use client'
+
+import { Globe, Loader2, MoreHorizontal } from 'lucide-react'
+import Link from 'next/link'
 
 import { TickBar } from '@/features/catalyst/components/brands/BrandBits'
 import { Card } from '@/features/catalyst/components/Card'
 import { WorldMap } from '@/features/catalyst/components/overview/WorldMap'
 import { BRAND } from '@/features/catalyst/constants'
-import { WORLD_MARKERS, WORLD_META } from '@/features/catalyst/world-data'
-import type { WorldMarker } from '@/features/catalyst/world-data'
+import { useBrandPath } from '@/hooks/useBrandPath'
+import { useWorldPresence, type WorldMarker } from '@/hooks/useWorldPresence'
 
 function Header(): JSX.Element {
   return (
@@ -52,8 +55,8 @@ function MarketRow({ marker, max }: { marker: WorldMarker; max: number }): JSX.E
   )
 }
 
-function TopMarkets(): JSX.Element {
-  const top = [...WORLD_MARKERS].sort((a, b) => b.share - a.share).slice(0, 5)
+function TopMarkets({ markers }: { markers: WorldMarker[] }): JSX.Element {
+  const top = [...markers].sort((a, b) => b.share - a.share).slice(0, 5)
   const max = top[0]?.share ?? 1
   return (
     <div className="w-full shrink-0 lg:w-[210px] lg:border-l lg:border-[var(--cat-border-soft)] lg:pl-5">
@@ -69,20 +72,91 @@ function TopMarkets(): JSX.Element {
   )
 }
 
+interface PromptProps {
+  href: string
+  title: string
+  hint: string
+  cta: string
+}
+
+function Prompt({ href, title, hint, cta }: PromptProps): JSX.Element {
+  return (
+    <div className="flex min-h-[172px] flex-col items-center justify-center gap-2 text-center">
+      <p className="text-[13px] font-medium text-[var(--cat-ink-2)]">{title}</p>
+      <p className="max-w-xs text-[11.5px] text-[var(--cat-ink-3)]">{hint}</p>
+      <Link
+        href={href}
+        className="auth-cta-btn mt-1 inline-flex h-[34px] items-center rounded-md px-3.5 text-[13px] font-semibold text-white"
+      >
+        {cta}
+      </Link>
+    </div>
+  )
+}
+
+const GA_PROPERTY_HREF = '/settings/integrations/google-analytics/property'
+
+function SyncingState(): JSX.Element {
+  return (
+    <div className="flex min-h-[172px] flex-col items-center justify-center gap-2 text-center">
+      <Loader2 size={18} className="animate-spin text-[var(--cat-ink-3)]" />
+      <p className="text-[13px] font-medium text-[var(--cat-ink-2)]">Syncing your GA4 data</p>
+      <p className="max-w-xs text-[11.5px] text-[var(--cat-ink-3)]">
+        The first sync usually takes a minute or two. This card fills in automatically.
+      </p>
+    </div>
+  )
+}
+
+interface StateProps {
+  isEmpty: boolean
+  syncing: boolean
+}
+
+function EmptyOrConnect({ isEmpty, syncing }: StateProps): JSX.Element {
+  const brandPath = useBrandPath()
+  if (syncing) return <SyncingState />
+  return isEmpty ? (
+    <Prompt
+      href={GA_PROPERTY_HREF}
+      title="No location data for this GA4 property"
+      hint="Google Analytics is connected, but the selected property has no sessions-by-country to plot. Try a different property."
+      cta="Change property"
+    />
+  ) : (
+    <Prompt
+      href={brandPath('integrations')}
+      title="Connect Google Analytics to see where your traffic comes from"
+      hint="We’ll plot sessions by country from your GA4 property."
+      cta="Connect Google Analytics"
+    />
+  )
+}
+
 export function WorldPresenceCard(): JSX.Element {
+  const { markers, countries, sessions, hasData, isEmpty, isLoading, syncing } = useWorldPresence()
+
   return (
     <Card className="xl:col-span-2">
       <Header />
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-        <div className="min-w-0 flex-1">
-          <WorldMap />
-        </div>
-        <TopMarkets />
-      </div>
-      <div className="mt-3 flex items-center gap-2 border-t border-[var(--cat-border-soft)] pt-2.5 text-[11px] text-[var(--cat-ink-3)]">
-        <span className="h-1.5 w-1.5 rounded-full bg-[#2FBE7E]" />
-        {WORLD_META.countries} countries reached · {WORLD_META.sessions} sessions this month
-      </div>
+      {isLoading && (
+        <div className="min-h-[172px] animate-pulse rounded-md bg-[var(--cat-hover)]" />
+      )}
+      {!isLoading && !hasData && <EmptyOrConnect isEmpty={isEmpty} syncing={syncing} />}
+      {!isLoading && hasData && (
+        <>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+            <div className="min-w-0 flex-1">
+              <WorldMap markers={markers} />
+            </div>
+            <TopMarkets markers={markers} />
+          </div>
+          <div className="mt-3 flex items-center gap-2 border-t border-[var(--cat-border-soft)] pt-2.5 text-[11px] text-[var(--cat-ink-3)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#2FBE7E]" />
+            {countries} countries reached · {sessions} sessions in the last 30 days
+          </div>
+        </>
+      )}
     </Card>
   )
 }

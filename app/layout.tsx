@@ -1,11 +1,26 @@
 import type { Metadata, Viewport } from 'next'
-import { Instrument_Serif } from 'next/font/google'
+import { Instrument_Serif, Geist } from 'next/font/google'
 import localFont from 'next/font/local'
+import { Suspense } from 'react'
 import type React from 'react'
 
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import { QueryProvider } from '@/components/providers/query-provider'
+import { Amplitude } from '@/features/site/amplitude'
+import { AffiliateCapture } from '@/features/site/components/analytics/affiliate-capture'
+import { AhrefsAnalytics } from '@/features/site/components/analytics/ahrefs-analytics'
+import { ClarityInit } from '@/features/site/components/analytics/clarity'
+import { GitBookWidget } from '@/features/site/components/analytics/gitbook-widget'
+import { GoogleAnalytics } from '@/features/site/components/analytics/google-analytics'
+import {
+  GoogleTagManager,
+  GoogleTagManagerNoScript,
+} from '@/features/site/components/analytics/google-tag-manager'
+import { ReferralCapture } from '@/features/site/components/analytics/referral-capture'
+import { CookieConsentBanner } from '@/features/site/components/cookies/cookie-consent'
+import { ChunkReloadGuard } from '@/features/site/components/system/chunk-reload-guard'
 import { JsonLd } from '@/features/site/components/seo/json-ld'
 import {
   buildMetadata,
@@ -15,6 +30,9 @@ import {
 } from '@/features/site/lib/seo'
 
 import './globals.css'
+import { cn } from '@/lib/utils'
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
 
 // Mona Sans (GitHub) as the global sans font — variable weight 200–900.
 const monaSans = localFont({
@@ -53,7 +71,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }): JSX.Element {
   return (
-    <html lang="en" className={`${monaSans.variable} ${instrumentSerif.variable} antialiased`}>
+    <html
+      lang="en"
+      className={cn(
+        'antialiased',
+        monaSans.variable,
+        instrumentSerif.variable,
+        'font-sans',
+        geist.variable,
+      )}
+    >
       <head>
         <link
           rel="alternate"
@@ -65,10 +92,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
         <JsonLd id="ld-organization" data={organizationJsonLd()} />
         <JsonLd id="ld-website" data={websiteJsonLd()} />
         <JsonLd id="ld-software" data={softwareApplicationJsonLd()} />
+        <GoogleTagManager />
       </head>
       <body className="font-sans antialiased">
+        <GoogleTagManagerNoScript />
+        <ChunkReloadGuard />
+        <Amplitude />
+        <ClarityInit />
+        <GoogleAnalytics />
+        <AhrefsAnalytics />
+        <GitBookWidget />
+        <Suspense fallback={null}>
+          <ReferralCapture />
+          <AffiliateCapture />
+        </Suspense>
         <QueryProvider>{children}</QueryProvider>
+        <CookieConsentBanner />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

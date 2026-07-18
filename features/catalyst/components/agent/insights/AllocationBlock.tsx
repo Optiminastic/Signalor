@@ -1,4 +1,4 @@
-import type { AllocItem } from '@/features/catalyst/agent-insights-data'
+import type { AllocItem } from '@/features/catalyst/components/agent/insights/types'
 import { GREEN, NEG } from '@/features/catalyst/constants'
 
 interface AllocationBlockProps {

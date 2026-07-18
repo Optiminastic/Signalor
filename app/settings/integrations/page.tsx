@@ -5,46 +5,28 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
 
+import { CallbackPanel } from '@/features/integrations/components/CallbackPanel'
 import { sendGACallback } from '@/lib/api/integrations'
-import { useSession } from '@/lib/auth-client'
 import { routes } from '@/lib/routes'
 
 type State = 'idle' | 'connecting' | 'done' | 'error'
 
-interface PanelProps {
-  title: string
-  icon?: JSX.Element
-  children: React.ReactNode
-}
-
-function Panel({ title, icon, children }: PanelProps): JSX.Element {
-  return (
-    <main className="grid min-h-svh place-items-center bg-white px-6 font-sans">
-      <div className="flex w-full max-w-sm flex-col items-center gap-3 text-center">
-        {icon}
-        <h1 className="text-foreground text-lg font-semibold tracking-tight">{title}</h1>
-        {children}
-      </div>
-    </main>
-  )
-}
-
 function CallbackView({ state }: { state: State }): JSX.Element {
   if (state === 'connecting') {
     return (
-      <Panel title="Connecting Google Analytics…">
+      <CallbackPanel title="Connecting Google Analytics…">
         <Loader2 className="h-5 w-5 animate-spin text-[var(--cat-ink-3)]" />
-      </Panel>
+      </CallbackPanel>
     )
   }
   if (state === 'error') {
     return (
-      <Panel
+      <CallbackPanel
         title="Couldn’t connect Google Analytics"
         icon={<XCircle className="h-6 w-6 text-[#E5484D]" />}
       >
         <p className="text-[13px] text-neutral-500">Try again from onboarding or the dashboard.</p>
-      </Panel>
+      </CallbackPanel>
     )
   }
   return state === 'done' ? <DonePanel /> : <IdlePanel />
@@ -52,20 +34,20 @@ function CallbackView({ state }: { state: State }): JSX.Element {
 
 function DonePanel(): JSX.Element {
   return (
-    <Panel
+    <CallbackPanel
       title="Google Analytics connected"
       icon={<CheckCircle2 className="h-6 w-6 text-[#047857]" />}
     >
       <p className="text-[13px] text-neutral-500">
         You can close this tab and return to onboarding — it’ll pick up the connection.
       </p>
-    </Panel>
+    </CallbackPanel>
   )
 }
 
 function IdlePanel(): JSX.Element {
   return (
-    <Panel title="Integrations">
+    <CallbackPanel title="Integrations">
       <p className="text-[13px] text-neutral-500">
         Connect Google Analytics from onboarding or the dashboard to see AI referral traffic.
       </p>
@@ -75,27 +57,26 @@ function IdlePanel(): JSX.Element {
       >
         Go to dashboard
       </Link>
-    </Panel>
+    </CallbackPanel>
   )
 }
 
 function IntegrationsCallback(): JSX.Element {
   const params = useSearchParams()
-  const { data: session } = useSession()
-  const email = session?.user?.email
   const code = params.get('code')
+  const oauthState = params.get('state')
   const [state, setState] = useState<State>(code ? 'connecting' : 'idle')
 
   useEffect(() => {
-    if (!code || !email) return
+    if (!code || !oauthState) return
     let active = true
-    sendGACallback(email, code)
+    sendGACallback(code, oauthState)
       .then(() => active && setState('done'))
       .catch(() => active && setState('error'))
     return () => {
       active = false
     }
-  }, [code, email])
+  }, [code, oauthState])
 
   return <CallbackView state={state} />
 }

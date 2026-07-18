@@ -67,6 +67,14 @@ export function UrlAnalyzerToolInline() {
     };
   }, []);
 
+  // Prefill from `?url=` so entry points (e.g. the homepage hero form) can
+  // hand a URL straight into the analyzer. Prefill only — running an audit
+  // still takes an explicit submit.
+  useEffect(() => {
+    const fromQuery = new URLSearchParams(window.location.search).get("url");
+    if (fromQuery) setUrl(fromQuery);
+  }, []);
+
   useEffect(() => {
     if (!session?.user?.email) {
       setSub(null);

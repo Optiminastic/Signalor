@@ -10,8 +10,11 @@ export const env = createEnv({
     // Optional — Google OAuth is enabled only when both are present.
     GOOGLE_CLIENT_ID: z.string().optional(),
     GOOGLE_CLIENT_SECRET: z.string().optional(),
-    // Optional — OTP email delivery via SendGrid (falls back to dev log).
-    SENDGRID_API_KEY: z.string().optional(),
+    // Optional — OTP email delivery via Resend (falls back to dev log when unset).
+    // Must match the key read in lib/email.ts and mapped in runtimeEnv below;
+    // a mismatch here silently disables sending, since t3-env only exposes keys
+    // declared in this schema.
+    RESEND_API_KEY: z.string().optional(),
     FROM_EMAIL: z.string().optional(),
   },
   client: {
@@ -21,6 +24,11 @@ export const env = createEnv({
     // When 'true', the onboarding service returns mocked data instead of calling
     // the backend/OTP — lets the full UI be clicked through without infra.
     NEXT_PUBLIC_USE_STUBS: z.enum(['true', 'false']).default('false'),
+    // Analytics — all optional; each tracker stays dormant (or falls back to a
+    // built-in default) when its key is unset, and none fire until the user
+    // grants consent via the cookie banner.
+    NEXT_PUBLIC_AMPLITUDE_API_KEY: z.string().optional(),
+    NEXT_PUBLIC_CLARITY_PROJECT_ID: z.string().optional(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -29,11 +37,13 @@ export const env = createEnv({
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     FROM_EMAIL: process.env.FROM_EMAIL,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_USE_STUBS: process.env.NEXT_PUBLIC_USE_STUBS,
+    NEXT_PUBLIC_AMPLITUDE_API_KEY: process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY,
+    NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,

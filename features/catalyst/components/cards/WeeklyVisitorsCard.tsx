@@ -6,10 +6,12 @@ import { Metric } from '@/features/catalyst/components/Metric'
 import { Radar, type RadarSeries } from '@/features/catalyst/components/Radar'
 import { BRAND } from '@/features/catalyst/constants'
 import { useActiveProject } from '@/hooks/useActiveProject'
+import { useBrandPath } from '@/hooks/useBrandPath'
 import { usePillars } from '@/hooks/usePillars'
 
 export function WeeklyVisitorsCard(): JSX.Element {
   const { slug } = useActiveProject()
+  const brandPath = useBrandPath()
   const { data } = usePillars(slug)
 
   const pillars = data?.pillars ?? []
@@ -18,7 +20,7 @@ export function WeeklyVisitorsCard(): JSX.Element {
 
   return (
     <Card>
-      <CardHead title="GEO Pillars" action="Details" />
+      <CardHead title="GEO Pillars" action="Details" href={brandPath('pillars')} />
       <Metric
         value={data ? `${data.composite}` : '—'}
         positive

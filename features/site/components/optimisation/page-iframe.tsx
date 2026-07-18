@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Globe2, Loader2, RotateCw } from "@/features/site/components/icons";
+import { Globe2, RotateCw } from "@/features/site/components/icons";
 import type { PreviewElement } from "@/features/site/lib/api/content-optimisation";
 import { cn } from "@/features/site/lib/utils";
 
@@ -19,6 +19,60 @@ type Props = {
   onSelectElement: (el: PreviewElement | null) => void;
 };
 
+/** Wireframe shimmer that reads like a webpage while the screenshot renders. */
+function LoadingSkeleton() {
+  return (
+    <div className="h-full overflow-hidden bg-background px-10 py-8" aria-label="Loading preview">
+      <div className="mx-auto flex max-w-3xl animate-pulse flex-col gap-5">
+        <div className="flex items-center justify-between">
+          <div className="h-5 w-24 rounded-md bg-muted" />
+          <div className="flex gap-2">
+            <div className="h-5 w-14 rounded-md bg-muted/70" />
+            <div className="h-5 w-14 rounded-md bg-muted/70" />
+            <div className="h-5 w-16 rounded-md bg-muted" />
+          </div>
+        </div>
+        <div className="mt-6 h-9 w-3/5 rounded-md bg-muted" />
+        <div className="h-9 w-2/5 rounded-md bg-muted/80" />
+        <div className="mt-1 h-3.5 w-4/5 rounded bg-muted/60" />
+        <div className="h-3.5 w-3/5 rounded bg-muted/60" />
+        <div className="mt-2 flex gap-2">
+          <div className="h-8 w-28 rounded-md bg-muted" />
+          <div className="h-8 w-24 rounded-md bg-muted/60" />
+        </div>
+        <div className="mt-8 grid grid-cols-3 gap-4">
+          <div className="h-28 rounded-lg bg-muted/50" />
+          <div className="h-28 rounded-lg bg-muted/50" />
+          <div className="h-28 rounded-lg bg-muted/50" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EmptyState({ emptyMessage, onRetry }: { emptyMessage?: string; onRetry?: () => void }) {
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-3 bg-muted/15 px-8 text-center">
+      <span className="grid size-12 place-items-center rounded-full bg-muted/60">
+        <Globe2 className="size-5 text-muted-foreground" />
+      </span>
+      <p className="max-w-sm text-[13px] leading-relaxed text-muted-foreground">
+        {emptyMessage || "Select a page from the dropdown above to load a preview."}
+      </p>
+      {onRetry && emptyMessage ? (
+        <button
+          type="button"
+          onClick={onRetry}
+          className="flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground shadow-sm transition hover:bg-muted/50"
+        >
+          <RotateCw className="size-3.5" />
+          Try again
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
 export function PageIframe({
   previewImage,
   previewElements,
@@ -34,34 +88,8 @@ export function PageIframe({
   // as a percentage of the image's intrinsic height. Captured on image load.
   const [imgNaturalHeight, setImgNaturalHeight] = useState(0);
 
-  if (isLoading) {
-    return (
-      <div className="flex h-full items-center justify-center bg-muted/15">
-        <Loader2 className="size-5 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
-  if (!previewImage) {
-    return (
-      <div className="flex h-full flex-col items-center justify-center gap-3 bg-muted/15 px-8 text-center">
-        <Globe2 className="size-7 text-muted-foreground/60" />
-        <p className="text-[13px] text-muted-foreground">
-          {emptyMessage || "Select a page from the dropdown above to load a preview."}
-        </p>
-        {onRetry && emptyMessage ? (
-          <button
-            type="button"
-            onClick={onRetry}
-            className="flex items-center gap-1.5 rounded-md bg-muted px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-muted/70"
-          >
-            <RotateCw className="size-3.5" />
-            Try again
-          </button>
-        ) : null}
-      </div>
-    );
-  }
+  if (isLoading) return <LoadingSkeleton />;
+  if (!previewImage) return <EmptyState emptyMessage={emptyMessage} onRetry={onRetry} />;
 
   return (
     <div className="relative h-full w-full overflow-auto bg-background">
@@ -69,7 +97,7 @@ export function PageIframe({
         <img
           src={previewImage}
           alt="Page preview"
-          className="block w-full h-auto select-none"
+          className="block h-auto w-full select-none"
           draggable={false}
           onLoad={(e) => setImgNaturalHeight(e.currentTarget.naturalHeight)}
           onClick={() => onSelectElement(null)}
@@ -84,6 +112,7 @@ export function PageIframe({
             {previewElements.map((el) => {
               const isSelected = el.id === selectedElementId;
               const isHover = el.id === hoverId;
+              const showTag = isSelected || isHover;
               return (
                 <button
                   key={el.id}
@@ -95,9 +124,9 @@ export function PageIframe({
                   onMouseEnter={() => setHoverId(el.id)}
                   onMouseLeave={() => setHoverId(null)}
                   className={cn(
-                    "absolute cursor-pointer transition-colors",
+                    "absolute cursor-pointer rounded-sm transition-colors",
                     isSelected
-                      ? "border-2 border-primary bg-primary/10"
+                      ? "border-2 border-primary bg-primary/10 shadow-[0_0_0_3px_rgba(224,74,61,0.12)]"
                       : isHover
                         ? "border-2 border-primary/60 bg-primary/5"
                         : "border border-transparent hover:border-primary/40",
@@ -109,7 +138,18 @@ export function PageIframe({
                     height: `${(el.bbox.h / imgNaturalHeight) * 100}%`,
                   }}
                   title={`${el.tag.toUpperCase()}: ${el.text.slice(0, 80)}`}
-                />
+                >
+                  {showTag ? (
+                    <span
+                      className={cn(
+                        "absolute -top-5 left-0 select-none rounded-sm px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none tracking-wide text-white shadow-sm",
+                        isSelected ? "bg-primary" : "bg-primary/70",
+                      )}
+                    >
+                      {el.tag}
+                    </span>
+                  ) : null}
+                </button>
               );
             })}
           </div>

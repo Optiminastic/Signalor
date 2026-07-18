@@ -1,5 +1,6 @@
 import { Check, GripVertical } from 'lucide-react'
 
+import { useViewTransitionNavigate } from '@/components/providers/view-transition-provider'
 import { useTaskFix } from '@/features/catalyst/components/autofix/AutoFixContext'
 import { AutoFixControl } from '@/features/catalyst/components/autofix/AutoFixControl'
 import { AssigneeStack } from '@/features/catalyst/components/tasks/AssigneeStack'
@@ -7,6 +8,7 @@ import { PriorityTag } from '@/features/catalyst/components/tasks/PriorityTag'
 import { ProgressCell } from '@/features/catalyst/components/tasks/ProgressCell'
 import { ProjectTag } from '@/features/catalyst/components/tasks/ProjectTag'
 import type { TaskItem } from '@/features/catalyst/tasks-data'
+import { useBrandPath } from '@/hooks/useBrandPath'
 
 export interface TaskRowProps {
   row: TaskItem
@@ -54,7 +56,10 @@ function TaskNameCell({
       <button
         type="button"
         disabled={busy}
-        onClick={() => onToggleDone(row.taskId, !done)}
+        onClick={e => {
+          e.stopPropagation()
+          onToggleDone(row.taskId, !done)
+        }}
         aria-label={done ? 'Mark task not done' : 'Mark task done'}
         className={`grid h-[15px] w-[15px] shrink-0 place-items-center rounded-sm border disabled:opacity-50 ${
           done
@@ -95,11 +100,18 @@ function AutoFixCell({ recommendationId }: { recommendationId?: number }): JSX.E
   return <AutoFixControl state={fix.state} onFix={fix.onFix} />
 }
 
+/** One task row. Clicking anywhere opens the task's detail page; the inline
+ * controls (done toggle, assign, auto-fix) stop the click from navigating. */
 export function TaskRow(props: TaskRowProps): JSX.Element {
   const { row } = props
   const done = row.progress === 100
+  const brandPath = useBrandPath()
+  const navigate = useViewTransitionNavigate()
   return (
-    <tr className="border-t border-[var(--cat-border-soft)] transition-colors hover:bg-[var(--cat-hover)]">
+    <tr
+      onClick={() => navigate(brandPath(`tasks/${row.taskId}`))}
+      className="cursor-pointer border-t border-[var(--cat-border-soft)] transition-colors hover:bg-[var(--cat-hover)]"
+    >
       <td className="py-2.5 pr-3 pl-1">
         <TaskNameCell row={row} done={done} busy={props.busy} onToggleDone={props.onToggleDone} />
       </td>
@@ -109,7 +121,7 @@ export function TaskRow(props: TaskRowProps): JSX.Element {
       <td className="max-w-[220px] px-3 py-2.5">
         <span className="block truncate text-[var(--cat-ink-2)]">{row.description}</span>
       </td>
-      <td className="px-3 py-2.5">
+      <td className="px-3 py-2.5" onClick={e => e.stopPropagation()}>
         <AssigneeCell {...props} />
       </td>
       <td className="px-3 py-2.5 whitespace-nowrap text-[var(--cat-ink-2)]">{row.due}</td>
@@ -119,7 +131,7 @@ export function TaskRow(props: TaskRowProps): JSX.Element {
       <td className="px-3 py-2.5">
         <ProgressCell value={row.progress} />
       </td>
-      <td className="px-3 py-2.5">
+      <td className="px-3 py-2.5" onClick={e => e.stopPropagation()}>
         <AutoFixCell recommendationId={row.recommendationId} />
       </td>
     </tr>

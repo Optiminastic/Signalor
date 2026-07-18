@@ -1,5 +1,5 @@
 import { BRAND } from '@/features/catalyst/constants'
-import { WORLD_MARKERS } from '@/features/catalyst/world-data'
+import type { WorldMarker } from '@/hooks/useWorldPresence'
 
 const W = 48
 const H = 22
@@ -133,7 +133,11 @@ function Marker({ lon, lat, share }: { lon: number; lat: number; share: number }
   )
 }
 
-export function WorldMap(): JSX.Element {
+interface WorldMapProps {
+  markers: WorldMarker[]
+}
+
+export function WorldMap({ markers }: WorldMapProps): JSX.Element {
   return (
     <svg viewBox="-1 -1 50 24" preserveAspectRatio="xMidYMid meet" className="h-[172px] w-full">
       {LAND_DOTS.map(d => (
@@ -146,7 +150,7 @@ export function WorldMap(): JSX.Element {
           opacity={0.3}
         />
       ))}
-      {WORLD_MARKERS.map(m => (
+      {markers.map(m => (
         <Marker key={m.country} lon={m.lon} lat={m.lat} share={m.share} />
       ))}
     </svg>

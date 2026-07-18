@@ -213,6 +213,21 @@ export async function getCitations(slug: string): Promise<Citations> {
   return citationsSchema.parse(await apiGet<unknown>(`/api/analyzer/runs/s/${slug}/citations/`))
 }
 
+/** Per-page pillar breakdown. The brand's root page mirrors the run composite. */
+export const pageScoreSchema = z
+  .object({
+    url: z.string().optional().default(''),
+    content_score: z.number().nullable().optional(),
+    schema_score: z.number().nullable().optional(),
+    eeat_score: z.number().nullable().optional(),
+    technical_score: z.number().nullable().optional(),
+    entity_score: z.number().nullable().optional(),
+    ai_visibility_score: z.number().nullable().optional(),
+    composite_score: z.number().nullable().optional(),
+  })
+  .passthrough()
+export type PageScore = z.infer<typeof pageScoreSchema>
+
 /* ──────────────────────────────────────────────────────────────── competitors */
 
 export const competitorSchema = z.object({
@@ -223,10 +238,14 @@ export const competitorSchema = z.object({
   tier: z.string().optional().default(''),
   target_market: z.string().optional().default(''),
   geography: z.string().optional().default(''),
+  pricing_model: z.string().optional().default(''),
+  estimated_revenue_band: z.string().optional().default(''),
   positioning: z.string().optional().default(''),
   relevance_score: z.number().nullable().optional(),
   composite_score: z.number().nullable().optional(),
   scored: z.boolean().optional().default(false),
+  /** The competitor's own crawled-page pillar scores (static pillars only). */
+  page_score: pageScoreSchema.nullable().optional(),
 })
 export type Competitor = z.infer<typeof competitorSchema>
 
@@ -237,33 +256,7 @@ export async function getCompetitors(slug: string): Promise<Competitor[]> {
     .parse(await apiGet<unknown>(`/api/analyzer/runs/s/${slug}/competitors/`))
 }
 
-/* ───────────────────────────────────────────────────────────── prompt tracker */
-
-export const promptTrackSchema = z.object({
-  id: z.number(),
-  prompt_text: z.string(),
-  intent: z.string().nullable().optional(),
-  prompt_type: z.string().nullable().optional(),
-  score: z.number().nullable().optional(),
-  visibility_pct: z.number().nullable().optional(),
-  avg_position: z.number().nullable().optional(),
-  ranking_label: z.string().nullable().optional(),
-  sentiment_label: z.string().nullable().optional(),
-  total_runs: z.number().nullable().optional(),
-  mentions: z.number().nullable().optional(),
-  results: z
-    .array(z.object({ engine: z.string().optional() }).passthrough())
-    .optional()
-    .default([]),
-})
-export type PromptTrack = z.infer<typeof promptTrackSchema>
-
-/** GET runs/s/<slug>/prompts/ → tracked prompts with per-engine results. */
-export async function getPrompts(slug: string): Promise<PromptTrack[]> {
-  return z
-    .array(promptTrackSchema)
-    .parse(await apiGet<unknown>(`/api/analyzer/runs/s/${slug}/prompts/`))
-}
+/* Prompt tracker API lives in ./prompts (list / create / recheck / delete). */
 
 /* ─────────────────────────────────────────────────────────── recommendations */
 
@@ -287,21 +280,6 @@ export const recommendationSchema = z.object({
   estimated_minutes: z.number().nullable().optional(),
 })
 export type Recommendation = z.infer<typeof recommendationSchema>
-
-/** Per-page pillar breakdown. The brand's root page mirrors the run composite. */
-export const pageScoreSchema = z
-  .object({
-    url: z.string().optional().default(''),
-    content_score: z.number().nullable().optional(),
-    schema_score: z.number().nullable().optional(),
-    eeat_score: z.number().nullable().optional(),
-    technical_score: z.number().nullable().optional(),
-    entity_score: z.number().nullable().optional(),
-    ai_visibility_score: z.number().nullable().optional(),
-    composite_score: z.number().nullable().optional(),
-  })
-  .passthrough()
-export type PageScore = z.infer<typeof pageScoreSchema>
 
 const runDetailSchema = z
   .object({

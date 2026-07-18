@@ -10,6 +10,7 @@ import type {
   SetStateAction,
 } from 'react'
 
+import { SEARCH_FIELD } from '@/features/catalyst/components/control-styles'
 import { SearchResults } from '@/features/catalyst/components/SearchResults'
 import { searchIndex } from '@/features/catalyst/search-data'
 import type { SearchItem } from '@/features/catalyst/search-data'
@@ -90,7 +91,7 @@ function SearchInput({
         onFocus={onFocus}
         onKeyDown={onKeyDown}
         placeholder="Search pages, competitors…"
-        className="h-[34px] w-full rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] pr-10 pl-9 text-[13px] text-[var(--cat-ink)] placeholder:text-[var(--cat-ink-3)] focus:border-[#e04a3d] focus:outline-none"
+        className={SEARCH_FIELD}
       />
       <kbd className="absolute top-1/2 right-2 -translate-y-1/2 rounded border border-[var(--cat-border)] bg-[var(--cat-hover)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--cat-ink-3)]">
         ⌘K

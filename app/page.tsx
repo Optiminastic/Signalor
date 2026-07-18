@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 
-import { Hero } from '@/features/landing/components/Hero'
 import { LandingNav } from '@/features/landing/components/LandingNav'
 
 import { JsonLd } from '@/features/site/components/seo/json-ld'
@@ -13,15 +12,18 @@ import {
   SITE_URL,
   siteNavigationJsonLd,
 } from '@/features/site/lib/seo'
-import { LandingFaq } from '@/features/site/components/landing/landing-faq'
-import { LandingFeaturesGrid } from '@/features/site/components/landing/landing-features-grid'
-import { LandingFooter } from '@/features/site/components/landing/landing-footer'
-import { LandingHowItWorks } from '@/features/site/components/landing/landing-how-it-works'
-import { LandingIntegrationsStrip } from '@/features/site/components/landing/landing-integrations-strip'
-import { LandingNewsletter } from '@/features/site/components/landing/landing-newsletter'
-import { LandingPricingTeaser } from '@/features/site/components/landing/landing-pricing-teaser'
-import { LandingTestimonials } from '@/features/site/components/landing/landing-testimonials'
-import { LandingWhySignalor } from '@/features/site/components/landing/landing-why-signalor'
+import { HomeCta } from '@/features/site/components/landing/home-cta'
+import { HomeFaq } from '@/features/site/components/landing/home-faq'
+import { HomeFeatureShowcase } from '@/features/site/components/landing/home-feature-showcase'
+import { HomeFeatures } from '@/features/site/components/landing/home-features'
+import { HomeHero } from '@/features/site/components/landing/home-hero'
+import { HomeHowItWorks } from '@/features/site/components/landing/home-how-it-works'
+import { HomeIntegrations } from '@/features/site/components/landing/home-integrations'
+import { HomeLogoCloud } from '@/features/site/components/landing/home-logo-cloud'
+import { HomePricing } from '@/features/site/components/landing/home-pricing'
+import { HomeStats } from '@/features/site/components/landing/home-stats'
+import { HomeFooter } from '@/features/site/components/landing/home-footer'
+import { HomeTestimonials } from '@/features/site/components/landing/home-testimonials'
 
 const HOMEPAGE_FAQ = [
   {
@@ -79,8 +81,8 @@ const homeProductJsonLd = {
   offers: {
     '@type': 'AggregateOffer',
     priceCurrency: 'GBP',
-    lowPrice: '19.99',
-    highPrice: '59.99',
+    lowPrice: '69.99',
+    highPrice: '99.69',
     offerCount: 3,
     url: `${SITE_URL}/pricing`,
   },
@@ -89,31 +91,33 @@ const homeProductJsonLd = {
 
 export default function HomePage(): JSX.Element {
   return (
-    <div className="min-h-screen overflow-x-clip bg-[#fbfbfa] font-sans">
+    <div className="min-h-screen overflow-x-clip bg-[#fafafa] font-sans">
       <JsonLd id="ld-home-breadcrumb" data={breadcrumbJsonLd([{ name: 'Home', path: '/' }])} />
       <JsonLd id="ld-home-faq" data={faqJsonLd(HOMEPAGE_FAQ)} />
       <JsonLd id="ld-home-product" data={homeProductJsonLd} />
       <JsonLd id="ld-home-sitenav" data={siteNavigationJsonLd()} />
 
-      {/* new-signalor header + hero */}
-      <div className="hero-sand relative overflow-hidden">
-        <div className="hero-grain pointer-events-none absolute inset-0" />
-        <div className="relative z-10">
+      <header className="border-border border-b">
+        <div className="border-border mx-auto max-w-6xl border-x">
           <LandingNav />
-          <Hero />
         </div>
-      </div>
-
-      {/* the rest of the landing — ranking-fe sections */}
-      <LandingHowItWorks />
-      <LandingFeaturesGrid />
-      <LandingTestimonials />
-      <LandingWhySignalor />
-      <LandingIntegrationsStrip />
-      <LandingPricingTeaser />
-      <LandingFaq items={HOMEPAGE_FAQ} />
-      <LandingNewsletter />
-      <LandingFooter />
+      </header>
+      <main>
+        <HomeHero />
+        <div className="border-border mx-auto max-w-6xl border-x">
+          <HomeLogoCloud />
+          <HomeFeatures />
+          <HomeFeatureShowcase />
+          <HomeHowItWorks />
+          <HomeStats />
+          <HomeTestimonials />
+          <HomeIntegrations />
+          <HomePricing />
+          <HomeFaq items={HOMEPAGE_FAQ} />
+        </div>
+        <HomeCta />
+      </main>
+      <HomeFooter />
     </div>
   )
 }

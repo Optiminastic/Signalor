@@ -17,13 +17,13 @@ const OPTIONS: Option[] = [
   {
     value: 'individual',
     label: 'Sign up as an Individual',
-    blurb: 'Track one brand or domain with self-serve tools. Any email works.',
+    blurb: 'Track one brand or domain with self-serve .',
     Icon: Building2,
   },
   {
     value: 'agency',
     label: 'Sign up as an Agency',
-    blurb: 'Manage multiple client brands with higher limits. Work email required.',
+    blurb: 'Manage multiple client brands with higher ',
     Icon: Users,
   },
 ]
@@ -53,16 +53,14 @@ export function AccountTypeForm(): JSX.Element {
               type="button"
               onClick={() => setSelected(opt.value)}
               className={cn(
-                'flex w-full items-start gap-3 rounded-md border bg-white px-3 py-3 text-left transition-colors',
-                active
-                  ? 'border-foreground ring-foreground ring-1'
-                  : 'border-neutral-200 hover:border-neutral-300',
+                'bg-card flex w-full items-start gap-3 rounded-md px-3 py-3 text-left shadow transition-all',
+                active ? 'ring-primary/60 ring-2' : 'ring-foreground/10 hover:bg-muted/40 ring-1',
               )}
             >
               <span
                 className={cn(
                   'mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md',
-                  active ? 'bg-foreground text-white' : 'bg-muted text-muted-foreground',
+                  active ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground',
                 )}
               >
                 <opt.Icon className="h-4 w-4" />
@@ -70,9 +68,9 @@ export function AccountTypeForm(): JSX.Element {
               <span className="min-w-0 flex-1">
                 <span className="flex items-center justify-between gap-2">
                   <span className="text-foreground text-[15px] font-semibold">{opt.label}</span>
-                  {active && <Check className="text-foreground h-4 w-4 shrink-0" />}
+                  {active && <Check className="text-primary h-4 w-4 shrink-0" />}
                 </span>
-                <span className="mt-0.5 block text-xs leading-relaxed font-light text-neutral-400">
+                <span className="text-muted-foreground mt-0.5 block text-[11px] leading-relaxed">
                   {opt.blurb}
                 </span>
               </span>
