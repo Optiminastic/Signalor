@@ -1,26 +1,26 @@
 import type { ReactNode } from 'react'
 
-import { AnnouncementBar } from '@/features/landing/components/AnnouncementBar'
-import { Footer } from '@/features/landing/components/Footer'
 import { LandingNav } from '@/features/landing/components/LandingNav'
+import { HomeCta } from '@/features/site/components/landing/home-cta'
+import { HomeFooter } from '@/features/site/components/landing/home-footer'
 
 interface MarketingShellProps {
   children: ReactNode
 }
 
 /**
- * New-signalor marketing chrome — announcement bar + top nav + footer — shared by
- * every non-home marketing/tool/blog page. Mirrors the home page's chrome so the
- * ported pages stop rendering the old signalor shell (LandingMarketingShell +
- * fe LandingFooter). Page bodies are passed through untouched.
+ * Marketing chrome — top nav + pre-footer CTA + footer — shared by every
+ * non-home marketing/tool/blog page, mirroring the home page's chrome (the
+ * hairline-grid CTA band and footer). The announcement pill lives inside each
+ * page's hero now, not above the nav. Page bodies are passed through untouched.
  */
 export function MarketingShell({ children }: MarketingShellProps): JSX.Element {
   return (
-    <div className="min-h-screen bg-[#fbfbfa] font-sans">
-      <AnnouncementBar />
+    <div className="min-h-screen bg-[#fafafa] font-sans">
       <LandingNav />
       {children}
-      <Footer />
+      <HomeCta />
+      <HomeFooter />
     </div>
   )
 }

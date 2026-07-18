@@ -5,9 +5,13 @@ import { ScreenHR, GridDividerDiamonds } from "@/features/site/components/ui/int
 
 export function LandingFeaturesGrid() {
   return (
-    <section className="relative bg-transparent" aria-labelledby="landing-features-grid-heading">
+    <section
+      id="features"
+      className="relative scroll-mt-20 bg-transparent"
+      aria-labelledby="landing-features-grid-heading"
+    >
       <ScreenHR />
-      <div className="mx-auto max-w-7xl px-6 pb-12 pt-14 lg:px-12 lg:pb-14 lg:pt-16 rounded-none ">
+      <div className="mx-auto max-w-7xl px-6 pb-12 pt-14 lg:px-12 lg:pb-14 lg:pt-16">
         <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
           [ platform ]
         </p>
@@ -36,11 +40,11 @@ export function LandingFeaturesGrid() {
         </p>
       </div>
       <ScreenHR />
-      <div className="mx-auto max-w-7xl bg-black-10">
-        <div className="relative grid grid-cols-1 divide-y divide-black/6 md:grid-cols-3 md:divide-x md:divide-y-0 md:divide-black/6">
+      <div className="mx-auto max-w-7xl">
+        <div className="relative grid grid-cols-1 divide-y divide-black/6 md:grid-cols-3 md:divide-x md:divide-y-0">
           <GridDividerDiamonds columns={3} top bottom />
           {/* Prompt tracking */}
-          <div className="flex flex-col gap-8 px-6 py-12 md:px-8 md:py-16 lg:px-10 rounded-none bg-white">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 Prompt tracking
@@ -68,7 +72,7 @@ export function LandingFeaturesGrid() {
           </div>
 
           {/* Citations analysis */}
-          <div className="flex flex-col gap-8 px-6 py-12 md:px-8 md:py-16 lg:px-10 bg-white rounded-none">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 Citations analysis
@@ -116,7 +120,7 @@ export function LandingFeaturesGrid() {
           </div>
 
           {/* Agent analytics */}
-          <div className="flex flex-col gap-8 px-6 py-12 md:px-8 md:py-16 lg:px-10 bg-white rounded-none ">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 Agent analytics
@@ -175,15 +179,12 @@ export function LandingFeaturesGrid() {
           </div>
         </div>
 
-        <div
-          aria-hidden
-          className="relative left-1/2 w-screen -translate-x-1/2 border-t border-black/6"
-        />
+        <ScreenHR />
 
-        <div className="relative grid grid-cols-1 divide-y divide-black/6 md:grid-cols-3 md:divide-x md:divide-y-0 md:divide-black/6">
+        <div className="relative grid grid-cols-1 divide-y divide-black/6 md:grid-cols-3 md:divide-x md:divide-y-0">
           <GridDividerDiamonds columns={3} top bottom />
           {/* GEO score */}
-          <div className="flex flex-col gap-8 rounded-none bg-white px-6 py-12 md:px-8 md:py-16 lg:px-10">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 GEO score
@@ -227,7 +228,7 @@ export function LandingFeaturesGrid() {
           </div>
 
           {/* Fix queue */}
-          <div className="flex flex-col gap-8 rounded-none bg-white px-6 py-12 md:px-8 md:py-16 lg:px-10">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 Fix queue
@@ -281,7 +282,7 @@ export function LandingFeaturesGrid() {
           </div>
 
           {/* Competitor lens */}
-          <div className="flex flex-col gap-8 rounded-none bg-white px-6 py-12 md:px-8 md:py-16 lg:px-10">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 Competitor lens

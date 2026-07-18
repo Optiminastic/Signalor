@@ -20,10 +20,16 @@ function buildPoints(values: number[]): string {
     .join(' ')
 }
 
-export function LineChart({ data }: { data: number[] }): JSX.Element {
+interface LineChartProps {
+  data: number[]
+  /** Rendered height class; the SVG stretches to fill it. */
+  heightClass?: string
+}
+
+export function LineChart({ data, heightClass = 'h-[90px]' }: LineChartProps): JSX.Element {
   const points = buildPoints(data)
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-[90px] w-full">
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className={`${heightClass} w-full`}>
       {points && (
         <polyline
           points={points}
@@ -32,6 +38,7 @@ export function LineChart({ data }: { data: number[] }): JSX.Element {
           strokeWidth={2}
           strokeLinejoin="round"
           strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
         />
       )}
     </svg>

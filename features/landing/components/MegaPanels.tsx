@@ -1,64 +1,90 @@
+import type { TablerIcon } from '@tabler/icons-react'
 import Link from 'next/link'
 
 import { FeaturedGraph } from '@/features/landing/components/FeaturedGraph'
 import {
-  PRICING_LINKS,
-  PRODUCT_COLS,
-  RESOURCE_COLS,
-  type MenuColumn,
+  PRICING_SECTION,
+  PRODUCT_FEATURES,
+  PRODUCT_MORE,
+  RESOURCE_MAIN,
+  RESOURCE_PRODUCT,
+  RESOURCE_SUPPORT,
   type MenuLink,
+  type MenuSection,
+  type QuickLink,
 } from '@/features/landing/nav-data'
 
-function MenuLinkRow({ link }: { link: MenuLink }): JSX.Element {
+function SectionLabel({ children }: { children: string }): JSX.Element {
   return (
-    <Link
-      href={link.href}
-      className="block rounded-md px-3 py-2 transition-colors hover:bg-[#f6f6f7]"
-    >
-      <span className="flex items-center gap-2">
-        <span className="text-[14px] font-medium text-[#171717]">{link.label}</span>
-        {link.badge && (
-          <span className="rounded-full bg-[#e9f9ef] px-1.5 py-[1px] text-[10px] font-semibold text-[#12a150]">
-            {link.badge}
-          </span>
-        )}
-      </span>
-      <span className="mt-0.5 block text-[12.5px] text-[#71717a]">{link.desc}</span>
-    </Link>
-  )
-}
-
-function MenuCol({ col }: { col: MenuColumn }): JSX.Element {
-  return (
-    <div className="min-w-[176px]">
-      <div className="mb-1 px-3 text-[11px] font-semibold tracking-wider text-[#a1a1aa] uppercase">
-        {col.title}
-      </div>
-      {col.links.map(l => (
-        <MenuLinkRow key={l.label} link={l} />
-      ))}
+    <div className="px-2 pt-1 pb-1 text-[11px] font-medium tracking-[0.1em]  uppercase">
+      {children}
     </div>
   )
 }
 
-function MenuFooter({
-  label,
-  action,
-  href,
+function IconTile({ icon: Icon }: { icon: TablerIcon }): JSX.Element {
+  return (
+    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-sm  bg-white shadow ring-1 ring-foreground/10">
+      <Icon size={18} stroke={1.75} className="text-[#3f3f46]" />
+    </span>
+  )
+}
+
+function ItemRow({ link }: { link: MenuLink }): JSX.Element {
+  return (
+    <Link
+      href={link.href}
+      className="flex items-center gap-3 rounded-lg p-2 transition-colors duration-150 hover:bg-black/3"
+    >
+      <IconTile icon={link.icon} />
+      <span className="min-w-0">
+        <span className="flex items-center gap-1.5">
+          <span className="text-[14px] font-medium text-[#171717]">{link.label}</span>
+          {link.badge && (
+            <span className="rounded-full bg-[#e9f9ef] px-1.5 py-px text-[10px] font-semibold text-[#12a150]">
+              {link.badge}
+            </span>
+          )}
+        </span>
+        <span className="block truncate text-[11px] text-[#71717a]">{link.desc}</span>
+      </span>
+    </Link>
+  )
+}
+
+function SectionCard({
+  section,
+  className = '',
 }: {
-  label: string
-  action: string
-  href: string
+  section: MenuSection
+  className?: string
 }): JSX.Element {
   return (
-    <div className="mt-3 flex items-center justify-between border-t border-[#f0f0f0] px-3 pt-3">
-      <span className="text-[12.5px] text-[#71717a]">{label}</span>
-      <Link
-        href={href}
-        className="text-[12.5px] font-semibold text-[#171717] transition-colors hover:text-[#e04a3d]"
-      >
-        {action}
-      </Link>
+    <div className={`rounded-xl shadow ring-1 ring-foreground/10 bg-white p-2 ${className}`}>
+      <SectionLabel>{section.title}</SectionLabel>
+      <div className={section.cols === 2 ? 'grid grid-cols-2 gap-x-1' : 'grid'}>
+        {section.links.map(l => (
+          <ItemRow key={l.label} link={l} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function QuickList({ title, links }: { title: string; links: QuickLink[] }): JSX.Element {
+  return (
+    <div className="w-42 shrink-0 p-2">
+      <SectionLabel>{title}</SectionLabel>
+      {links.map(l => (
+        <Link
+          key={l.label}
+          href={l.href}
+          className="flex items-center gap-2.5 rounded-lg p-2 text-[14px] font-medium text-[#171717] transition-colors duration-150 hover:bg-black/3"
+        >
+          <l.icon size={16} stroke={1.75} className="text-[#52525b]" />
+          {l.label}
+        </Link>
+      ))}
     </div>
   )
 }
@@ -67,61 +93,47 @@ function FeaturedCard(): JSX.Element {
   return (
     <Link
       href="/api"
-      className="flex w-[336px] flex-col rounded-md bg-gradient-to-b from-[#faf2f1] to-[#f6f6f7] p-4 transition-shadow hover:shadow-sm"
+      className="flex w-74 shrink-0 flex-col justify-between overflow-hidden rounded-xl border border-black/6 bg-gradient-to-b from-[#fdf1ef] to-[#f7f7f8] transition-colors duration-150 hover:border-black/12"
     >
-      <div className="px-1">
-        <span className="text-[11px] font-semibold tracking-wider text-[#a1a1aa] uppercase">
-          Featured
-        </span>
-        <p className="mt-2 text-[14px] font-semibold text-[#171717]">API &amp; MCP</p>
-        <p className="mt-0.5 text-[12.5px] text-[#71717a]">Build on top of Signalor data</p>
+      <div className="flex h-34 items-start justify-center overflow-hidden pt-2">
+        <div className="origin-top scale-[0.72]">
+          <FeaturedGraph />
+        </div>
       </div>
-      <FeaturedGraph />
+      <div className="px-4 pb-4">
+        <p className="text-[14px] font-medium text-[#171717]">API &amp; MCP</p>
+        <p className="mt-0.5 truncate text-[13px] text-[#71717a]">
+          Plug your AI stack into Signalor data
+        </p>
+      </div>
     </Link>
   )
 }
 
 export function ProductPanel(): JSX.Element {
   return (
-    <div className="w-[740px] p-4">
-      <div className="flex gap-5">
-        <div className="flex-1">
-          <MenuCol col={PRODUCT_COLS[0]} />
-        </div>
-        <FeaturedCard />
-      </div>
-      <MenuFooter label="What's new in Signalor" action="Changelog" href="/changelog" />
+    <div className="flex w-220 gap-1 p-1 bg-[#FAFAFA]">
+      <SectionCard section={PRODUCT_FEATURES} className="flex-1" />
+      <SectionCard section={PRODUCT_MORE} className="flex-1" />
+      <FeaturedCard />
     </div>
   )
 }
 
 export function ResourcesPanel(): JSX.Element {
   return (
-    <div className="w-[720px] p-4">
-      <div className="flex gap-1">
-        {RESOURCE_COLS.map(c => (
-          <MenuCol key={c.title} col={c} />
-        ))}
-      </div>
-      <MenuFooter
-        label="New research: How AI search reshapes B2B discovery"
-        action="Read report"
-        href="/blog"
-      />
+    <div className="flex w-230 gap-1 p-1 bg-[#FAFAFA]">
+      <SectionCard section={RESOURCE_MAIN} className="flex-1" />
+      <SectionCard section={RESOURCE_PRODUCT} className="w-56 shrink-0" />
+      <QuickList title={RESOURCE_SUPPORT.title} links={RESOURCE_SUPPORT.links} />
     </div>
   )
 }
 
 export function PricingPanel(): JSX.Element {
   return (
-    <div className="w-[340px] p-4">
-      <div className="mb-1 px-3 text-[11px] font-semibold tracking-wider text-[#a1a1aa] uppercase">
-        Pricing models
-      </div>
-      {PRICING_LINKS.map(l => (
-        <MenuLinkRow key={l.label} link={l} />
-      ))}
-      <MenuFooter label="Not sure which is right?" action="Talk to us" href="/contact-sales" />
+    <div className="w-78 p-1 bg-[#FAFAFA]">
+      <SectionCard section={PRICING_SECTION} />
     </div>
   )
 }

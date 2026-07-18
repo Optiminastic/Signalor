@@ -14,11 +14,13 @@ export const queryKeys = {
     runs: (orgId: number, email: string) => ['catalyst', 'runs', orgId, email] as const,
     visibility: (slug: string) => ['catalyst', 'visibility', slug] as const,
     competitors: (slug: string) => ['catalyst', 'competitors', slug] as const,
+    brandProfile: (orgSlug: string) => ['catalyst', 'brand-profile', orgSlug] as const,
     prompts: (slug: string) => ['catalyst', 'prompts', slug] as const,
     recommendations: (slug: string) => ['catalyst', 'recommendations', slug] as const,
     sitemap: (slug: string) => ['catalyst', 'sitemap', slug] as const,
     backlinks: (slug: string) => ['catalyst', 'backlinks', slug] as const,
     tasks: (email: string) => ['catalyst', 'tasks', email] as const,
+    agentPlan: (slug: string) => ['catalyst', 'agent-plan', slug] as const,
     integrations: (email: string, orgId: number) =>
       ['catalyst', 'integrations', email, orgId] as const,
     worldVisibility: (slug: string) => ['catalyst', 'world-visibility', slug] as const,

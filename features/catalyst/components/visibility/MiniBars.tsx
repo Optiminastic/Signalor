@@ -1,3 +1,4 @@
+import { EngineLogo } from '@/features/catalyst/components/EngineLogo'
 import type { SovBar } from '@/features/catalyst/visibility-data'
 
 interface MiniBarsProps {
@@ -22,8 +23,9 @@ export function MiniBars({ bars, color }: MiniBarsProps): JSX.Element {
               }}
             />
           </div>
-          <span className="w-full truncate text-center text-[9px] text-[var(--cat-ink-3)]">
-            {bar.name}
+          <span className="flex w-full items-center justify-center gap-1 text-[9px] text-[var(--cat-ink-3)]">
+            <EngineLogo name={bar.name} size={13} color={color} />
+            <span className="truncate">{bar.name}</span>
           </span>
         </div>
       ))}

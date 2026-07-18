@@ -1,18 +1,20 @@
 'use client'
 
+import { Zap } from 'lucide-react'
 import Link from 'next/link'
+import { useState, type ReactNode } from 'react'
 
 import { DataState } from '@/features/catalyst/components/DataState'
-import { useActiveProject } from '@/hooks/useActiveProject'
-import { useBrandPath } from '@/hooks/useBrandPath'
-import { useContentOptimisation, type ContentOptimisation } from '@/hooks/useContentOptimisation'
-
+import { QuickFixesRail } from '@/features/catalyst/components/optimisation/QuickFixesRail'
 import { AlertCircle, ExternalLink, FileText, X } from '@/features/site/components/icons'
 import { BrowserChrome } from '@/features/site/components/optimisation/browser-chrome'
 import { ElementEditor } from '@/features/site/components/optimisation/element-editor'
 import { PageIframe } from '@/features/site/components/optimisation/page-iframe'
 import { RawFilesPanel } from '@/features/site/components/optimisation/raw-files-panel'
 import type { PreviewElement } from '@/features/site/lib/api/content-optimisation'
+import { useActiveProject } from '@/hooks/useActiveProject'
+import { useBrandPath } from '@/hooks/useBrandPath'
+import { useContentOptimisation, type ContentOptimisation } from '@/hooks/useContentOptimisation'
 
 interface PreviewFields {
   previewImage: string
@@ -45,9 +47,69 @@ function previewFor(co: ContentOptimisation): PreviewFields {
   }
 }
 
-function ChromeHeader({ co }: { co: ContentOptimisation }): JSX.Element {
+interface RailToggleProps {
+  on: boolean
+  onClick: () => void
+  title: string
+  children: ReactNode
+}
+
+function RailToggle({ on, onClick, title, children }: RailToggleProps): JSX.Element {
   return (
-    <div className="border-border bg-background flex items-center gap-2 border-b pr-2">
+    <button
+      type="button"
+      onClick={onClick}
+      title={title}
+      className={`inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border px-2.5 text-xs font-medium transition ${
+        on
+          ? 'border-primary/40 bg-primary/10 text-primary'
+          : 'border-border bg-background text-foreground hover:bg-muted/40'
+      }`}
+    >
+      {children}
+    </button>
+  )
+}
+
+interface ChromeHeaderProps {
+  co: ContentOptimisation
+  fixesOpen: boolean
+  onToggleFixes: () => void
+  onToggleRaw: () => void
+}
+
+function HeaderToggles({
+  co,
+  fixesOpen,
+  onToggleFixes,
+  onToggleRaw,
+}: ChromeHeaderProps): JSX.Element {
+  return (
+    <>
+      <RailToggle
+        on={fixesOpen}
+        onClick={onToggleFixes}
+        title="Auto-fixable recommendations for this site"
+      >
+        <Zap className="size-3.5" />
+        Quick fixes
+      </RailToggle>
+      <RailToggle
+        on={co.showRawFiles}
+        onClick={onToggleRaw}
+        title="Crawler & AI files (robots.txt, llms-txt, humans-txt, ads-txt)"
+      >
+        <FileText className="size-3.5" />
+        Crawler files
+      </RailToggle>
+    </>
+  )
+}
+
+function ChromeHeader(props: ChromeHeaderProps): JSX.Element {
+  const { co } = props
+  return (
+    <div className="border-border bg-muted/25 flex items-center gap-2 border-b pr-2">
       <div className="min-w-0 flex-1">
         <BrowserChrome
           url={co.url}
@@ -62,19 +124,7 @@ function ChromeHeader({ co }: { co: ContentOptimisation }): JSX.Element {
           onRefresh={co.onRefresh}
         />
       </div>
-      <button
-        type="button"
-        onClick={co.toggleRawFiles}
-        className={`inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border px-2.5 text-xs font-medium transition ${
-          co.showRawFiles
-            ? 'border-primary/40 bg-primary/10 text-primary'
-            : 'border-border bg-background text-foreground hover:bg-muted/40'
-        }`}
-        title="Crawler & AI files (robots.txt, llms-txt, humans-txt, ads-txt)"
-      >
-        <FileText className="size-3.5" />
-        Crawler files
-      </button>
+      <HeaderToggles {...props} />
     </div>
   )
 }
@@ -130,7 +180,14 @@ function NoticeBar({ co }: { co: ContentOptimisation }): JSX.Element | null {
   )
 }
 
-function RightRail({ co, slug }: { co: ContentOptimisation; slug: string }): JSX.Element | null {
+interface RightRailProps {
+  co: ContentOptimisation
+  slug: string
+  showFixes: boolean
+  onCloseFixes: () => void
+}
+
+function RightRail({ co, slug, showFixes, onCloseFixes }: RightRailProps): JSX.Element | null {
   if (co.showRawFiles) {
     return (
       <div className="bg-background w-[380px] min-w-[320px] shrink-0 overflow-y-auto">
@@ -149,6 +206,7 @@ function RightRail({ co, slug }: { co: ContentOptimisation; slug: string }): JSX
       </div>
     )
   }
+  if (showFixes) return <QuickFixesRail slug={slug} onClose={onCloseFixes} />
   if (!co.selectedElement) return null
   return (
     <div className="w-[360px] min-w-[300px] shrink-0">
@@ -167,8 +225,8 @@ function RightRail({ co, slug }: { co: ContentOptimisation; slug: string }): JSX
   )
 }
 
-function PreviewPane({ co, slug }: { co: ContentOptimisation; slug: string }): JSX.Element {
-  const railOpen = Boolean(co.selectedElement) || co.showRawFiles
+function PreviewPane({ co, slug, showFixes, onCloseFixes }: RightRailProps): JSX.Element {
+  const railOpen = Boolean(co.selectedElement) || co.showRawFiles || showFixes
   return (
     <div className="flex min-h-0 flex-1">
       <div className={`min-w-0 flex-1 ${railOpen ? 'border-border border-r' : ''}`}>
@@ -179,14 +237,39 @@ function PreviewPane({ co, slug }: { co: ContentOptimisation; slug: string }): J
           onSelectElement={co.setSelectedElement}
         />
       </div>
-      <RightRail co={co} slug={slug} />
+      <RightRail co={co} slug={slug} showFixes={showFixes} onCloseFixes={onCloseFixes} />
     </div>
   )
+}
+
+interface RailState {
+  showFixes: boolean
+  toggleFixes: () => void
+  toggleRaw: () => void
+  closeFixes: () => void
+}
+
+/** Quick-fixes rail visibility, kept mutually exclusive with the raw-files rail. */
+function useRailState(co: ContentOptimisation): RailState {
+  const [showFixes, setShowFixes] = useState(false)
+  return {
+    showFixes,
+    toggleFixes: () => {
+      if (!showFixes && co.showRawFiles) co.toggleRawFiles()
+      setShowFixes(o => !o)
+    },
+    toggleRaw: () => {
+      if (!co.showRawFiles) setShowFixes(false)
+      co.toggleRawFiles()
+    },
+    closeFixes: () => setShowFixes(false),
+  }
 }
 
 export function ContentOptimisationView(): JSX.Element {
   const { slug, run, isLoading } = useActiveProject()
   const co = useContentOptimisation({ slug, runUrl: run?.url })
+  const rails = useRailState(co)
 
   if (!slug) {
     return (
@@ -204,9 +287,19 @@ export function ContentOptimisationView(): JSX.Element {
 
   return (
     <div className="border-border/60 bg-card flex h-[calc(100dvh-150px)] min-h-0 flex-col overflow-hidden rounded-xl border shadow-sm">
-      <ChromeHeader co={co} />
+      <ChromeHeader
+        co={co}
+        fixesOpen={rails.showFixes}
+        onToggleFixes={rails.toggleFixes}
+        onToggleRaw={rails.toggleRaw}
+      />
       <NoticeBar co={co} />
-      <PreviewPane co={co} slug={slug} />
+      <PreviewPane
+        co={co}
+        slug={slug}
+        showFixes={rails.showFixes}
+        onCloseFixes={rails.closeFixes}
+      />
     </div>
   )
 }

@@ -299,17 +299,20 @@ export function LandingFooter() {
                 </MailLink>
               </nav>
 
-              <Link href="https://status.signalor.ai/" target="_blank">
-                <div className="flex flex-col items-start gap-2 lg:items-end">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-black/8 bg-white px-3 py-1.5 text-[11px] font-medium text-foreground shadow-[0_1px_0_rgba(0,0,0,0.03)]">
-                    <span className="h-2 w-2 shrink-0 rounded-full bg-success" aria-hidden />
-                    All systems online
-                  </div>
-                  <p className="text-[11px] leading-snug text-muted-foreground">
-                    © {new Date().getFullYear()} Signalor. All rights reserved.
-                  </p>
-                </div>
-              </Link>
+              <div className="flex flex-col items-start gap-2 lg:items-end">
+                <a
+                  href="https://status.signalor.ai/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-black/8 bg-white px-3 py-1.5 text-[11px] font-medium text-foreground shadow-[0_1px_0_rgba(0,0,0,0.03)] transition-colors hover:border-black/15"
+                >
+                  <span className="h-2 w-2 shrink-0 rounded-full bg-success" aria-hidden />
+                  All systems online
+                </a>
+                <p className="text-[11px] leading-snug text-muted-foreground">
+                  © {new Date().getFullYear()} Signalor. All rights reserved.
+                </p>
+              </div>
             </div>
           </div>
         </div>

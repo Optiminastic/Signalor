@@ -1,13 +1,16 @@
 import {
+  BadgeCheck,
   Blocks,
   Eye,
   Facebook,
+  Footprints,
   Instagram,
   LayoutGrid,
   Link2,
   ListChecks,
   MessageCircle,
   PenLine,
+  Radar,
   Search,
   Store,
   Users,
@@ -35,6 +38,8 @@ export interface NavEntry {
   label: string
   href: string
   badge?: number
+  /** Extra brand-relative paths that also count as "on this page" (drill-downs). */
+  alsoMatch?: string[]
 }
 
 export interface ChannelRow {
@@ -69,18 +74,26 @@ export interface TableRow {
 }
 
 /* --------------------------------------------------------------------- data */
-export const MAIN_NAV: NavEntry[] = [{ icon: LayoutGrid, label: 'Overview', href: '' }]
+export const MAIN_NAV: NavEntry[] = [
+  // Pillars + GEO detail pages are Overview drill-downs, so Overview stays lit.
+  { icon: LayoutGrid, label: 'Overview', href: '', alsoMatch: ['pillars', 'geo'] },
+]
 
 // Visibility now hosts Prompt Tracking, Sitemap and Analytics as in-page tabs
 // (see MonitoringTabs), so they are no longer separate sidebar entries.
 export const MONITORING_NAV: NavEntry[] = [
   { icon: Eye, label: 'Visibility', href: 'visibility' },
+  { icon: Radar, label: '360 Insights', href: 'insights' },
+  { icon: Footprints, label: 'Crawler Logs', href: 'crawlers' },
   { icon: Users, label: 'Competitors', href: 'competitors' },
+  { icon: BadgeCheck, label: 'Brand Profile', href: 'brand-profile' },
 ]
 
 export const OPTIMIZATION_NAV: NavEntry[] = [
-  { icon: ListChecks, label: 'Tasks', href: 'tasks' },
+  // One surface for the Growth Agent plan + the Tasks board (old routes redirect).
+  { icon: ListChecks, label: 'Actions', href: 'actions', alsoMatch: ['tasks', 'agent'] },
   { icon: PenLine, label: 'Content', href: 'optimisation' },
+  { icon: Store, label: 'Shopping', href: 'shopping' },
   { icon: Link2, label: 'Backlinks', href: 'backlinks' },
   { icon: Blocks, label: 'Integrations', href: 'integrations' },
 ]

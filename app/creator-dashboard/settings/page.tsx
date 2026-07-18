@@ -14,7 +14,11 @@ import { Check, Loader2, Save } from '@/features/site/components/icons'
 import { Button } from '@/features/site/components/ui/button'
 import { Input } from '@/features/site/components/ui/input'
 import { updateMyCreatorProfile } from '@/features/site/lib/api/partners-program'
-import type { AudienceSize, PayoutMethod, SocialEntry } from '@/features/site/lib/api/partners-program'
+import type {
+  AudienceSize,
+  PayoutMethod,
+  SocialEntry,
+} from '@/features/site/lib/api/partners-program'
 import { cn } from '@/features/site/lib/utils'
 
 import { useCreator } from '../_components/creator-context'

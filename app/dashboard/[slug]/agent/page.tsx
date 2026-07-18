@@ -1,10 +1,11 @@
-import { AgentView } from '@/features/catalyst/components/agent/AgentView'
-import { CatalystShell } from '@/features/catalyst/components/CatalystShell'
+import { redirect } from 'next/navigation'
 
-export default function AgentPage(): JSX.Element {
-  return (
-    <CatalystShell>
-      <AgentView />
-    </CatalystShell>
-  )
+/** Growth Agent merged into the Actions page — old links land on the plan tab. */
+export default async function AgentPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<never> {
+  const { slug } = await params
+  redirect(`/dashboard/${slug}/actions`)
 }

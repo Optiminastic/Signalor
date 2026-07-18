@@ -113,7 +113,7 @@ export function LandingIntegrationsStrip() {
           </p>
           <h2
             id="landing-integrations-heading"
-            className="mt-4 whitespace-nowrap text-2xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-[2.65rem]"
+            className="mt-4 text-3xl font-bold leading-[1.12] tracking-tight text-foreground sm:text-4xl lg:text-[2.65rem]"
           >
             Works where your{" "}
             <span className="relative text-primary">

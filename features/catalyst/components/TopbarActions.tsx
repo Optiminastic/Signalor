@@ -1,28 +1,17 @@
 'use client'
 
-import {
-  Bell,
-  Calendar,
-  Check,
-  ChevronDown,
-  Loader2,
-  Plus,
-  Search,
-  SlidersHorizontal,
-} from 'lucide-react'
+import { Calendar, Check, ChevronDown, Loader2, Plus, SlidersHorizontal } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 
+import { CONTROL_CHIP, CONTROL_RING } from '@/features/catalyst/components/control-styles'
+import { EngineLogo } from '@/features/catalyst/components/EngineLogo'
 import { PrimaryButton } from '@/features/catalyst/components/PrimaryButton'
+import { engineLogo } from '@/features/catalyst/engine-logos'
 import { useActiveProject } from '@/hooks/useActiveProject'
 import { useNewAnalysis } from '@/hooks/useNewAnalysis'
 
-const CHIP =
-  'inline-flex h-[34px] items-center gap-2 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-3 text-[13px] font-medium text-[var(--cat-ink)] shadow-sm transition-colors hover:bg-[var(--cat-hover)]'
-const ICON_BTN =
-  'grid h-[34px] w-[34px] place-items-center rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] text-[var(--cat-ink-2)] shadow-sm transition-colors hover:bg-[var(--cat-hover)]'
-const PANEL =
-  'absolute right-0 z-50 mt-2 min-w-[190px] rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] p-1 shadow-lg'
+const PANEL = `absolute right-0 z-50 mt-2 min-w-[190px] rounded-md bg-[var(--cat-card)] p-1 shadow-lg ${CONTROL_RING}`
 
 /** Lightweight dropdown: a trigger + a click-away backdrop + a panel. */
 function Dropdown({
@@ -72,37 +61,27 @@ function MenuItem({
   )
 }
 
-function SearchButton(): JSX.Element {
-  return (
-    <button
-      type="button"
-      className={ICON_BTN}
-      aria-label="Search"
-      onClick={() =>
-        window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))
-      }
-    >
-      <Search size={18} strokeWidth={1.8} />
-    </button>
-  )
+interface SelectChipProps {
+  icon: LucideIcon
+  options: string[]
+  value: string
+  onChange: (v: string) => void
+  /** Show each engine's logo (Topbar engine filter). */
+  withLogos?: boolean
 }
 
-function NotificationsButton(): JSX.Element {
-  return (
-    <Dropdown
-      trigger={toggle => (
-        <button type="button" className={ICON_BTN} aria-label="Notifications" onClick={toggle}>
-          <Bell size={18} strokeWidth={1.8} />
-        </button>
-      )}
-    >
-      {() => (
-        <div className="px-3 py-6 text-center text-[12px] text-[var(--cat-ink-3)]">
-          You’re all caught up 🎉
-        </div>
-      )}
-    </Dropdown>
-  )
+/** Leading glyph for a labelled option — the engine logo when available. */
+function OptionGlyph({
+  name,
+  size,
+  withLogos,
+}: {
+  name: string
+  size: number
+  withLogos: boolean
+}): JSX.Element | null {
+  if (withLogos && engineLogo(name)) return <EngineLogo name={name} size={size} />
+  return null
 }
 
 function SelectChip({
@@ -110,21 +89,21 @@ function SelectChip({
   options,
   value,
   onChange,
-}: {
-  icon: LucideIcon
-  options: string[]
-  value: string
-  onChange: (v: string) => void
-}): JSX.Element {
+  withLogos = false,
+}: SelectChipProps): JSX.Element {
+  const trigger = (toggle: () => void): JSX.Element => (
+    <button type="button" className={CONTROL_CHIP} onClick={toggle}>
+      {withLogos && engineLogo(value) ? (
+        <EngineLogo name={value} size={18} />
+      ) : (
+        <Icon size={16} className="text-[var(--cat-ink-2)]" />
+      )}{' '}
+      {value}
+      <ChevronDown size={15} className="text-[var(--cat-ink-3)]" />
+    </button>
+  )
   return (
-    <Dropdown
-      trigger={toggle => (
-        <button type="button" className={CHIP} onClick={toggle}>
-          <Icon size={16} className="text-[var(--cat-ink-2)]" /> {value}
-          <ChevronDown size={15} className="text-[var(--cat-ink-3)]" />
-        </button>
-      )}
-    >
+    <Dropdown trigger={trigger}>
       {close =>
         options.map(opt => (
           <MenuItem
@@ -135,7 +114,10 @@ function SelectChip({
               close()
             }}
           >
-            {opt}
+            <span className="flex items-center gap-2">
+              <OptionGlyph name={opt} size={16} withLogos={withLogos} />
+              {opt}
+            </span>
           </MenuItem>
         ))
       }
@@ -167,9 +149,7 @@ export function TopbarActions(): JSX.Element {
   const [filter, setFilter] = useState('All engines')
 
   return (
-    <div className="flex items-center gap-2 sm:gap-2.5">
-      <SearchButton />
-      <NotificationsButton />
+    <div className="flex items-center gap-1.5 sm:gap-2">
       <div className="hidden sm:block">
         <SelectChip icon={Calendar} options={RANGES} value={range} onChange={setRange} />
       </div>
@@ -179,6 +159,7 @@ export function TopbarActions(): JSX.Element {
           options={FILTERS}
           value={filter}
           onChange={setFilter}
+          withLogos
         />
       </div>
       <NewAnalysisButton />

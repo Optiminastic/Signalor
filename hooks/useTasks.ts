@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { FileCheck2, FileClock, FileText, Flag } from 'lucide-react'
 
 import { BLUE, BRAND, GREEN, NEG, YELLOW } from '@/features/catalyst/constants'
+import { formatTaskDate } from '@/features/catalyst/tasks-data'
 import type {
   Priority,
   ProjectRef,
@@ -13,15 +14,6 @@ import type {
 } from '@/features/catalyst/tasks-data'
 import { getActions, type UserAction } from '@/lib/api/analyzer'
 import { syncActions } from '@/lib/api/tasks'
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-function formatDate(iso: string): string {
-  if (!iso) return '—'
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return '—'
-  return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`
-}
 
 function priorityOf(points: number | null | undefined): Priority {
   const p = points ?? 0
@@ -44,7 +36,7 @@ function toTask(action: UserAction, project: ProjectRef): TaskItem {
     project,
     description: action.description,
     assigneeEmail: action.assignee_email ?? '',
-    due: formatDate(action.created_at),
+    due: formatTaskDate(action.created_at),
     priority: priorityOf(action.points_value),
     progress: progressOf(action.status),
     recommendationId: action.recommendation ?? undefined,

@@ -1,6 +1,6 @@
 'use client'
 
-import { Share2, Sparkles, X } from 'lucide-react'
+import { Share2, X } from 'lucide-react'
 
 import { NavGroup } from '@/features/catalyst/components/NavGroup'
 import { NavItem } from '@/features/catalyst/components/NavItem'
@@ -52,9 +52,9 @@ interface SidebarContentProps {
 /** The full inner sidebar — shared by the desktop rail and the mobile drawer. */
 export function SidebarContent({ collapsed, onClose }: SidebarContentProps): JSX.Element {
   const taskCount = useTaskCount()
-  // Real open-task count on the Tasks item (hidden when 0), not a hardcoded badge.
+  // Real open-task count on the Actions item (hidden when 0), not a hardcoded badge.
   const optimizationNav = OPTIMIZATION_NAV.map(item =>
-    item.href === 'tasks' ? { ...item, badge: taskCount || undefined } : item,
+    item.href === 'actions' ? { ...item, badge: taskCount || undefined } : item,
   )
   return (
     <>
@@ -75,10 +75,6 @@ export function SidebarContent({ collapsed, onClose }: SidebarContentProps): JSX
 
       <div className="mt-1 -mr-1 flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto pr-1">
         <NavSection title="Main" items={MAIN_NAV} collapsed={collapsed} />
-        {collapsed && <div className="mx-1 my-2 h-px bg-[var(--cat-border-soft)]" />}
-        <div className={collapsed ? '' : 'mt-1'}>
-          <NavItem icon={Sparkles} label="Growth Agent" href="agent" collapsed={collapsed} />
-        </div>
         <NavSection title="Monitoring" items={MONITORING_NAV} collapsed={collapsed} />
         <NavSection title="Optimization" items={optimizationNav} collapsed={collapsed} />
         {collapsed && <div className="mx-1 my-2 h-px bg-[var(--cat-border-soft)]" />}

@@ -1,27 +1,43 @@
 'use client'
 
-import { Sparkles } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
 
-import { AGENT_ACTIONS, CATEGORY_META } from '@/features/catalyst/agent-data'
 import { PrimaryButton } from '@/features/catalyst/components/PrimaryButton'
-import { useTaskStore } from '@/stores/useTaskStore'
+import { useAgentMutations, useAgentPlan } from '@/hooks/useAgentPlan'
 
-/** Queues every auto-executable action into the Tasks inbox in one click. */
+/** Whether refresh is locked and the label to show, from the next-allowed time. */
+function refreshState(availableAt: string | null): { locked: boolean; label: string } {
+  if (!availableAt) return { locked: false, label: 'Refresh plan' }
+  const remainingMs = new Date(availableAt).getTime() - Date.now()
+  if (remainingMs <= 0) return { locked: false, label: 'Refresh plan' }
+  const hours = Math.ceil(remainingMs / (1000 * 60 * 60))
+  const label =
+    hours >= 1 ? `Refresh in ${hours}h` : `Refresh in ${Math.ceil(remainingMs / 60000)}m`
+  return { locked: true, label }
+}
+
+/**
+ * Re-materializes the latest analysis into tasks and re-ranks them now, instead
+ * of waiting for the nightly job. Limited to once per 24h (the plan is a daily
+ * artifact) — the backend enforces it; the button reflects it.
+ *
+ * Deliberately does NOT auto-apply site fixes — that stays behind the per-task
+ * CTA and the auto-fix consent flow.
+ */
 export function RunPlanButton(): JSX.Element {
-  const addTask = useTaskStore(s => s.addTask)
-  const run = (): void => {
-    AGENT_ACTIONS.filter(a => a.kind === 'auto').forEach(a =>
-      addTask({
-        id: `agent-${a.id}`,
-        title: a.title,
-        source: 'Growth Agent',
-        category: CATEGORY_META[a.category].label,
-      }),
-    )
-  }
+  const { plan } = useAgentPlan()
+  const { refresh, isRefreshing } = useAgentMutations()
+
+  const { locked, label } = refreshState(plan?.refresh_available_at ?? null)
+
   return (
-    <PrimaryButton icon={Sparkles} onClick={run}>
-      Run today’s plan
+    <PrimaryButton
+      icon={RefreshCw}
+      onClick={refresh}
+      disabled={isRefreshing || locked}
+      title={locked ? 'You can refresh the plan once a day' : undefined}
+    >
+      {isRefreshing ? 'Refreshing…' : label}
     </PrimaryButton>
   )
 }

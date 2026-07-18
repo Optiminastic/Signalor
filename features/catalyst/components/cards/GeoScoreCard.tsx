@@ -10,16 +10,18 @@ import { Delta } from '@/features/catalyst/components/Delta'
 import { LineChart } from '@/features/catalyst/components/LineChart'
 import { RangeTabs, type Range } from '@/features/catalyst/components/RangeTabs'
 import { useActiveProject } from '@/hooks/useActiveProject'
+import { useBrandPath } from '@/hooks/useBrandPath'
 import { useGeoScore } from '@/hooks/useGeoScore'
 
 export function GeoScoreCard(): JSX.Element {
   const { slug } = useActiveProject()
+  const brandPath = useBrandPath()
   const [range, setRange] = useState<Range>('1W')
   const { data } = useGeoScore(slug, range)
 
   return (
     <Card>
-      <CardHead title="GEO Score" action="Report" />
+      <CardHead title="GEO Score" action="Details" href={brandPath('geo')} />
       <div className="flex items-center gap-2.5">
         <AnimatedScore value={data?.score} />
         <Badge positive={data?.positive ?? true}>{data ? data.delta : '—'}</Badge>

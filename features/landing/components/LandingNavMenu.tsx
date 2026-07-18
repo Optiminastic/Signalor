@@ -2,7 +2,7 @@
 
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import {
   PricingPanel,
@@ -11,6 +11,12 @@ import {
 } from '@/features/landing/components/MegaPanels'
 
 type MenuKey = 'product' | 'pricing' | 'resources'
+
+const CLOSE_DELAY_MS = 140
+const EASE = 'cubic-bezier(0.4,0,0.2,1)'
+// Tailwind v4: translate/scale are standalone CSS properties, so they must be
+// named explicitly for the morph + zoom to animate.
+const VIEWPORT_TRANSITION = `width 300ms ${EASE}, height 300ms ${EASE}, opacity 200ms ${EASE}, scale 200ms ${EASE}`
 
 const TRIGGERS: Array<{ label: string; key?: MenuKey; href?: string }> = [
   { label: 'Product', key: 'product' },
@@ -38,14 +44,17 @@ function Trigger({
   return (
     <button
       type="button"
+      aria-haspopup="menu"
+      aria-expanded={active}
       onMouseEnter={onOpen}
       onFocus={onOpen}
-      className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-[14px] font-medium transition-colors ${active ? 'bg-[#f4f4f5] text-[#171717]' : 'text-[#3f3f46] hover:text-[#171717]'}`}
+      onClick={onOpen}
+      className={`inline-flex h-9 items-center gap-1 rounded-lg px-3.5 text-[14px] font-medium transition-colors duration-150 ${active ? 'bg-[#f4f4f5] text-[#171717]' : 'text-[#3f3f46] hover:text-[#171717]'}`}
     >
       {label}
       <ChevronDown
         size={15}
-        className={`text-[#a1a1aa] transition-transform duration-200 ${active ? 'rotate-180' : ''}`}
+        className={`transition-transform duration-200 ${active ? 'rotate-180 text-[#71717a]' : 'text-[#a1a1aa]'}`}
       />
     </button>
   )
@@ -75,7 +84,7 @@ function TriggerRow({
             key={t.label}
             href={t.href ?? '#'}
             onMouseEnter={onClose}
-            className="rounded-md px-3 py-2 text-[14px] font-medium text-[#3f3f46] transition-colors hover:text-[#171717]"
+            className="inline-flex h-9 items-center rounded-lg px-3.5 text-[14px] font-medium text-[#3f3f46] transition-colors duration-150 hover:text-[#171717]"
           >
             {t.label}
           </Link>
@@ -85,27 +94,42 @@ function TriggerRow({
   )
 }
 
+function panelMotion(index: number, activeIndex: number): string {
+  if (index === activeIndex) return 'translate-x-0 opacity-100'
+  const slide = index < activeIndex ? '-translate-x-50' : 'translate-x-50'
+  return `pointer-events-none ${slide} opacity-0`
+}
+
 interface ViewportProps {
   active: MenuKey | null
+  lastIndex: number
   dims: { w: number; h: number }
   setRef: (k: MenuKey, el: HTMLDivElement | null) => void
   onEnter: () => void
-  onClose: () => void
+  onLeave: () => void
+  onNavigate: () => void
 }
 
-function Viewport({ active, dims, setRef, onEnter, onClose }: ViewportProps): JSX.Element {
+function Viewport(props: ViewportProps): JSX.Element {
+  const { active, lastIndex, dims, setRef, onEnter, onLeave, onNavigate } = props
+  const activeIndex = active ? PANELS.findIndex(p => p.key === active) : lastIndex
   return (
     <div
       onMouseEnter={onEnter}
-      onMouseLeave={onClose}
-      style={{ width: dims.w || undefined, height: dims.h || undefined }}
-      className={`absolute top-[calc(100%+10px)] left-1/2 z-50 -translate-x-1/2 overflow-hidden rounded-md border border-[#ececec] bg-white shadow-[0_24px_60px_-20px_rgba(0,0,0,0.28)] transition-[width,height,opacity,transform] duration-300 ease-out ${active ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-1 opacity-0'}`}
+      onMouseLeave={onLeave}
+      onClick={onNavigate}
+      style={{
+        width: dims.w || undefined,
+        height: dims.h || undefined,
+        transition: VIEWPORT_TRANSITION,
+      }}
+      className={`absolute top-[calc(100%+8px)] left-1/2 z-50 origin-top -translate-x-1/2 overflow-hidden rounded-2xl border border-black/8 bg-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.07),0_4px_6px_-4px_rgba(0,0,0,0.07)] ${active ? 'scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'}`}
     >
-      {PANELS.map(p => (
+      {PANELS.map((p, i) => (
         <div
           key={p.key}
           ref={el => setRef(p.key, el)}
-          className={`absolute top-0 left-0 transition-opacity duration-200 ${active === p.key ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+          className={`absolute top-0 left-0 transition-[translate,opacity] duration-200 ease-in-out ${panelMotion(i, activeIndex)}`}
         >
           {p.node}
         </div>
@@ -114,8 +138,20 @@ function Viewport({ active, dims, setRef, onEnter, onClose }: ViewportProps): JS
   )
 }
 
+function useEscapeToClose(active: boolean, close: () => void): void {
+  useEffect(() => {
+    if (!active) return
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') close()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [active, close])
+}
+
 export function LandingNavMenu(): JSX.Element {
   const [active, setActive] = useState<MenuKey | null>(null)
+  const [lastIndex, setLastIndex] = useState(0)
   const [dims, setDims] = useState<{ w: number; h: number }>({ w: 0, h: 0 })
   const panels = useRef<Record<MenuKey, HTMLDivElement | null>>({
     product: null,
@@ -133,22 +169,31 @@ export function LandingNavMenu(): JSX.Element {
   const open = (k: MenuKey): void => {
     clearTimeout(timer.current)
     setActive(k)
+    setLastIndex(PANELS.findIndex(p => p.key === k))
   }
-  const close = (): void => {
-    timer.current = setTimeout(() => setActive(null), 120)
+  const scheduleClose = (): void => {
+    timer.current = setTimeout(() => setActive(null), CLOSE_DELAY_MS)
+  }
+  const closeNow = (): void => {
+    clearTimeout(timer.current)
+    setActive(null)
   }
 
+  useEscapeToClose(active !== null, closeNow)
+
   return (
-    <div className="relative hidden md:block" onMouseLeave={close}>
-      <TriggerRow active={active} onOpen={open} onClose={close} />
+    <div className="relative hidden md:block" onMouseLeave={scheduleClose}>
+      <TriggerRow active={active} onOpen={open} onClose={scheduleClose} />
       <Viewport
         active={active}
+        lastIndex={lastIndex}
         dims={dims}
         setRef={(k, el) => {
           panels.current[k] = el
         }}
         onEnter={() => clearTimeout(timer.current)}
-        onClose={close}
+        onLeave={scheduleClose}
+        onNavigate={closeNow}
       />
     </div>
   )

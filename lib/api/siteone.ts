@@ -38,14 +38,51 @@ export type SiteOneCounts = z.infer<typeof siteoneCountsSchema>
 export const siteonePerformanceSchema = z.object({
   request_ms_avg: z.number().optional().default(0),
   request_ms_p90: z.number().optional().default(0),
+  request_ms_max: z.number().optional().default(0),
 })
 export type SiteOnePerformance = z.infer<typeof siteonePerformanceSchema>
+
+// One scored finding from SiteOne's summary (severity + message).
+export const siteoneFindingSchema = z.object({
+  code: z.string().optional().default(''),
+  status: z.string().optional().default(''), // CRITICAL | WARNING | NOTICE | OK | INFO
+  text: z.string().optional().default(''),
+})
+export type SiteOneFinding = z.infer<typeof siteoneFindingSchema>
+
+// A generic detail table (SiteOne emits ~27). Columns give the row-key order and
+// labels; rows are arbitrary string-keyed maps (values coerced to text on render).
+export const siteoneColumnSchema = z.object({
+  field: z.string().optional().default(''),
+  label: z.string().optional().default(''),
+})
+export type SiteOneColumn = z.infer<typeof siteoneColumnSchema>
+
+export const siteoneTableSchema = z.object({
+  key: z.string().optional().default(''),
+  title: z.string().optional().default(''),
+  columns: z.array(siteoneColumnSchema).optional().default([]),
+  rows: z.array(z.record(z.string(), z.unknown())).optional().default([]),
+})
+export type SiteOneTable = z.infer<typeof siteoneTableSchema>
+
+export const siteoneStatsSchema = z.object({
+  total_urls: z.number().optional().default(0),
+  total_size: z.number().optional().default(0),
+  total_size_formatted: z.string().optional().default(''),
+  execution_time_s: z.number().optional().default(0),
+  count_by_status: z.record(z.string(), z.number()).optional().default({}),
+})
+export type SiteOneStats = z.infer<typeof siteoneStatsSchema>
 
 export const siteoneReportSchema = z.object({
   overall_score: z.number().nullable().optional(), // 0-10 when present
   categories: z.array(siteoneCategorySchema).optional().default([]),
+  findings: z.array(siteoneFindingSchema).optional().default([]),
   severity_counts: z.record(z.string(), z.number()).optional().default({}),
+  tables: z.array(siteoneTableSchema).optional().default([]),
   counts: siteoneCountsSchema.optional().default({}),
+  stats: siteoneStatsSchema.optional().default({}),
   performance: siteonePerformanceSchema.optional().default({}),
 })
 export type SiteOneReport = z.infer<typeof siteoneReportSchema>

@@ -8,6 +8,7 @@ import { isWorkEmail } from '@/lib/work-email'
 import { checkOrganizationExists, sendVerificationOtp } from '@/services/onboarding.service'
 import { useOnboardingStore } from '@/stores/useOnboardingStore'
 
+import { AUTH_FIELD } from './field-styles'
 import { GoogleButton } from './google-button'
 
 const authEmailSchema = z.object({
@@ -87,9 +88,9 @@ export function AuthMethodForm(): JSX.Element {
       <GoogleButton />
 
       <div className="flex items-center gap-3">
-        <span className="h-px flex-1 bg-neutral-200" />
-        <span className="text-[11px] text-neutral-500">or continue with email</span>
-        <span className="h-px flex-1 bg-neutral-200" />
+        <span className="bg-border h-px flex-1" />
+        <span className="text-muted-foreground text-[11px]">or continue with email</span>
+        <span className="bg-border h-px flex-1" />
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3" noValidate>
@@ -105,10 +106,10 @@ export function AuthMethodForm(): JSX.Element {
             value={emailInput}
             onChange={e => setEmailInput(e.target.value)}
             disabled={loading}
-            className="shadow-input text-foreground placeholder:text-muted-foreground/55 focus:border-primary focus:ring-ring/50 h-[38px] w-full rounded-md border border-neutral-200 bg-white px-3 text-[13px] transition outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white disabled:opacity-60"
+            className={AUTH_FIELD}
           />
           {isSignUp && (
-            <p className="text-[11px] text-neutral-500">
+            <p className="text-muted-foreground text-[11px]">
               {requireWorkEmail
                 ? "Use your company email — personal providers (gmail, outlook…) aren't allowed."
                 : 'Use your work email.'}

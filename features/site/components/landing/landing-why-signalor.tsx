@@ -71,10 +71,10 @@ export function LandingWhySignalor() {
 
       <ScreenHR />
 
-      <div className="mx-auto max-w-7xl bg-black-10">
-        <div className="grid grid-cols-1 divide-y divide-black/6 md:grid-cols-2 md:divide-x md:divide-y-0 md:divide-black/6 ">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid grid-cols-1 divide-y divide-black/6 md:grid-cols-2 md:divide-x md:divide-y-0">
           {/* 1, Proof in numbers + CTAs */}
-          <div className="flex flex-col gap-8 bg-white px-6 py-12 md:px-8 md:py-16 lg:px-10 rounded-none border border-black/6">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 Proof in numbers
@@ -120,7 +120,7 @@ export function LandingWhySignalor() {
           </div>
 
           {/* 2, Citation attribution (feature moat, the URL roll-up) */}
-          <div className="flex flex-col gap-8 bg-white px-6 py-12 md:px-8 md:py-16 lg:px-10 rounded-none border border-black/6">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 Citation attribution
@@ -202,7 +202,7 @@ export function LandingWhySignalor() {
           </div>
 
           {/* 3, Competitor delta (closing the gap week over week) */}
-          <div className="flex flex-col gap-8 bg-white px-6 py-12 md:px-8 md:py-16 lg:px-10 rounded-none border border-black/6">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 Competitor delta
@@ -265,7 +265,7 @@ export function LandingWhySignalor() {
           </div>
 
           {/* 4, What you ship (capability list) */}
-          <div className="flex flex-col gap-8 bg-white px-6 py-12 md:px-8 md:py-16 lg:px-10 rounded-none border border-black/6">
+          <div className="flex flex-col gap-8 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-16 lg:px-10">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 What you ship

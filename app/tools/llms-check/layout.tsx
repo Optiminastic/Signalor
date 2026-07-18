@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
 
 import { JsonLd } from '@/features/site/components/seo/json-ld'
-import { AGGREGATE_RATING, breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@/features/site/lib/seo'
+import {
+  AGGREGATE_RATING,
+  breadcrumbJsonLd,
+  buildMetadata,
+  faqJsonLd,
+  SITE_URL,
+} from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Free llms.txt Checker & LLM Readiness Score',

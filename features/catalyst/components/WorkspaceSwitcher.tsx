@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
+import { domainOf } from '@/features/catalyst/competitors-data'
+import { BrandFavicon } from '@/features/catalyst/components/competitors/BrandFavicon'
 import { useActiveProject } from '@/hooks/useActiveProject'
 
 const LOGO_BG = 'conic-gradient(from 210deg at 50% 50%, #F2A79E, #e04a3d, #b9382d, #F2A79E)'
@@ -15,15 +17,10 @@ interface Project {
   url: string
 }
 
-function Tile({ label }: { label: string }): JSX.Element {
-  return (
-    <span
-      className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-[13px] font-semibold text-white uppercase"
-      style={{ background: LOGO_BG }}
-    >
-      {label[0] ?? '?'}
-    </span>
-  )
+/** The brand's real favicon; falls back to the gradient monogram tile. */
+function Tile({ name, url }: { name: string; url: string }): JSX.Element {
+  const domain = url.includes('.') ? domainOf(url) : ''
+  return <BrandFavicon domain={domain} name={name} color={LOGO_BG} size={32} />
 }
 
 interface MenuProps {
@@ -63,7 +60,7 @@ function ProjectMenu({ projects, activeId, onSelect }: MenuProps): JSX.Element {
           onClick={() => onSelect(p.id)}
           className="flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-[var(--cat-hover)]"
         >
-          <Tile label={p.name} />
+          <Tile name={p.name} url={p.url} />
           <span className="min-w-0 flex-1">
             <span className="block truncate text-[13px] font-medium text-[var(--cat-ink)]">
               {p.name}
@@ -94,7 +91,7 @@ function SwitcherTrigger({
       onClick={onToggle}
       className="flex w-full items-center gap-2.5 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-2 py-1.5 text-left transition-colors hover:bg-[var(--cat-hover)]"
     >
-      <Tile label={project.name} />
+      <Tile name={project.name} url={project.url} />
       <span className="min-w-0 flex-1">
         <span className="block truncate text-[13px] font-semibold text-[var(--cat-ink)]">
           {project.name}
@@ -141,7 +138,7 @@ export function WorkspaceSwitcher({ collapsed }: { collapsed?: boolean }): JSX.E
         title={active.name}
         className="mt-3 flex justify-center rounded-md py-1 transition-colors hover:bg-[var(--cat-hover)]"
       >
-        <Tile label={active.name} />
+        <Tile name={active.name} url={active.url} />
       </Link>
     )
   }

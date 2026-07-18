@@ -14,12 +14,12 @@ const TINT_CLASSES: Record<Testimonial["tint"], { dot: string; avatar: string; q
   },
   blue: {
     dot: "bg-info/15 text-info",
-    avatar: "bg-gradient-to-br from-info to-info text-white",
+    avatar: "bg-info text-white",
     quote: "text-info/25",
   },
   emerald: {
     dot: "bg-success/15 text-success",
-    avatar: "bg-gradient-to-br from-success to-success text-white",
+    avatar: "bg-success text-white",
     quote: "text-success/25",
   },
 };
@@ -53,7 +53,7 @@ export function LandingTestimonials() {
 
       <ScreenHR />
 
-      <div className="mx-auto max-w-7xl bg-black-10">
+      <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 divide-y divide-black/6 md:grid-cols-3 md:divide-x md:divide-y-0">
           {TESTIMONIALS.map((t, i) => (
             <TestimonialCard key={i} t={t} />
@@ -69,7 +69,7 @@ export function LandingTestimonials() {
 function TestimonialCard({ t }: { t: Testimonial }) {
   const tone = TINT_CLASSES[t.tint];
   return (
-    <figure className="relative flex flex-col gap-6 bg-white px-6 py-12 md:px-8 md:py-14 lg:px-10">
+    <figure className="relative flex flex-col gap-6 bg-white px-6 py-12 transition-colors duration-200 hover:bg-muted/25 md:px-8 md:py-14 lg:px-10">
       <Quote className={cn("h-8 w-8 shrink-0", tone.quote)} strokeWidth={1.5} aria-hidden />
       <blockquote className="flex-1 text-sm font-light leading-relaxed text-foreground md:text-base">
         &ldquo;{t.quote}&rdquo;

@@ -3,7 +3,10 @@
 import { useRouter } from 'next/navigation'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
-import { getMyCreatorProfile, type CreatorMeResponse } from '@/features/site/lib/api/partners-program'
+import {
+  getMyCreatorProfile,
+  type CreatorMeResponse,
+} from '@/features/site/lib/api/partners-program'
 import { useSession } from '@/features/site/lib/auth-client'
 
 interface CreatorContextValue {

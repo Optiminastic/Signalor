@@ -1,3 +1,5 @@
+import { EngineLogo } from '@/features/catalyst/components/EngineLogo'
+
 export interface ChannelSegment {
   label: string
   color: string
@@ -22,7 +24,7 @@ export function ChannelLegend({ segments }: { segments: ChannelSegment[] }): JSX
       <div className="flex flex-wrap gap-4 text-xs text-[var(--cat-ink-2)]">
         {segments.map(s => (
           <span key={s.label} className="inline-flex items-center gap-1.5">
-            <i className="h-2 w-2 rounded-full" style={{ background: s.color }} />
+            <EngineLogo name={s.label} size={16} color={s.color} />
             {s.label}
           </span>
         ))}

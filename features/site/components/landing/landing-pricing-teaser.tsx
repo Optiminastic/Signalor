@@ -128,7 +128,7 @@ export function LandingPricingTeaser() {
     ? `${starterLocalized.symbol}${formatLiveAmount(starterLocalized.amount, starterLocalized.ccy)}`
     : currencyReady
       ? `${currency.symbol}${formatPrice(69.99, currency)}`
-      : "69.99";
+      : "£69.99";
 
   const baseCcy = livePrices
     ? (
@@ -195,7 +195,7 @@ export function LandingPricingTeaser() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl bg-black-10">
+      <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 divide-y divide-black/6 md:grid-cols-3 md:divide-x md:divide-y-0">
           {TEASER_PLANS.map((p) => {
             const isCustom = p.price === null;
@@ -214,10 +214,10 @@ export function LandingPricingTeaser() {
               <div
                 key={p.label}
                 className={cn(
-                  "relative flex flex-col gap-5 px-6 py-10 md:px-8 md:py-12 lg:px-10",
+                  "relative flex flex-col gap-5 px-6 py-10 transition-colors duration-200 md:px-8 md:py-12 lg:px-10",
                   p.popular
                     ? "bg-gradient-to-br from-primary/5 via-white to-primary/10"
-                    : "bg-white",
+                    : "bg-white hover:bg-muted/25",
                 )}
               >
                 <div className="flex items-center gap-2">

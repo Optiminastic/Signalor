@@ -2,9 +2,9 @@
 
 import { ChevronRight } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
 
+import { TransitionLink } from '@/components/TransitionLink'
 import { BRAND, BRAND_SOFT, BRAND_STRONG } from '@/features/catalyst/constants'
 
 interface NavItemProps {
@@ -15,10 +15,12 @@ interface NavItemProps {
   label: string
   badge?: number
   collapsed?: boolean
+  /** Extra brand-relative paths that also count as "on this page" (drill-downs). */
+  alsoMatch?: string[]
 }
 
 /** Resolve a nav entry's href against the active brand slug in the URL. */
-function resolveHref(href: string, slug: string | undefined): string {
+export function resolveHref(href: string, slug: string | undefined): string {
   if (href.startsWith('/')) return href
   if (!slug) return '/dashboard'
   return href ? `/dashboard/${slug}/${href}` : `/dashboard/${slug}`
@@ -65,21 +67,30 @@ function NavRight({
   )
 }
 
-export function NavItem({ icon: Icon, label, href, badge, collapsed }: NavItemProps): JSX.Element {
+export function NavItem({
+  icon: Icon,
+  label,
+  href,
+  badge,
+  collapsed,
+  alsoMatch,
+}: NavItemProps): JSX.Element {
   const pathname = usePathname()
   const params = useParams()
   const slug = typeof params?.slug === 'string' ? params.slug : undefined
   const fullHref = resolveHref(href, slug)
-  const active = isActive(pathname, fullHref, href === '')
+  const active =
+    isActive(pathname, fullHref, href === '') ||
+    (alsoMatch ?? []).some(sub => isActive(pathname, resolveHref(sub, slug), false))
   const style = active
     ? { background: BRAND_SOFT, color: BRAND_STRONG }
     : { color: 'var(--cat-ink-2)' }
 
   return (
-    <Link
+    <TransitionLink
       href={fullHref}
       title={collapsed ? label : undefined}
-      className={`relative flex items-center rounded-md py-2 text-[14px] font-medium transition-colors hover:bg-[var(--cat-hover)] ${collapsed ? 'justify-center px-0' : 'gap-3 px-2.5'}`}
+      className={`relative flex items-center rounded-md py-2 text-[14px] font-medium transition-colors hover:bg-[var(--cat-hover)] focus-visible:ring-2 focus-visible:ring-[rgba(224,74,61,0.4)] focus-visible:outline-none ${collapsed ? 'justify-center px-0' : 'gap-3 px-2.5'}`}
       style={style}
     >
       {active && (
@@ -91,6 +102,6 @@ export function NavItem({ icon: Icon, label, href, badge, collapsed }: NavItemPr
       <Icon size={18} strokeWidth={1.8} className="shrink-0" />
       {!collapsed && label}
       <NavRight collapsed={collapsed} active={active} badge={badge} />
-    </Link>
+    </TransitionLink>
   )
 }

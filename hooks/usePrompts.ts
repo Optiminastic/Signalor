@@ -1,63 +1,68 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { Eye, Gauge, MessageSquareText, Zap } from 'lucide-react'
 
-import type { DashStatData } from '@/features/catalyst/components/dash/DashStat'
-import type { TrackedPrompt } from '@/features/catalyst/prompt-tracker-data'
-import { getPrompts, type PromptTrack } from '@/lib/api/analyzer'
+import { BLUE, BRAND, GREEN, YELLOW } from '@/features/catalyst/constants'
+import { engineLabel } from '@/features/catalyst/engine-logos'
+import type { PromptEngineResult, TrackedPrompt } from '@/features/catalyst/prompt-tracker-data'
+import type { StatCard } from '@/features/catalyst/tasks-data'
+import { getPrompts, type PromptResult, type PromptTrack } from '@/lib/api/prompts'
 import { queryKeys } from '@/lib/query-keys'
 
-const ENGINE_LABELS: Record<string, string> = {
-  chatgpt: 'ChatGPT',
-  claude: 'Claude',
-  gemini: 'Gemini',
-  google: 'Google',
-  perplexity: 'Perplexity',
-  bing: 'Bing',
-}
+const PENDING_REFETCH_MS = 15000
 
-function engineLabel(engine: string): string {
-  return ENGINE_LABELS[engine] ?? engine.charAt(0).toUpperCase() + engine.slice(1)
-}
-
-function enginesOf(prompt: PromptTrack): string[] {
-  const seen = new Set<string>()
-  for (const result of prompt.results) {
-    if (result.engine) seen.add(engineLabel(result.engine))
+function toEngineResult(result: PromptResult): PromptEngineResult {
+  return {
+    id: result.id,
+    engine: result.engine,
+    engineLabel: engineLabel(result.engine),
+    mentioned: result.brand_mentioned ?? false,
+    sentiment: result.sentiment ?? '',
+    position: result.rank_position ?? null,
+    snippet: result.response_text ?? '',
+    checkedAt: result.checked_at ?? '',
   }
-  return [...seen]
 }
 
 function toTracked(prompt: PromptTrack): TrackedPrompt {
   return {
     id: prompt.id,
     prompt: prompt.prompt_text,
+    isCustom: prompt.is_custom,
+    intent: prompt.intent ?? '',
+    promptType: prompt.prompt_type ?? '',
     score: Math.round(prompt.score ?? 0),
+    visibility: Math.round(prompt.visibility_pct ?? 0),
+    avgPosition: prompt.avg_position ?? null,
     cited: (prompt.mentions ?? 0) > 0,
-    engines: enginesOf(prompt),
+    mentions: prompt.mentions ?? 0,
     runs: prompt.total_runs ?? 0,
-    // No historical series yet — trend stays flat until repeat runs exist.
-    trend: 'flat',
+    results: prompt.results.map(toEngineResult),
   }
 }
 
-function buildStats(prompts: TrackedPrompt[], raw: PromptTrack[]): DashStatData[] {
+function buildStats(prompts: TrackedPrompt[]): StatCard[] {
   const count = prompts.length || 1
   const avgScore = Math.round(prompts.reduce((a, p) => a + p.score, 0) / count)
-  const avgVis = Math.round(raw.reduce((a, p) => a + (p.visibility_pct ?? 0), 0) / count)
+  const avgVis = Math.round(prompts.reduce((a, p) => a + p.visibility, 0) / count)
   const strong = prompts.filter(p => p.score >= 70).length
   const totalRuns = prompts.reduce((a, p) => a + p.runs, 0)
   return [
-    { label: 'Avg score', value: String(avgScore) },
-    { label: 'Visibility', value: `${avgVis}%` },
-    { label: 'Strong prompts', value: `${strong} / ${prompts.length}` },
-    { label: 'Total runs', value: String(totalRuns) },
+    { icon: Gauge, color: BRAND, label: 'Avg Score', value: String(avgScore) },
+    { icon: Eye, color: BLUE, label: 'Visibility', value: `${avgVis}%` },
+    { icon: Zap, color: GREEN, label: 'Strong Prompts', value: `${strong} / ${prompts.length}` },
+    { icon: MessageSquareText, color: YELLOW, label: 'Total Runs', value: String(totalRuns) },
   ]
 }
 
 export interface PromptTrackerData {
   prompts: TrackedPrompt[]
-  stats: DashStatData[]
+  stats: StatCard[]
+  /** True while any prompt is still waiting for its first engine answers. */
+  hasPending: boolean
+  /** True once the user has tracked a prompt of their own (onboarding). */
+  hasCustomPrompt: boolean
 }
 
 interface UsePromptsResult {
@@ -66,16 +71,26 @@ interface UsePromptsResult {
   isError: boolean
 }
 
-/** Fetches tracked prompts for a run slug and derives the header stat row. */
+/**
+ * Tracked prompts for a run slug, plus the header stat cards. While any prompt
+ * has no engine answers yet (just added or rechecking), the list re-polls every
+ * 15s so results stream in without a manual refresh.
+ */
 export function usePrompts(slug: string | undefined): UsePromptsResult {
   const query = useQuery({
     queryKey: queryKeys.catalyst.prompts(slug ?? ''),
     enabled: Boolean(slug),
     queryFn: async (): Promise<PromptTrackerData> => {
-      const raw = await getPrompts(slug as string)
-      const prompts = raw.map(toTracked)
-      return { prompts, stats: buildStats(prompts, raw) }
+      const prompts = (await getPrompts(slug as string)).map(toTracked)
+      return {
+        prompts,
+        stats: buildStats(prompts),
+        hasPending: prompts.some(p => p.results.length === 0),
+        hasCustomPrompt: prompts.some(p => p.isCustom),
+      }
     },
+    refetchInterval: q =>
+      (q.state.data as PromptTrackerData | undefined)?.hasPending ? PENDING_REFETCH_MS : false,
   })
   return { data: query.data, isLoading: query.isLoading, isError: query.isError }
 }

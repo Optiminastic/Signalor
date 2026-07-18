@@ -9,7 +9,6 @@ import {
   pollCmsRefresh,
   pollGithubJob,
 } from '@/features/catalyst/components/optimisation/apply-helpers'
-
 import {
   applyElementEdit,
   getContentPageFields,

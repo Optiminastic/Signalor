@@ -5,6 +5,8 @@ import { useState } from 'react'
 
 import { useOnboardingStore } from '@/stores/useOnboardingStore'
 
+import { AUTH_FIELD } from './field-styles'
+
 const ROLE_OPTIONS = [
   'Founder / CEO',
   'Marketing / Growth',
@@ -14,8 +16,7 @@ const ROLE_OPTIONS = [
   'Other',
 ] as const
 
-const FIELD =
-  'h-10 w-full rounded-md border border-neutral-200 bg-white px-3 text-[14px] text-foreground outline-none transition focus:border-foreground'
+const FIELD = `${AUTH_FIELD} text-[14px]`
 
 /** Agency-only step: collect the person's name, agency name and their role. */
 export function OrgDetailsForm(): JSX.Element {
@@ -83,7 +84,7 @@ export function OrgDetailsForm(): JSX.Element {
       </div>
 
       {error && (
-        <p className="border-destructive/20 bg-destructive/5 text-destructive rounded-md border px-3 py-2 text-xs font-medium">
+        <p className="bg-destructive/5 text-destructive ring-destructive/20 rounded-md px-3 py-2 text-xs font-medium ring-1">
           {error}
         </p>
       )}

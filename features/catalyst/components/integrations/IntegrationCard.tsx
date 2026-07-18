@@ -1,9 +1,38 @@
 import { Settings2 } from 'lucide-react'
+import Link from 'next/link'
 
 import { ConnectSwitch } from '@/features/catalyst/components/integrations/ConnectSwitch'
-import type { Integration } from '@/features/catalyst/integrations-data'
+import type { IntegrationWithStatus } from '@/features/catalyst/integrations-data'
 
-export function IntegrationCard({ item }: { item: Integration }): JSX.Element {
+interface IntegrationCardProps {
+  item: IntegrationWithStatus
+  /** Omitted for providers with no self-serve flow — the switch renders inert. */
+  onToggle?: (next: boolean) => void
+  busy?: boolean
+  /** When connected, where the manage gear links (e.g. GA property selection). */
+  manageHref?: string
+}
+
+function CardActions({ item, onToggle, busy, manageHref }: IntegrationCardProps): JSX.Element {
+  return (
+    <div className="flex items-center gap-1">
+      {item.connected && manageHref && (
+        <Link
+          href={manageHref}
+          aria-label={`Manage ${item.name}`}
+          title={`Manage ${item.name}`}
+          className="grid h-7 w-7 place-items-center rounded-md text-[var(--cat-ink-3)] transition-colors hover:bg-[var(--cat-hover)] hover:text-[var(--cat-ink)]"
+        >
+          <Settings2 size={15} strokeWidth={2} />
+        </Link>
+      )}
+      <ConnectSwitch checked={item.connected} label={item.name} onToggle={onToggle} busy={busy} />
+    </div>
+  )
+}
+
+export function IntegrationCard(props: IntegrationCardProps): JSX.Element {
+  const { item } = props
   const { connected, accent } = item
   return (
     <div
@@ -21,18 +50,7 @@ export function IntegrationCard({ item }: { item: Integration }): JSX.Element {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={item.logo} alt="" className="h-5 w-5 object-contain" />
         </span>
-        <div className="flex items-center gap-1">
-          {connected && (
-            <button
-              type="button"
-              aria-label={`Manage ${item.name}`}
-              className="grid h-7 w-7 place-items-center rounded-md text-[var(--cat-ink-3)] transition-colors hover:bg-[var(--cat-hover)] hover:text-[var(--cat-ink)]"
-            >
-              <Settings2 size={15} strokeWidth={2} />
-            </button>
-          )}
-          <ConnectSwitch defaultOn={connected} label={item.name} />
-        </div>
+        <CardActions {...props} />
       </div>
 
       <p className="mt-3 text-[13.5px] font-semibold text-[var(--cat-ink)]">{item.name}</p>
