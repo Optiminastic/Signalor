@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { cn } from '@/features/site/lib/utils'
 
 // Hairline-grid primitives for the homepage's "drafting table" layout:
@@ -18,7 +20,7 @@ export function GridHandle({ className }: GridHandleProps): JSX.Element {
     <span
       aria-hidden
       className={cn(
-        'pointer-events-none absolute z-10 size-1.5 bg-card shadow-sm shadow-black/10 ring-1 ring-foreground/10',
+        'bg-card ring-foreground/10 pointer-events-none absolute z-10 size-1.5 shadow-sm ring-1 shadow-black/10',
         className,
       )}
     />
@@ -40,16 +42,51 @@ export function GridCornerHandles({
     <>
       {top ? (
         <>
-          <GridHandle className="-left-[3.5px] -top-[3.5px]" />
-          <GridHandle className="-right-[3.5px] -top-[3.5px]" />
+          <GridHandle className="-top-[3.5px] -left-[3.5px]" />
+          <GridHandle className="-top-[3.5px] -right-[3.5px]" />
         </>
       ) : null}
       {bottom ? (
         <>
           <GridHandle className="-bottom-[3.5px] -left-[3.5px]" />
-          <GridHandle className="-bottom-[3.5px] -right-[3.5px]" />
+          <GridHandle className="-right-[3.5px] -bottom-[3.5px]" />
         </>
       ) : null}
     </>
+  )
+}
+
+interface MeasureBoxProps {
+  children: ReactNode
+  /** Extra classes for the box, e.g. a larger padding or width. */
+  className?: string
+}
+
+/**
+ * Faint "measurement" box with a dot in each corner — the annotated
+ * drafting-table signature around floating content (hero announcement,
+ * CTA compass, logo cloud).
+ */
+export function MeasureBox({ children, className }: MeasureBoxProps): JSX.Element {
+  return (
+    <div className={cn('bg-foreground/5 relative p-2', className)}>
+      <span
+        aria-hidden
+        className="bg-foreground/20 absolute top-1 left-1 size-[3px] rounded-full"
+      />
+      <span
+        aria-hidden
+        className="bg-foreground/20 absolute top-1 right-1 size-[3px] rounded-full"
+      />
+      <span
+        aria-hidden
+        className="bg-foreground/20 absolute bottom-1 left-1 size-[3px] rounded-full"
+      />
+      <span
+        aria-hidden
+        className="bg-foreground/20 absolute right-1 bottom-1 size-[3px] rounded-full"
+      />
+      {children}
+    </div>
   )
 }

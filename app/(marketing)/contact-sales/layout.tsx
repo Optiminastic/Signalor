@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 
-import { buildMetadata } from '@/features/site/lib/seo'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { CONTACT_SALES_FAQ } from '@/features/site/lib/landing-contact-content'
+import { breadcrumbJsonLd, buildMetadata, faqJsonLd } from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Contact Sales',
@@ -11,5 +13,17 @@ export const metadata: Metadata = buildMetadata({
 })
 
 export default function ContactSalesLayout({ children }: { children: ReactNode }): JSX.Element {
-  return <>{children}</>
+  return (
+    <>
+      <JsonLd
+        id="ld-contact-sales-breadcrumb"
+        data={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'Contact sales', path: '/contact-sales' },
+        ])}
+      />
+      <JsonLd id="ld-contact-sales-faq" data={faqJsonLd([...CONTACT_SALES_FAQ])} />
+      {children}
+    </>
+  )
 }

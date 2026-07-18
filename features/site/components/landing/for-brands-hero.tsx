@@ -1,27 +1,52 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { ArrowRight, Gauge, Link2, ListChecks, TrendingUp } from '@/features/site/components/icons'
+import {
+  FloatingEngineChips,
+  type EngineChip,
+} from '@/features/site/components/landing/floating-engine-chips'
 import { GridCornerHandles, GridHandle } from '@/features/site/components/landing/home-grid'
 import { LANDING_PRIMARY_CTA_CLASS } from '@/features/site/components/landing/constants'
 import { cn } from '@/features/site/lib/utils'
 
-type EngineChip = {
-  engine: string
-  logo: string
-  cited: boolean
-  left: string
-  top: string
-  delay: string
-  duration: string
-}
-
 // Floating mock engine-mention chips — how each AI surface treats the brand.
 const ENGINE_CHIPS: EngineChip[] = [
-  { engine: 'ChatGPT', logo: '/logos/chatgpt.svg', cited: true, left: '8%', top: '20%', delay: '0s', duration: '5s' },
-  { engine: 'Perplexity', logo: '/logos/perplexity.svg', cited: true, left: '10%', top: '62%', delay: '1.2s', duration: '5.5s' },
-  { engine: 'Gemini', logo: '/logos/gemini.svg', cited: false, left: '80%', top: '22%', delay: '0.6s', duration: '4.8s' },
-  { engine: 'Claude', logo: '/logos/claude.svg', cited: true, left: '79%', top: '64%', delay: '1.7s', duration: '5.8s' },
+  {
+    engine: 'ChatGPT',
+    logo: '/logos/chatgpt.svg',
+    cited: true,
+    left: '8%',
+    top: '20%',
+    delay: '0s',
+    duration: '5s',
+  },
+  {
+    engine: 'Perplexity',
+    logo: '/logos/perplexity.svg',
+    cited: true,
+    left: '10%',
+    top: '62%',
+    delay: '1.2s',
+    duration: '5.5s',
+  },
+  {
+    engine: 'Gemini',
+    logo: '/logos/gemini.svg',
+    cited: false,
+    left: '80%',
+    top: '22%',
+    delay: '0.6s',
+    duration: '4.8s',
+  },
+  {
+    engine: 'Claude',
+    logo: '/logos/claude.svg',
+    cited: true,
+    left: '79%',
+    top: '64%',
+    delay: '1.7s',
+    duration: '5.8s',
+  },
 ]
 
 const FLOATING_SLOTS = [
@@ -56,39 +81,6 @@ const BRAND_VALUE_CELLS = [
   },
 ] as const
 
-function FloatingEngineChips(): JSX.Element {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
-      {ENGINE_CHIPS.map((chip) => (
-        <span key={chip.engine} className="absolute" style={{ left: chip.left, top: chip.top }}>
-          <span
-            className="flex items-center gap-2 rounded-xl bg-card px-3 py-2 shadow-md shadow-black/5 ring-1 ring-border motion-safe:animate-float"
-            style={{ animationDelay: chip.delay, animationDuration: chip.duration }}
-          >
-            <Image src={chip.logo} alt="" width={16} height={16} className="h-4 w-4" />
-            <span className="text-xs font-semibold text-foreground">{chip.engine}</span>
-            <span
-              className={cn(
-                'rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase',
-                chip.cited ? 'bg-success/10 text-success' : 'bg-muted text-muted-foreground ring-1 ring-border',
-              )}
-            >
-              {chip.cited ? 'Cited' : 'Missing'}
-            </span>
-          </span>
-        </span>
-      ))}
-      {FLOATING_SLOTS.map((slot) => (
-        <span
-          key={`${slot.left}-${slot.top}`}
-          className="absolute h-6 w-6 rounded-lg bg-muted ring-1 ring-border/60"
-          style={{ left: slot.left, top: slot.top }}
-        />
-      ))}
-    </div>
-  )
-}
-
 function BrandAuditForm(): JSX.Element {
   return (
     <div className="mx-auto mt-8 w-full max-w-md">
@@ -104,17 +96,17 @@ function BrandAuditForm(): JSX.Element {
           inputMode="url"
           autoComplete="url"
           placeholder="yourbrand.com"
-          className="h-9 min-w-0 flex-1 rounded-md bg-card px-3 text-sm text-foreground shadow-sm shadow-black/5 ring-1 ring-border placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50"
+          className="bg-card text-foreground ring-border placeholder:text-muted-foreground/70 focus:ring-primary/50 h-9 min-w-0 flex-1 rounded-md px-3 text-sm shadow-sm ring-1 shadow-black/5 focus:ring-2 focus:outline-none"
         />
         <button type="submit" className={`${LANDING_PRIMARY_CTA_CLASS} h-9 shrink-0`}>
           Get free GEO score
         </button>
       </form>
-      <p className="mt-3 text-[13px] font-medium text-muted-foreground/80">
+      <p className="text-muted-foreground/80 mt-3 text-[13px] font-medium">
         Free score in ~60 seconds · No sign-up needed ·{' '}
         <Link
           href="/sign-up"
-          className="inline-flex items-center gap-0.5 text-foreground/70 underline decoration-border underline-offset-2 transition-colors hover:text-foreground"
+          className="text-foreground/70 decoration-border hover:text-foreground inline-flex items-center gap-0.5 underline underline-offset-2 transition-colors"
         >
           or start a free account
           <ArrowRight className="h-3 w-3" aria-hidden />
@@ -126,28 +118,28 @@ function BrandAuditForm(): JSX.Element {
 
 function BrandValueCells(): JSX.Element {
   return (
-    <div className="relative border-t border-border">
+    <div className="border-border relative border-t">
       <GridCornerHandles top />
       <GridHandle className="-top-[3.5px] left-1/4 -ml-[3.5px] hidden lg:block" />
       <GridHandle className="-top-[3.5px] left-1/2 -ml-[3.5px] hidden sm:block" />
       <GridHandle className="-top-[3.5px] left-3/4 -ml-[3.5px] hidden lg:block" />
-      <div className="grid divide-border max-sm:divide-y sm:grid-cols-2 lg:grid-cols-4 lg:divide-x">
+      <div className="divide-border grid max-sm:divide-y sm:grid-cols-2 lg:grid-cols-4 lg:divide-x">
         {BRAND_VALUE_CELLS.map(({ icon: Icon, title, description }, index) => (
           <div
             key={title}
             className={cn(
-              'flex flex-col bg-card px-6 py-8 sm:px-8',
-              index % 2 === 1 && 'sm:max-lg:border-l sm:max-lg:border-border',
-              index >= 2 && 'sm:max-lg:border-t sm:max-lg:border-border',
+              'bg-card flex flex-col px-6 py-8 sm:px-8',
+              index % 2 === 1 && 'sm:max-lg:border-border sm:max-lg:border-l',
+              index >= 2 && 'sm:max-lg:border-border sm:max-lg:border-t',
             )}
           >
             <span className="flex items-center gap-2.5">
-              <Icon className="h-4.5 w-4.5 text-primary" strokeWidth={2} aria-hidden />
-              <span className="text-[15px] font-semibold tracking-tight text-foreground">
+              <Icon className="text-primary h-4.5 w-4.5" strokeWidth={2} aria-hidden />
+              <span className="text-foreground text-[15px] font-semibold tracking-tight">
                 {title}
               </span>
             </span>
-            <span className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+            <span className="text-muted-foreground mt-2 text-[13px] leading-relaxed">
               {description}
             </span>
           </div>
@@ -159,28 +151,28 @@ function BrandValueCells(): JSX.Element {
 
 export function ForBrandsHero(): JSX.Element {
   return (
-    <section className="border-y border-border" aria-labelledby="for-brands-hero-heading">
-      <div className="relative mx-auto max-w-6xl border-x border-border">
+    <section className="border-border border-y" aria-labelledby="for-brands-hero-heading">
+      <div className="border-border relative mx-auto max-w-6xl border-x">
         <div className="relative px-6 py-20 sm:py-28">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_30%,rgba(224,74,61,0.05),transparent_70%)]"
           />
-          <FloatingEngineChips />
+          <FloatingEngineChips chips={ENGINE_CHIPS} slots={FLOATING_SLOTS} />
           <div className="relative mx-auto max-w-2xl text-center">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-primary">
+            <p className="text-primary text-[12px] font-semibold tracking-[0.18em] uppercase">
               For brands
             </p>
             <h1
               id="for-brands-hero-heading"
-              className="mt-3 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"
+              className="text-foreground mt-3 text-4xl font-semibold tracking-tight text-balance sm:text-5xl"
             >
               Learn how AI talks about{' '}
-              <span className="underline decoration-primary/60 decoration-dashed decoration-2 underline-offset-4">
+              <span className="decoration-primary/60 underline decoration-dashed decoration-2 underline-offset-4">
                 your brand
               </span>
             </h1>
-            <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="text-muted-foreground mx-auto mt-4 max-w-xl text-base leading-relaxed text-pretty sm:text-lg">
               See how ChatGPT, Gemini, and Perplexity describe and cite you today - then close the
               gaps with a clear, prioritized plan.
             </p>

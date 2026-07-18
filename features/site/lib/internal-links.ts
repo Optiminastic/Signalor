@@ -105,6 +105,11 @@ const CATALOG: Record<string, RelatedLink> = {
     title: 'GEO blog & playbooks',
     desc: 'Research drops and playbooks for AI search visibility.',
   },
+  '/about-us': {
+    href: '/about-us',
+    title: 'About Signalor',
+    desc: 'What we build, who it is for, and the team behind the GEO platform.',
+  },
 }
 
 // Per-page related destinations (topic clusters). Keep to 3-4 relevant links.
@@ -200,6 +205,7 @@ const RELATED: Record<string, string[]> = {
     '/pricing',
   ],
   '/for-brands': ['/ai-visibility', '/prompt-tracking', '/recommendations', '/pricing'],
+  '/about-us': ['/for-brands', '/for-agencies', '/pricing', '/blog'],
 }
 
 /** Curated related links for a given page path (empty array if none configured). */
