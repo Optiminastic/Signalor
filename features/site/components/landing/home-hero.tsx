@@ -11,17 +11,29 @@ import { GridCornerHandles, GridHandle } from '@/features/site/components/landin
  */
 function HeroAnnouncement(): JSX.Element {
   return (
-    <div className="relative mx-auto w-fit bg-foreground/5 p-2">
-      <span aria-hidden className="absolute left-1 top-1 size-[3px] rounded-full bg-foreground/20" />
-      <span aria-hidden className="absolute right-1 top-1 size-[3px] rounded-full bg-foreground/20" />
-      <span aria-hidden className="absolute bottom-1 left-1 size-[3px] rounded-full bg-foreground/20" />
-      <span aria-hidden className="absolute bottom-1 right-1 size-[3px] rounded-full bg-foreground/20" />
-      <div className="relative flex h-fit items-center gap-2 rounded-full bg-card px-3 py-1 shadow-sm shadow-black/5 ring-1 ring-border">
-        <span className="text-sm text-foreground">Track your first 50 prompts free</span>
-        <span aria-hidden className="block h-3 w-px bg-foreground/10" />
+    <div className="bg-foreground/5 relative mx-auto w-fit p-2">
+      <span
+        aria-hidden
+        className="bg-foreground/20 absolute top-1 left-1 size-[3px] rounded-full"
+      />
+      <span
+        aria-hidden
+        className="bg-foreground/20 absolute top-1 right-1 size-[3px] rounded-full"
+      />
+      <span
+        aria-hidden
+        className="bg-foreground/20 absolute bottom-1 left-1 size-[3px] rounded-full"
+      />
+      <span
+        aria-hidden
+        className="bg-foreground/20 absolute right-1 bottom-1 size-[3px] rounded-full"
+      />
+      <div className="bg-card ring-border relative flex h-fit items-center gap-2 rounded-full px-3 py-1 shadow-sm ring-1 shadow-black/5">
+        <span className="text-foreground text-sm">Track your first 50 prompts free</span>
+        <span aria-hidden className="bg-foreground/10 block h-3 w-px" />
         <Link
           href="/sign-up"
-          className="text-sm font-medium text-primary transition-colors hover:text-primary/80"
+          className="text-primary hover:text-primary/80 text-sm font-medium transition-colors"
         >
           Claim
         </Link>
@@ -49,17 +61,17 @@ function HeroAuditForm(): JSX.Element {
           inputMode="url"
           autoComplete="url"
           placeholder="yourdomain.com"
-          className="h-9 min-w-0 flex-1 rounded-md bg-card px-3 text-sm text-foreground shadow-sm shadow-black/5 ring-1 ring-border placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/50"
+          className="bg-card text-foreground ring-border placeholder:text-muted-foreground/70 focus:ring-primary/50 h-9 min-w-0 flex-1 rounded-md px-3 text-sm shadow-sm ring-1 shadow-black/5 focus:ring-2 focus:outline-none"
         />
         <button type="submit" className={`${LANDING_PRIMARY_CTA_CLASS} h-9 shrink-0`}>
           Get free GEO score
         </button>
       </form>
-      <p className="mt-3 text-[13px] font-medium text-muted-foreground/80">
+      <p className="text-muted-foreground/80 mt-3 text-[13px] font-medium">
         Free score in ~60 seconds · No sign-up needed ·{' '}
         <Link
           href="/sign-up"
-          className="inline-flex items-center gap-0.5 text-foreground/70 underline decoration-border underline-offset-2 transition-colors hover:text-foreground"
+          className="text-foreground/70 decoration-border hover:text-foreground inline-flex items-center gap-0.5 underline underline-offset-2 transition-colors"
         >
           or start a free account
           <ArrowRight className="h-3 w-3" aria-hidden />
@@ -75,14 +87,14 @@ function HeroAuditForm(): JSX.Element {
  */
 function HeroScreenshot(): JSX.Element {
   return (
-    <div className="border-b border-border">
-      <div className="relative mx-auto max-w-6xl border-x border-border px-4 sm:px-6 md:px-12">
+    <div className="border-border border-b">
+      <div className="border-border relative mx-auto max-w-6xl border-x px-4 sm:px-6 md:px-12">
         <GridCornerHandles top bottom />
         <GridHandle className="-top-[3.5px] left-[12.5px] sm:left-[20.5px] md:left-[44.5px]" />
         <GridHandle className="-top-[3.5px] right-[12.5px] sm:right-[20.5px] md:right-[44.5px]" />
         <GridHandle className="-bottom-[3.5px] left-[12.5px] sm:left-[20.5px] md:left-[44.5px]" />
-        <GridHandle className="-bottom-[3.5px] right-[12.5px] sm:right-[20.5px] md:right-[44.5px]" />
-        <div className="overflow-hidden border-x border-border bg-card">
+        <GridHandle className="right-[12.5px] -bottom-[3.5px] sm:right-[20.5px] md:right-[44.5px]" />
+        <div className="border-border bg-card overflow-hidden border-x">
           <Image
             src="/carousel1.png"
             alt="Signalor dashboard showing GEO score, tracked prompts, and AI citation analytics"
@@ -90,7 +102,7 @@ function HeroScreenshot(): JSX.Element {
             height={2000}
             priority
             sizes="(max-width: 1152px) 100vw, 1152px"
-            className="h-auto max-h-[560px] w-full select-none object-cover object-top"
+            className="h-auto max-h-[560px] w-full object-cover object-top select-none"
             style={{
               maskImage: 'linear-gradient(to bottom, black 72%, transparent 100%)',
               WebkitMaskImage: 'linear-gradient(to bottom, black 72%, transparent 100%)',
@@ -105,7 +117,7 @@ function HeroScreenshot(): JSX.Element {
 export function HomeHero(): JSX.Element {
   return (
     <section aria-labelledby="home-hero-heading">
-      <div className="relative mx-auto max-w-6xl border-x border-b border-border px-6 pb-12 pt-14 md:pb-16 md:pt-20">
+      <div className="border-border relative mx-auto max-w-6xl border-x border-b px-6 pt-14 pb-12 md:pt-20 md:pb-16">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_65%_at_50%_0%,rgba(224,74,61,0.05),transparent_70%)]"
@@ -115,11 +127,11 @@ export function HomeHero(): JSX.Element {
           <div className="mx-auto mt-8 max-w-3xl text-center md:mt-10">
             <h1
               id="home-hero-heading"
-              className="text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+              className="text-foreground text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
             >
-              Get your brand cited in AI answers
+              Signalor gets your brand cited in AI answers
             </h1>
-            <p className="mx-auto mt-4 max-w-xl text-balance text-lg leading-relaxed text-muted-foreground">
+            <p className="text-muted-foreground mx-auto mt-4 max-w-xl text-lg leading-relaxed text-balance">
               Signalor scores your site, tracks prompts across ChatGPT, Claude, Gemini, and
               Perplexity, and hands you the exact fixes that win citations.
             </p>

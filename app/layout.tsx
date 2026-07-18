@@ -25,6 +25,7 @@ import { JsonLd } from '@/features/site/components/seo/json-ld'
 import {
   buildMetadata,
   organizationJsonLd,
+  siteNavigationJsonLd,
   softwareApplicationJsonLd,
   websiteJsonLd,
 } from '@/features/site/lib/seo'
@@ -92,6 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
         <JsonLd id="ld-organization" data={organizationJsonLd()} />
         <JsonLd id="ld-website" data={websiteJsonLd()} />
         <JsonLd id="ld-software" data={softwareApplicationJsonLd()} />
+        <JsonLd id="ld-sitenav" data={siteNavigationJsonLd()} />
         <GoogleTagManager />
       </head>
       <body className="font-sans antialiased">

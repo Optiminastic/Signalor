@@ -66,7 +66,11 @@ export const SITE_LOCALE = 'en_US'
 export const SITE_TWITTER = '@signalorai'
 export const SITE_OG_IMAGE = `${SITE_URL}/carousel1.png`
 
-export const ORG_SOCIAL = ['https://twitter.com/signalorai', 'https://github.com/signalorai']
+export const ORG_SOCIAL = [
+  'https://twitter.com/signalorai',
+  'https://github.com/signalorai',
+  'https://www.crunchbase.com/organization/signalor-ai',
+]
 
 export const DEFAULT_OG = {
   type: 'website' as const,
@@ -78,7 +82,7 @@ export const DEFAULT_OG = {
       url: SITE_OG_IMAGE,
       width: 1200,
       height: 630,
-      alt: `${SITE_BRAND}, ${SITE_TAGLINE}`,
+      alt: `${SITE_BRAND} | ${SITE_TAGLINE}`,
     },
   ],
 }
@@ -108,7 +112,7 @@ export function buildMetadata({
   ogType = 'website',
 }: BuildMetadataInput = {}): Metadata {
   const url = absoluteUrl(path)
-  const fullTitle = title ? `${title} | ${SITE_BRAND}` : `${SITE_BRAND}, ${SITE_TAGLINE}`
+  const fullTitle = title ? `${title} | ${SITE_BRAND}` : `${SITE_BRAND} | ${SITE_TAGLINE}`
   const image = ogImage || SITE_OG_IMAGE
 
   return {
@@ -191,7 +195,7 @@ export function organizationJsonLd() {
     '@id': `${SITE_URL}#organization`,
     name: SITE_LEGAL_NAME,
     legalName: SITE_LEGAL_NAME,
-    alternateName: [SITE_DISPLAY_NAME, SITE_BRAND, SITE_NAME],
+    alternateName: [SITE_DISPLAY_NAME, SITE_BRAND, SITE_NAME, 'signalor.ai'],
     url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
@@ -258,22 +262,22 @@ export function softwareApplicationJsonLd() {
     offers: [
       {
         '@type': 'Offer',
-        name: 'Starter',
-        price: '19.99',
+        name: 'Free',
+        price: '0',
         priceCurrency: 'GBP',
         url: `${SITE_URL}/pricing`,
       },
       {
         '@type': 'Offer',
-        name: 'Pro',
-        price: '49.99',
+        name: 'Self-Serve Brand',
+        price: '69.99',
         priceCurrency: 'GBP',
         url: `${SITE_URL}/pricing`,
       },
       {
         '@type': 'Offer',
-        name: 'Max',
-        price: '59.99',
+        name: 'Managed Growth Brand',
+        price: '99.69',
         priceCurrency: 'GBP',
         url: `${SITE_URL}/pricing`,
       },
@@ -311,6 +315,11 @@ export const SITE_NAV = [
     name: 'Recommendations',
     path: '/recommendations',
     description: 'Signalor Prioritizes GEO fixes automatically generated for your site.',
+  },
+  {
+    name: 'Free Tools',
+    path: '/tools',
+    description: 'Free GEO tools from Signalor: URL analyzer, schema validator, and more.',
   },
   {
     name: 'About Signalor',
