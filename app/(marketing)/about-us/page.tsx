@@ -1,37 +1,22 @@
-import Link from 'next/link'
+import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-export default function AboutPage() {
+import { AboutHero } from '@/features/site/components/landing/about-hero'
+import { AboutSections } from '@/features/site/components/landing/about-sections'
+import { RelatedLinks } from '@/features/site/components/seo/related-links'
+
+export default function AboutPage(): JSX.Element {
   return (
-    <main className="mx-auto min-h-screen w-full max-w-4xl px-6 py-10 md:px-10">
-      <header className="border-border mb-8 border-b pb-4">
-        <h1 className="text-3xl font-bold tracking-tight">About Signalor GEO</h1>
-        <p className="text-muted-foreground mt-2 text-sm">
-          We help brands understand and improve how they appear in AI-driven search experiences.
-        </p>
-      </header>
-
-      <section className="text-foreground/90 space-y-5 text-sm leading-7">
-        <p>
-          Signalor GEO is built for teams that care about discoverability in modern search. Our
-          platform combines technical checks, content quality analysis, brand visibility, and
-          recommendation workflows to make GEO improvements measurable.
-        </p>
-        <p>
-          We focus on practical outcomes: clear scoring, transparent diagnostics, and action items
-          teams can execute quickly. We also support integrations so insights can be connected to
-          real business and traffic data.
-        </p>
-        <p>
-          If you need support, contact us through your account support channel or your internal
-          implementation contact.
-        </p>
-      </section>
-
-      <footer className="border-border text-muted-foreground mt-10 border-t pt-4 text-sm">
-        <Link href="/" className="hover:text-foreground">
-          Back to Home
-        </Link>
-      </footer>
-    </main>
+    <MarketingShell>
+      <p className="sr-only">
+        Signalor is the Generative Engine Optimization platform built by Signalor Ltd. We score how
+        ChatGPT, Claude, Gemini, Perplexity, Copilot, and Google AI Overviews describe and cite
+        brands, track the prompts buyers actually ask, and turn every audit into a ranked fix queue
+        with Shopify, WordPress, API, and MCP integrations. Six scoring pillars - content, schema,
+        E-E-A-T, technical, entity, and AI visibility - make AI search visibility measurable.
+      </p>
+      <AboutHero />
+      <AboutSections />
+      <RelatedLinks page="/about-us" />
+    </MarketingShell>
   )
 }

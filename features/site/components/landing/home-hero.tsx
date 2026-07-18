@@ -3,31 +3,69 @@ import Link from 'next/link'
 
 import { ArrowRight } from '@/features/site/components/icons'
 import { LANDING_PRIMARY_CTA_CLASS } from '@/features/site/components/landing/constants'
-import { GridCornerHandles, GridHandle } from '@/features/site/components/landing/home-grid'
+import {
+  FloatingEngineChips,
+  type EngineChip,
+} from '@/features/site/components/landing/floating-engine-chips'
+import {
+  GridCornerHandles,
+  GridHandle,
+  MeasureBox,
+} from '@/features/site/components/landing/home-grid'
+
+// Floating engine-mention chips filling the hero's side gutters. Positions
+// stay inside the max-w-3xl copy column's margins, so they only render at xl+.
+const HERO_ENGINE_CHIPS: EngineChip[] = [
+  {
+    engine: 'ChatGPT',
+    logo: '/logos/chatgpt.svg',
+    cited: true,
+    left: '4%',
+    top: '24%',
+    delay: '0s',
+    duration: '5s',
+  },
+  {
+    engine: 'Perplexity',
+    logo: '/logos/perplexity.svg',
+    cited: true,
+    left: '6%',
+    top: '58%',
+    delay: '1.2s',
+    duration: '5.5s',
+  },
+  {
+    engine: 'Gemini',
+    logo: '/logos/gemini.svg',
+    cited: false,
+    left: '78%',
+    top: '22%',
+    delay: '0.6s',
+    duration: '4.8s',
+  },
+  {
+    engine: 'Claude',
+    logo: '/logos/claude.svg',
+    cited: true,
+    left: '80%',
+    top: '56%',
+    delay: '1.7s',
+    duration: '5.8s',
+  },
+]
+
+const HERO_FLOATING_SLOTS = [
+  { left: '13%', top: '42%' },
+  { left: '86%', top: '40%' },
+] as const
 
 /**
- * Announcement pill inside a faint "measurement" box with corner dots —
- * the annotated, drafting-table look of the hairline-grid system.
+ * Announcement pill inside the corner-dot measurement box — the annotated,
+ * drafting-table look of the hairline-grid system.
  */
 function HeroAnnouncement(): JSX.Element {
   return (
-    <div className="bg-foreground/5 relative mx-auto w-fit p-2">
-      <span
-        aria-hidden
-        className="bg-foreground/20 absolute top-1 left-1 size-[3px] rounded-full"
-      />
-      <span
-        aria-hidden
-        className="bg-foreground/20 absolute top-1 right-1 size-[3px] rounded-full"
-      />
-      <span
-        aria-hidden
-        className="bg-foreground/20 absolute bottom-1 left-1 size-[3px] rounded-full"
-      />
-      <span
-        aria-hidden
-        className="bg-foreground/20 absolute right-1 bottom-1 size-[3px] rounded-full"
-      />
+    <MeasureBox className="mx-auto w-fit">
       <div className="bg-card ring-border relative flex h-fit items-center gap-2 rounded-full px-3 py-1 shadow-sm ring-1 shadow-black/5">
         <span className="text-foreground text-sm">Track your first 50 prompts free</span>
         <span aria-hidden className="bg-foreground/10 block h-3 w-px" />
@@ -38,7 +76,7 @@ function HeroAnnouncement(): JSX.Element {
           Claim
         </Link>
       </div>
-    </div>
+    </MeasureBox>
   )
 }
 
@@ -109,6 +147,34 @@ function HeroScreenshot(): JSX.Element {
             }}
           />
         </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-8 left-10 z-10 hidden sm:block md:left-20"
+        >
+          <span
+            className="bg-card ring-border motion-safe:animate-float flex items-baseline gap-2 rounded-xl px-3 py-2 shadow-md ring-1 shadow-black/5"
+            style={{ animationDuration: '7s' }}
+          >
+            <span className="text-muted-foreground text-xs font-medium">GEO score</span>
+            <span className="text-foreground text-sm font-semibold tabular-nums">82</span>
+            <span className="text-success text-[11px] font-semibold tabular-nums">+6</span>
+          </span>
+        </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-8 right-10 z-10 hidden sm:block md:right-20"
+        >
+          <span
+            className="bg-card ring-border motion-safe:animate-float flex items-center gap-2 rounded-xl px-3 py-2 shadow-md ring-1 shadow-black/5"
+            style={{ animationDelay: '1.4s', animationDuration: '6s' }}
+          >
+            <span aria-hidden className="bg-success size-2 rounded-full" />
+            <span className="text-foreground text-xs font-semibold">Cited by ChatGPT</span>
+            <span className="text-muted-foreground text-[11px] font-medium tabular-nums">
+              just now
+            </span>
+          </span>
+        </div>
       </div>
     </div>
   )
@@ -122,6 +188,11 @@ export function HomeHero(): JSX.Element {
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_65%_at_50%_0%,rgba(224,74,61,0.05),transparent_70%)]"
         />
+        <FloatingEngineChips
+          chips={HERO_ENGINE_CHIPS}
+          slots={HERO_FLOATING_SLOTS}
+          className="lg:hidden xl:block"
+        />
         <div className="relative">
           <HeroAnnouncement />
           <div className="mx-auto mt-8 max-w-3xl text-center md:mt-10">
@@ -129,7 +200,11 @@ export function HomeHero(): JSX.Element {
               id="home-hero-heading"
               className="text-foreground text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
             >
-              Signalor gets your brand cited in AI answers
+              Signalor gets your brand{' '}
+              <span className="decoration-primary/60 underline decoration-dashed decoration-2 underline-offset-4">
+                cited
+              </span>{' '}
+              in AI answers
             </h1>
             <p className="text-muted-foreground mx-auto mt-4 max-w-xl text-lg leading-relaxed text-balance">
               Signalor scores your site, tracks prompts across ChatGPT, Claude, Gemini, and
