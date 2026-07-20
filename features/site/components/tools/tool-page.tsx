@@ -1,270 +1,144 @@
-"use client";
+'use client'
 
-import type { ReactNode } from "react";
-import Link from "next/link";
-import { ArrowRight, Lock } from "@/features/site/components/icons";
-import { cn } from "@/features/site/lib/utils";
-import { ScreenHR } from "@/features/site/components/ui/intersection-diamonds";
+import type { ReactNode } from 'react'
 
-export type ToolTheme = "orange" | "blue" | "emerald" | "violet";
+import { BlogCardFrame } from '@/features/site/components/blog/blog-card-frame'
+import { HomeFaq } from '@/features/site/components/landing/home-faq'
+import { GridCornerHandles, MeasureBox } from '@/features/site/components/landing/home-grid'
+import type { ToolFaqItem } from '@/features/site/lib/tool-faqs'
+import { cn } from '@/features/site/lib/utils'
+
+export type ToolTheme = 'orange' | 'blue' | 'emerald' | 'violet'
 
 const THEME: Record<
   ToolTheme,
   {
-    sectionBg: string;
-    eyebrow: string;
-    accent: string;
-    accentBg: string;
-    accentSoftBg: string;
-    accentBorder: string;
-    cardRadius: string;
+    accentBg: string
+    accentDecoration: string
   }
 > = {
   orange: {
-    sectionBg: "bg-gradient-to-b from-primary/[0.05] via-background to-background",
-    eyebrow: "text-muted-foreground",
-    accent: "text-primary",
-    accentBg: "bg-primary",
-    accentSoftBg: "bg-primary/10",
-    accentBorder: "border-primary/20",
-    cardRadius: "rounded-none",
+    accentBg: 'bg-primary',
+    accentDecoration: 'decoration-primary/60',
   },
   blue: {
-    sectionBg: "bg-gradient-to-b from-primary/[0.05] via-background to-background",
-    eyebrow: "text-info/70",
-    accent: "text-info",
-    accentBg: "bg-info",
-    accentSoftBg: "bg-info/10",
-    accentBorder: "border-info/20",
-    cardRadius: "rounded-none",
+    accentBg: 'bg-info',
+    accentDecoration: 'decoration-info/60',
   },
   emerald: {
-    sectionBg: "bg-gradient-to-b from-primary/[0.05] via-background to-background",
-    eyebrow: "text-success/70",
-    accent: "text-success",
-    accentBg: "bg-success",
-    accentSoftBg: "bg-success/10",
-    accentBorder: "border-success/20",
-    cardRadius: "rounded-none",
+    accentBg: 'bg-success',
+    accentDecoration: 'decoration-success/60',
   },
   violet: {
-    sectionBg: "bg-gradient-to-b from-primary/[0.05] via-background to-background",
-    eyebrow: "text-[var(--feature-violet)]/70",
-    accent: "text-[var(--feature-violet)]",
-    accentBg: "bg-[var(--feature-violet)]",
-    accentSoftBg: "bg-[var(--feature-violet)]/10",
-    accentBorder: "border-[var(--feature-violet)]/20",
-    cardRadius: "rounded-none",
+    accentBg: 'bg-[var(--feature-violet)]',
+    accentDecoration: 'decoration-[var(--feature-violet)]/60',
   },
-};
+}
 
-export type ToolFeature = { title: string; description: string };
-export type ToolPreviewRow = {
-  locked?: boolean;
-  content: ReactNode;
-};
+/** `[ free tool · url analyzer ]` → `free tool · url analyzer` for the hero pill. */
+function pillLabel(eyebrow: string): string {
+  return eyebrow.replace(/^\[\s*/, '').replace(/\s*\]$/, '')
+}
+
+export type ToolFeature = { title: string; description: string }
 
 export function ToolPage({
   theme,
   eyebrow,
-  eyebrowClassName,
   title,
   titleAccent,
   description,
   secondaryDescription,
   form,
   features,
-  previewEyebrow,
-  previewTitle,
-  previewTitleAccent,
-  previewDescription,
-  previewRows,
-  lockedCta = "View pricing",
+  faq,
 }: {
-  theme: ToolTheme;
+  theme: ToolTheme
   /** Uppercase eyebrow, wrap the topic in brackets e.g. `[ free tool ]` */
-  eyebrow: string;
-  /** Optional override for the eyebrow color classes (defaults to the theme's). */
-  eyebrowClassName?: string;
-  title: string;
+  eyebrow: string
+  title: string
   /** Optional dashed-underline accent span within the title */
-  titleAccent?: string;
-  description: string;
-  secondaryDescription?: string;
-  form: ReactNode;
-  features: ToolFeature[];
-  previewEyebrow: string;
-  previewTitle: string;
-  previewTitleAccent?: string;
-  previewDescription: string;
-  previewRows: ToolPreviewRow[];
-  lockedCta?: string;
+  titleAccent?: string
+  description: string
+  secondaryDescription?: string
+  form: ReactNode
+  features: ToolFeature[]
+  /** Visible FAQ items; must mirror the layout's FAQPage JSON-LD. */
+  faq?: ToolFaqItem[]
 }) {
-  const t = THEME[theme];
-  const featuresCols = Math.min(features.length, 4);
+  const t = THEME[theme]
+  const featuresCols = Math.min(features.length, 4)
 
   return (
-    <>
-      {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className={cn("relative px-6 pb-14 pt-14 lg:px-12 lg:pb-16 lg:pt-16", t.sectionBg)}>
-        <div className="mx-auto max-w-7xl">
-          <p
-            className={cn(
-              "text-[11px] font-medium uppercase tracking-[0.22em]",
-              eyebrowClassName ?? t.eyebrow,
-            )}
-          >
-            {eyebrow}
-          </p>
-          <h1 className="mt-4 max-w-4xl text-3xl font-bold leading-[1.12] tracking-tight text-foreground sm:text-4xl lg:text-[2.65rem] xl:text-5xl">
-            {title}{" "}
+    <div className="border-border relative mx-auto max-w-6xl border-x">
+      <GridCornerHandles top bottom />
+
+      {/* ── Hero (landing language: pill · centered · dashed accent) ────── */}
+      <section className="relative overflow-hidden px-6 pt-14 pb-16 md:pt-20 md:pb-20">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_65%_at_50%_0%,rgba(224,74,61,0.05),transparent_70%)]"
+        />
+        <div className="relative mx-auto max-w-3xl text-center">
+          <MeasureBox className="mx-auto w-fit">
+            <div className="bg-card ring-border relative flex items-center gap-2 rounded-full px-3 py-1 shadow-sm ring-1 shadow-black/5">
+              <span className={cn('h-1.5 w-1.5 rounded-full', t.accentBg)} aria-hidden />
+              <span className="text-foreground text-sm">{pillLabel(eyebrow)}</span>
+            </div>
+          </MeasureBox>
+          <h1 className="text-foreground mt-8 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+            {title}{' '}
             {titleAccent && (
-              <span className={cn("relative whitespace-nowrap", t.accent)}>
+              <span
+                className={cn(
+                  'underline decoration-dashed decoration-2 underline-offset-[6px]',
+                  t.accentDecoration,
+                )}
+              >
                 {titleAccent}
-                <span
-                  className={cn(
-                    "absolute -bottom-1 left-0 right-0 border-b-2 border-dashed",
-                    t.accentBorder,
-                  )}
-                  aria-hidden
-                />
               </span>
             )}
           </h1>
-          <p className="mt-5 max-w-2xl text-base font-light leading-relaxed text-accent-foreground lg:text-lg">
+          <p className="text-muted-foreground mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-balance">
             {description}
           </p>
           {secondaryDescription && <p className="sr-only">{secondaryDescription}</p>}
-          <div className="mt-8 max-w-xl">{form}</div>
+          <div className="mx-auto mt-8 max-w-xl text-left">{form}</div>
         </div>
       </section>
 
-      {/* ── Features (landing-features-grid divide pattern) ───────────────── */}
-      <ScreenHR />
-      <section className={cn("relative", t.sectionBg)} aria-labelledby="tool-features-heading">
-        <div className="mx-auto max-w-7xl bg-black-10">
-          <div
-            className={cn(
-              "grid grid-cols-1 divide-y divide-black/6 md:divide-x md:divide-y-0 md:divide-black/6",
-              featuresCols === 2 && "md:grid-cols-2",
-              featuresCols === 3 && "md:grid-cols-3",
-              featuresCols >= 4 && "md:grid-cols-4",
-            )}
-          >
-            {features.map((f) => (
-              <div
-                key={f.title}
-                className={cn(
-                  "flex flex-col gap-4 bg-white px-6 py-12 md:px-8 md:py-14 lg:px-10",
-                  t.cardRadius,
-                )}
-              >
-                <span
-                  className={cn(
-                    "inline-flex h-8 w-8 items-center justify-center",
-                    t.cardRadius,
-                    t.accentSoftBg,
-                  )}
-                >
-                  <span className={cn("h-2 w-2 rounded-full", t.accentBg)} aria-hidden />
+      {/* ── Features ─────────────────────────────────────────────────────── */}
+      <section
+        className="border-border relative border-t px-6 py-14 lg:px-12 lg:py-16"
+        aria-labelledby="tool-features-heading"
+      >
+        <GridCornerHandles top />
+        <h2 id="tool-features-heading" className="sr-only">
+          Features
+        </h2>
+        <div
+          className={cn(
+            'grid gap-6 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12',
+            featuresCols === 3 && 'lg:grid-cols-3',
+            featuresCols >= 4 && 'lg:grid-cols-4',
+          )}
+        >
+          {features.map(f => (
+            <div key={f.title} className="group flex flex-col">
+              <BlogCardFrame seed={`${theme}-${f.title}`}>
+                <span className="ring-foreground/10 grid h-12 w-12 place-items-center rounded-xl bg-white shadow-md ring-1">
+                  <span className={cn('h-2.5 w-2.5 rounded-full', t.accentBg)} aria-hidden />
                 </span>
-                <h3 className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
-                  {f.title}
-                </h3>
-                <p className="max-w-sm text-sm font-light leading-relaxed text-accent-foreground md:text-sm">
-                  {f.description}
-                </p>
-              </div>
-            ))}
-          </div>
+              </BlogCardFrame>
+              <h3 className="text-foreground mt-4 text-lg font-bold tracking-tight">{f.title}</h3>
+              <p className="text-muted-foreground mt-2 text-sm leading-relaxed">{f.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ── Preview with locked rows ──────────────────────────────────────── */}
-      <ScreenHR />
-      <section className={cn("relative px-6 pb-14 pt-14 lg:px-12 lg:pb-16 lg:pt-16", t.sectionBg)}>
-        <div className="mx-auto max-w-7xl">
-          <p
-            className={cn(
-              "text-[11px] font-medium uppercase tracking-[0.22em]",
-              eyebrowClassName ?? t.eyebrow,
-            )}
-          >
-            {previewEyebrow}
-          </p>
-          <h2 className="mt-4 max-w-4xl text-3xl font-bold leading-[1.12] tracking-tight text-foreground sm:text-4xl lg:text-[2.65rem]">
-            {previewTitle}{" "}
-            {previewTitleAccent && (
-              <span className={cn("relative whitespace-nowrap", t.accent)}>
-                {previewTitleAccent}
-                <span
-                  className={cn(
-                    "absolute -bottom-1 left-0 right-0 border-b-2 border-dashed",
-                    t.accentBorder,
-                  )}
-                  aria-hidden
-                />
-              </span>
-            )}
-          </h2>
-          <p className="mt-5 max-w-2xl text-base font-light leading-relaxed text-accent-foreground lg:text-lg">
-            {previewDescription}
-          </p>
-        </div>
-
-        <div className="mx-auto mt-10 max-w-7xl bg-black-10">
-          <div className="grid grid-cols-1 divide-y divide-black/6">
-            {previewRows.map((row, i) => (
-              <div
-                key={i}
-                className={cn(
-                  "relative flex flex-col gap-4 bg-white px-6 py-10 md:px-8 md:py-12 lg:px-10",
-                  t.cardRadius,
-                )}
-              >
-                <div
-                  className={
-                    row.locked ? "pointer-events-none select-none blur-[2px] opacity-60" : ""
-                  }
-                >
-                  {row.content}
-                </div>
-                {row.locked && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Link
-                      href="/pricing"
-                      className={cn(
-                        "inline-flex items-center gap-2 border bg-white px-4 py-2 text-xs font-semibold text-foreground shadow-sm transition hover:shadow",
-                        t.cardRadius,
-                        t.accentBorder,
-                      )}
-                    >
-                      <Lock className={cn("h-3.5 w-3.5", t.accent)} aria-hidden />
-                      {lockedCta}
-                      <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" aria-hidden />
-                    </Link>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mx-auto mt-10 flex max-w-7xl justify-center">
-          <Link
-            href="/pricing"
-            className={cn(
-              "inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:brightness-110",
-              t.cardRadius,
-              t.accentBg,
-            )}
-          >
-            See all plans
-            <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
-        </div>
-      </section>
-      <ScreenHR />
-    </>
-  );
+      {/* ── FAQ (shared landing design; mirrors layout FAQPage JSON-LD) ──── */}
+      {faq && faq.length > 0 && <HomeFaq items={faq} />}
+    </div>
+  )
 }

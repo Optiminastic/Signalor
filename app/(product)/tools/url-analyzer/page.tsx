@@ -2,8 +2,8 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import { ToolPage } from '@/features/site/components/tools/tool-page'
+import { URL_ANALYZER_FAQ } from '@/features/site/lib/tool-faqs'
 import { UrlAnalyzerToolInline } from '@/features/site/components/tools/url-analyzer-inline'
 
 export default function UrlAnalyzerToolPage() {
@@ -22,6 +22,7 @@ export default function UrlAnalyzerToolPage() {
         benchmarking, and scheduled weekly or monthly re-analysis to catch score drift.
       </p>
       <ToolPage
+        faq={URL_ANALYZER_FAQ}
         theme="orange"
         eyebrow="[ free tool · url analyzer ]"
         title="Score any URL for"
@@ -48,53 +49,7 @@ export default function UrlAnalyzerToolPage() {
             description: 'Run unlimited audits on public URLs without an account.',
           },
         ]}
-        previewEyebrow="[ what's inside the full report ]"
-        previewTitle="Unlock the full"
-        previewTitleAccent="audit trail"
-        previewDescription="The free summary above shows the headline score, pillar breakdown, and top fix. Sign up or upgrade to see every recommendation, per-engine AI probes, competitor share, and monitoring."
-        previewRows={[
-          { content: <PreviewPerEngine />, locked: true },
-          { content: <PreviewFullFixQueue />, locked: true },
-          { content: <PreviewMonitoring />, locked: true },
-        ]}
       />
-      <RelatedLinks page="/tools/url-analyzer" />
     </MarketingShell>
-  )
-}
-
-function PreviewPerEngine() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Per-engine AI probes</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        ChatGPT, Claude, Gemini, and Perplexity tested against your brand prompts, see every
-        response, mention, and citation.
-      </p>
-    </div>
-  )
-}
-
-function PreviewFullFixQueue() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Full fix queue</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        Every recommendation ranked by projected lift, with ready-to-paste code and one-click
-        auto-fix on Shopify & WordPress.
-      </p>
-    </div>
-  )
-}
-
-function PreviewMonitoring() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Scheduled re-analysis</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        Weekly or monthly re-runs, score history, and competitor benchmarks so you spot drift before
-        it hurts.
-      </p>
-    </div>
   )
 }

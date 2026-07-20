@@ -2,7 +2,6 @@ import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
 import { AboutHero } from '@/features/site/components/landing/about-hero'
 import { AboutSections } from '@/features/site/components/landing/about-sections'
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 
 export default function AboutPage(): JSX.Element {
   return (
@@ -16,7 +15,6 @@ export default function AboutPage(): JSX.Element {
       </p>
       <AboutHero />
       <AboutSections />
-      <RelatedLinks page="/about-us" />
     </MarketingShell>
   )
 }

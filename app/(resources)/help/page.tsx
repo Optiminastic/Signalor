@@ -1,37 +1,38 @@
 import type { Metadata } from 'next'
 
-import { MarketingContent } from '@/features/landing/components/MarketingContent'
+import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-export const metadata: Metadata = {
-  title: 'Help Center',
-  description: 'Find answers fast — getting started, billing, integrations, and support.',
-}
+import { HelpContact } from '@/features/site/components/help/help-contact'
+import { HomeFaq } from '@/features/site/components/landing/home-faq'
+import { GridCornerHandles } from '@/features/site/components/landing/home-grid'
+import { JsonLd } from '@/features/site/components/seo/json-ld'
+import { HELP_FAQ } from '@/features/site/lib/help-content'
+import { breadcrumbJsonLd, buildMetadata, faqJsonLd } from '@/features/site/lib/seo'
+
+export const metadata: Metadata = buildMetadata({
+  title: 'Help & Support',
+  description:
+    'Get support for SignalorAI, contact sales, reach the team, and find answers on getting started, billing, integrations, and onboarding.',
+  path: '/help',
+})
 
 export default function HelpPage(): JSX.Element {
   return (
-    <MarketingContent
-      eyebrow="Help Center"
-      title="Find answers fast"
-      subtitle="Guides for the questions that come up most — and a direct line to us when you need a human."
-      cta={{ label: 'Contact support', href: '/contact-sales' }}
-      sections={[
-        {
-          heading: 'Getting started',
-          body: 'Set up your brand, run your first analysis, and understand what each part of the dashboard is telling you.',
-        },
-        {
-          heading: 'Billing & plans',
-          body: 'How plans, project limits, and engine coverage work, plus how to upgrade, downgrade, or manage your subscription.',
-        },
-        {
-          heading: 'Integrations',
-          body: 'Fixes for common connection issues with Shopify, WordPress, GitHub, and Google Analytics.',
-        },
-        {
-          heading: 'Still stuck?',
-          body: 'Reach out and a real person on the team will help — we usually reply the same working day.',
-        },
-      ]}
-    />
+    <MarketingShell>
+      <JsonLd
+        id="ld-help-breadcrumb"
+        data={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'Help', path: '/help' },
+        ])}
+      />
+      <JsonLd id="ld-help-faq" data={faqJsonLd(HELP_FAQ)} />
+
+      <div className="border-border relative mx-auto max-w-6xl border-x">
+        <GridCornerHandles top bottom />
+        <HelpContact />
+        <HomeFaq items={HELP_FAQ} />
+      </div>
+    </MarketingShell>
   )
 }

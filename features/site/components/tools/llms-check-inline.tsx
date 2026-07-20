@@ -1,86 +1,93 @@
-"use client";
+'use client'
 
-import { useCallback, useState } from "react";
-import { ArrowRight, CircleCheck, CircleX, Globe, Loader2, MinusCircle } from "@/features/site/components/icons";
+import { useCallback, useState } from 'react'
+import {
+  ArrowRight,
+  CircleCheck,
+  CircleX,
+  Globe,
+  Loader2,
+  MinusCircle,
+} from '@/features/site/components/icons'
 
-import { Button } from "@/features/site/components/ui/button";
-import { ToolGateCard } from "@/features/site/components/tools/tool-gate-card";
-import { cn } from "@/features/site/lib/utils";
+import { Button } from '@/features/site/components/ui/button'
+import { ToolGateCard } from '@/features/site/components/tools/tool-gate-card'
+import { cn } from '@/features/site/lib/utils'
 
 interface LlmsResult {
-  domain: string;
-  llmsTxt: { present: boolean; sections: number };
+  domain: string
+  llmsTxt: { present: boolean; sections: number }
   robots: {
-    present: boolean;
-    aiBots: Array<{ bot: string; allowed: boolean | null }>;
-  };
+    present: boolean
+    aiBots: Array<{ bot: string; allowed: boolean | null }>
+  }
   page: {
-    ok: boolean;
-    title: string | null;
-    description: string | null;
-    hasOrganizationSchema: boolean;
-    hasOgTags: boolean;
-    hasCanonical: boolean;
-    sitemapReachable: boolean;
-  };
-  score: number;
+    ok: boolean
+    title: string | null
+    description: string | null
+    hasOrganizationSchema: boolean
+    hasOgTags: boolean
+    hasCanonical: boolean
+    sitemapReachable: boolean
+  }
+  score: number
 }
 
 type State =
-  | { kind: "idle" }
-  | { kind: "running" }
-  | { kind: "done"; data: LlmsResult }
-  | { kind: "error"; message: string };
+  | { kind: 'idle' }
+  | { kind: 'running' }
+  | { kind: 'done'; data: LlmsResult }
+  | { kind: 'error'; message: string }
 
 export function LlmsCheckInline() {
-  const [url, setUrl] = useState("");
-  const [state, setState] = useState<State>({ kind: "idle" });
+  const [url, setUrl] = useState('')
+  const [state, setState] = useState<State>({ kind: 'idle' })
 
   const submit = useCallback(
     async (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!url.trim()) return;
-      setState({ kind: "running" });
+      e.preventDefault()
+      if (!url.trim()) return
+      setState({ kind: 'running' })
       try {
-        const res = await fetch("/api/tools/llms-check", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const res = await fetch('/api/tools/llms-check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url }),
-        });
-        const data = await res.json();
+        })
+        const data = await res.json()
         if (!res.ok) {
-          setState({ kind: "error", message: data.error ?? "Check failed." });
-          return;
+          setState({ kind: 'error', message: data.error ?? 'Check failed.' })
+          return
         }
-        setState({ kind: "done", data: data as LlmsResult });
+        setState({ kind: 'done', data: data as LlmsResult })
       } catch {
-        setState({ kind: "error", message: "Couldn't reach the server. Try again." });
+        setState({ kind: 'error', message: "Couldn't reach the server. Try again." })
       }
     },
     [url],
-  );
+  )
 
   return (
     <div className="w-full">
       <form
         onSubmit={submit}
-        className="flex w-full items-center gap-2 rounded-none border border-primary/25 bg-white p-1.5 shadow-sm"
+        className="bg-card ring-border focus-within:ring-primary/50 flex w-full items-center gap-2 rounded-md p-1.5 shadow-sm ring-1 shadow-black/5 focus-within:ring-2"
       >
-        <Globe className="ml-2 h-4 w-4 text-muted-foreground" aria-hidden />
+        <Globe className="text-muted-foreground ml-2 h-4 w-4" aria-hidden />
         <input
           type="text"
           placeholder="Enter your domain (e.g. signalor.ai)"
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          disabled={state.kind === "running"}
-          className="min-w-0 flex-1 bg-transparent px-2 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:opacity-60"
+          onChange={e => setUrl(e.target.value)}
+          disabled={state.kind === 'running'}
+          className="text-foreground placeholder:text-muted-foreground min-w-0 flex-1 bg-transparent px-2 py-2 text-sm focus:outline-none disabled:opacity-60"
         />
         <Button
           type="submit"
-          disabled={!url.trim() || state.kind === "running"}
-          className="shrink-0 rounded-none bg-primary px-4 text-xs font-semibold text-white hover:brightness-110"
+          disabled={!url.trim() || state.kind === 'running'}
+          className="bg-primary shrink-0 rounded-md px-4 text-xs font-semibold text-white hover:brightness-110"
         >
-          {state.kind === "running" ? (
+          {state.kind === 'running' ? (
             <>
               <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
               Checking
@@ -94,46 +101,46 @@ export function LlmsCheckInline() {
         </Button>
       </form>
 
-      {state.kind === "running" && (
-        <div className="mt-5 rounded-none border border-black/6 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-2 text-sm text-foreground">
-            <Loader2 className="h-4 w-4 animate-spin text-primary" />
+      {state.kind === 'running' && (
+        <div className="bg-card ring-border mt-5 rounded-xl border border-transparent p-5 shadow-sm ring-1 shadow-black/6.5">
+          <div className="text-foreground flex items-center gap-2 text-sm">
+            <Loader2 className="text-primary h-4 w-4 animate-spin" />
             Checking llms.txt, robots.txt, sitemap, and homepage signals…
           </div>
         </div>
       )}
 
-      {state.kind === "error" && (
-        <div className="mt-5 rounded-none border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+      {state.kind === 'error' && (
+        <div className="border-destructive/30 bg-destructive/10 text-destructive mt-5 rounded-xl border p-4 text-sm">
           {state.message}
         </div>
       )}
 
-      {state.kind === "done" && (
-        <ResultView data={state.data} onReset={() => setState({ kind: "idle" })} />
+      {state.kind === 'done' && (
+        <ResultView data={state.data} onReset={() => setState({ kind: 'idle' })} />
       )}
     </div>
-  );
+  )
 }
 
 function scoreTone(v: number) {
-  if (v >= 80) return "text-success";
-  if (v >= 60) return "text-warning";
-  if (v >= 40) return "text-orange-600";
-  return "text-destructive";
+  if (v >= 80) return 'text-success'
+  if (v >= 60) return 'text-warning'
+  if (v >= 40) return 'text-orange-600'
+  return 'text-destructive'
 }
 
 function BotChip({ bot, allowed }: { bot: string; allowed: boolean | null }) {
   const tone =
     allowed === true
-      ? "border-success/30 bg-success/10 text-success"
+      ? 'border-success/30 bg-success/10 text-success'
       : allowed === false
-        ? "border-destructive/30 bg-destructive/10 text-destructive"
-        : "border-border bg-muted text-muted-foreground";
+        ? 'border-destructive/30 bg-destructive/10 text-destructive'
+        : 'border-border bg-muted text-muted-foreground'
   return (
     <div
       className={cn(
-        "flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium",
+        'flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium',
         tone,
       )}
     >
@@ -142,45 +149,45 @@ function BotChip({ bot, allowed }: { bot: string; allowed: boolean | null }) {
       {allowed === null && <MinusCircle className="h-3 w-3" />}
       <span>{bot}</span>
     </div>
-  );
+  )
 }
 
 function SignalRow({ ok, label, detail }: { ok: boolean; label: string; detail?: string }) {
   return (
     <li className="flex items-start gap-3 py-2.5">
       {ok ? (
-        <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+        <CircleCheck className="text-success mt-0.5 h-4 w-4 shrink-0" />
       ) : (
-        <CircleX className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+        <CircleX className="text-destructive mt-0.5 h-4 w-4 shrink-0" />
       )}
       <div className="min-w-0 flex-1">
-        <p className="text-[13px] font-semibold text-foreground">{label}</p>
-        {detail && <p className="mt-0.5 text-xs text-muted-foreground">{detail}</p>}
+        <p className="text-foreground text-[13px] font-semibold">{label}</p>
+        {detail && <p className="text-muted-foreground mt-0.5 text-xs">{detail}</p>}
       </div>
     </li>
-  );
+  )
 }
 
 function ResultView({ data, onReset }: { data: LlmsResult; onReset: () => void }) {
   return (
     <div className="mt-6 space-y-4">
       {/* Score card */}
-      <div className="rounded-none border border-black/6 bg-white p-5 shadow-sm">
+      <div className="bg-card ring-border rounded-xl border border-transparent p-5 shadow-sm ring-1 shadow-black/6.5">
         <div className="flex items-start justify-between gap-6">
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+            <p className="text-muted-foreground text-[11px] font-semibold tracking-wide uppercase">
               AI readiness
             </p>
-            <p className="mt-1 text-4xl font-bold tabular-nums tracking-tight">
+            <p className="mt-1 text-4xl font-bold tracking-tight tabular-nums">
               <span className={scoreTone(data.score)}>{data.score}</span>
-              <span className="text-xl font-semibold text-muted-foreground">/100</span>
+              <span className="text-muted-foreground text-xl font-semibold">/100</span>
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">{data.domain}</p>
+            <p className="text-muted-foreground mt-1 text-xs">{data.domain}</p>
           </div>
           <button
             type="button"
             onClick={onReset}
-            className="shrink-0 text-[11px] font-semibold text-muted-foreground underline-offset-4 hover:underline"
+            className="text-muted-foreground shrink-0 text-[11px] font-semibold underline-offset-4 hover:underline"
           >
             Check another domain
           </button>
@@ -188,52 +195,52 @@ function ResultView({ data, onReset }: { data: LlmsResult; onReset: () => void }
       </div>
 
       {/* AI bot access */}
-      <div className="rounded-none border border-black/6 bg-white p-5 shadow-sm">
-        <p className="text-sm font-semibold text-foreground">AI crawler access (robots.txt)</p>
-        <p className="mt-1 text-xs text-muted-foreground">
+      <div className="bg-card ring-border rounded-xl border border-transparent p-5 shadow-sm ring-1 shadow-black/6.5">
+        <p className="text-foreground text-sm font-semibold">AI crawler access (robots.txt)</p>
+        <p className="text-muted-foreground mt-1 text-xs">
           {data.robots.present
-            ? "Green = explicitly allowed · Red = disallowed · Gray = no rule (default allow)."
-            : "No robots.txt found, bots will crawl by default."}
+            ? 'Green = explicitly allowed · Red = disallowed · Gray = no rule (default allow).'
+            : 'No robots.txt found, bots will crawl by default.'}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           {data.robots.aiBots.length === 0 ? (
-            <p className="text-xs text-muted-foreground">No rules to display.</p>
+            <p className="text-muted-foreground text-xs">No rules to display.</p>
           ) : (
-            data.robots.aiBots.map((b) => <BotChip key={b.bot} bot={b.bot} allowed={b.allowed} />)
+            data.robots.aiBots.map(b => <BotChip key={b.bot} bot={b.bot} allowed={b.allowed} />)
           )}
         </div>
       </div>
 
       {/* Page signals */}
-      <div className="rounded-none border border-black/6 bg-white p-5 shadow-sm">
-        <p className="text-sm font-semibold text-foreground">LLM-readable signals</p>
+      <div className="bg-card ring-border rounded-xl border border-transparent p-5 shadow-sm ring-1 shadow-black/6.5">
+        <p className="text-foreground text-sm font-semibold">LLM-readable signals</p>
         <ul className="mt-3 divide-y divide-black/6">
           <SignalRow
             ok={data.llmsTxt.present}
             label="llms.txt manifest"
             detail={
               data.llmsTxt.present
-                ? `Present · ${data.llmsTxt.sections} section${data.llmsTxt.sections === 1 ? "" : "s"}`
+                ? `Present · ${data.llmsTxt.sections} section${data.llmsTxt.sections === 1 ? '' : 's'}`
                 : "Not published, LLMs can't read a guided index of your content."
             }
           />
           <SignalRow
             ok={!!data.page.title}
             label="<title> tag"
-            detail={data.page.title ?? "Missing, add a descriptive title."}
+            detail={data.page.title ?? 'Missing, add a descriptive title.'}
           />
           <SignalRow
             ok={!!data.page.description}
             label="Meta description"
-            detail={data.page.description ?? "Missing, AI models often cite this directly."}
+            detail={data.page.description ?? 'Missing, AI models often cite this directly.'}
           />
           <SignalRow
             ok={data.page.hasOrganizationSchema}
             label="Organization schema"
             detail={
               data.page.hasOrganizationSchema
-                ? "Detected, AI engines can identify your brand."
-                : "Missing, add Organization JSON-LD to make the brand identifiable."
+                ? 'Detected, AI engines can identify your brand.'
+                : 'Missing, add Organization JSON-LD to make the brand identifiable.'
             }
           />
           <SignalRow ok={data.page.hasOgTags} label="Open Graph tags" />
@@ -250,5 +257,5 @@ function ResultView({ data, onReset }: { data: LlmsResult; onReset: () => void }
         signedInActiveLabel="Open dashboard"
       />
     </div>
-  );
+  )
 }

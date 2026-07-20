@@ -8,6 +8,7 @@ import {
   faqJsonLd,
   SITE_URL,
 } from '@/features/site/lib/seo'
+import { DOMAIN_RATING_FAQ } from '@/features/site/lib/tool-faqs'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Free Domain Rating (DR) Checker & Authority Score',
@@ -32,29 +33,6 @@ export const metadata: Metadata = buildMetadata({
     'domain trust score',
   ],
 })
-
-const FAQ = [
-  {
-    question: 'What is Domain Rating (DR)?',
-    answer:
-      "Domain Rating is a 0-100 score that reflects the strength of a website's backlink profile, the quantity and quality of other sites linking to it. A higher DR generally means more authoritative inbound links, which search engines and AI engines weigh when deciding which sources to trust and cite.",
-  },
-  {
-    question: 'How is the Domain Rating calculated?',
-    answer:
-      'The checker sources open backlink data (built on Common Crawl, the same basis as popular DR-style metrics) and normalizes it to a familiar 0-100 Domain Rating. It reflects how many authoritative sites link to the domain.',
-  },
-  {
-    question: 'What is the global rank?',
-    answer:
-      "Global rank is the domain's worldwide position by authority, where #1 is the strongest. It's a quick way to gauge how a domain compares against the rest of the web, lower numbers mean more authority.",
-  },
-  {
-    question: 'Does a high Domain Rating guarantee AI citations?',
-    answer:
-      "No. Backlink authority is one off-page trust signal among many. Earning AI citations also requires strong content quality, clear entity definitions, schema, and topical authority, all areas SignalorAI's full GEO audit covers.",
-  },
-]
 
 const domainRatingJsonLd = {
   '@context': 'https://schema.org',
@@ -88,7 +66,7 @@ export default function DomainRatingLayout({ children }: { children: React.React
         ])}
       />
       <JsonLd id="ld-domain-rating-tool" data={domainRatingJsonLd} />
-      <JsonLd id="ld-domain-rating-faq" data={faqJsonLd(FAQ)} />
+      <JsonLd id="ld-domain-rating-faq" data={faqJsonLd(DOMAIN_RATING_FAQ)} />
       {children}
     </>
   )

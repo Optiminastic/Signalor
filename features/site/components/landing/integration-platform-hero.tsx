@@ -1,32 +1,29 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import { Breadcrumbs } from "@/features/site/components/seo/breadcrumbs";
-
-import { HeroBackgroundGrid } from "@/features/site/components/landing/hero-background-grid";
+import Image from 'next/image'
+import { Breadcrumbs } from '@/features/site/components/seo/breadcrumbs'
 
 export type IntegrationPlatformCopy = {
-  title: string;
-  headline: string;
-  subhead: string;
-  bullets: readonly string[];
-};
+  title: string
+  headline: string
+  subhead: string
+  bullets: readonly string[]
+}
 
 export function IntegrationPlatformHero({
   copy,
   logoSrc,
 }: {
-  copy: IntegrationPlatformCopy;
-  logoSrc: string;
+  copy: IntegrationPlatformCopy
+  logoSrc: string
 }) {
   return (
-    <section className="relative bg-background px-6 pb-14 pt-14 lg:px-12 lg:pb-20 lg:pt-16">
-      <HeroBackgroundGrid spotlight={false} />
+    <section className="bg-background relative px-6 pt-14 pb-14 lg:px-12 lg:pt-16 lg:pb-20">
       <div className="relative z-10 mx-auto max-w-3xl">
         <Breadcrumbs
           items={[
-            { name: "Home", href: "/" },
-            { name: "Integrations", href: "/integration" },
+            { name: 'Home', href: '/' },
+            { name: 'Integrations', href: '/integration' },
             { name: copy.title },
           ]}
         />
@@ -41,29 +38,29 @@ export function IntegrationPlatformHero({
             />
           </span>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <p className="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
               Integration
             </p>
-            <h1 className="mt-1 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h1 className="text-foreground mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
               {copy.headline}
             </h1>
           </div>
         </div>
-        <p className="mt-5 text-base font-light leading-relaxed text-muted-foreground sm:text-lg">
+        <p className="text-muted-foreground mt-5 text-base leading-relaxed font-light sm:text-lg">
           {copy.subhead}
         </p>
         <ul className="mt-8 space-y-3 border-t border-black/8 pt-8">
-          {copy.bullets.map((line) => (
+          {copy.bullets.map(line => (
             <li
               key={line}
-              className="flex gap-3 text-sm leading-relaxed text-foreground sm:text-sm"
+              className="text-foreground flex gap-3 text-sm leading-relaxed sm:text-sm"
             >
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
+              <span className="bg-primary mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden />
               {line}
             </li>
           ))}
         </ul>
       </div>
     </section>
-  );
+  )
 }

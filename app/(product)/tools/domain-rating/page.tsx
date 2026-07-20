@@ -2,9 +2,9 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import { DomainRatingInline } from '@/features/site/components/tools/domain-rating-inline'
 import { ToolPage } from '@/features/site/components/tools/tool-page'
+import { DOMAIN_RATING_FAQ } from '@/features/site/lib/tool-faqs'
 
 export default function DomainRatingToolPage() {
   return (
@@ -18,9 +18,9 @@ export default function DomainRatingToolPage() {
         account required.
       </p>
       <ToolPage
+        faq={DOMAIN_RATING_FAQ}
         theme="blue"
         eyebrow="[ free tool · domain rating ]"
-        eyebrowClassName="text-muted-foreground"
         title="Check the authority of"
         titleAccent="any domain"
         description="Enter a domain and we'll return its Domain Rating (0-100), free, no sign-up."
@@ -43,38 +43,7 @@ export default function DomainRatingToolPage() {
           },
           { title: 'Free forever', description: 'Run unlimited domain checks without an account.' },
         ]}
-        previewEyebrow="[ what's inside the full report ]"
-        previewTitle="Go beyond a snapshot ,"
-        previewTitleAccent="track it over time"
-        previewDescription="The free tool shows a point-in-time authority snapshot. Sign up or upgrade to track Domain Rating growth over time and benchmark against competitors."
-        previewRows={[
-          { content: <PreviewBacklinkHistory />, locked: true },
-          { content: <PreviewCompetitorBenchmark />, locked: true },
-        ]}
       />
-      <RelatedLinks page="/tools/domain-rating" />
     </MarketingShell>
-  )
-}
-
-function PreviewBacklinkHistory() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Backlink & DR history</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        Week-over-week Domain Rating, new vs. lost backlinks, and referring-domain growth trends.
-      </p>
-    </div>
-  )
-}
-
-function PreviewCompetitorBenchmark() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Competitor authority benchmark</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        Compare your Domain Rating and referring domains against rivals to find link gaps to close.
-      </p>
-    </div>
   )
 }

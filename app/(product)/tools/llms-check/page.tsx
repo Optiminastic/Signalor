@@ -2,9 +2,9 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import { LlmsCheckInline } from '@/features/site/components/tools/llms-check-inline'
 import { ToolPage } from '@/features/site/components/tools/tool-page'
+import { LLMS_CHECK_FAQ } from '@/features/site/lib/tool-faqs'
 
 export default function LlmsCheckToolPage() {
   return (
@@ -22,6 +22,7 @@ export default function LlmsCheckToolPage() {
         adds live probes that show exactly how each AI engine describes and cites your brand.
       </p>
       <ToolPage
+        faq={LLMS_CHECK_FAQ}
         theme="blue"
         eyebrow="[ free tool · llm checker ]"
         title="See if AI can find and cite"
@@ -47,39 +48,7 @@ export default function LlmsCheckToolPage() {
           },
           { title: 'Free forever', description: 'Run unlimited checks without an account.' },
         ]}
-        previewEyebrow="[ what's inside the full report ]"
-        previewTitle="Go beyond readiness ,"
-        previewTitleAccent="real AI probes"
-        previewDescription="The free tool shows crawlability and schema signals. Sign up or upgrade to run live probes across ChatGPT, Claude, Gemini, and Perplexity."
-        previewRows={[
-          { content: <PreviewOtherEngines />, locked: true },
-          { content: <PreviewSentiment />, locked: true },
-        ]}
       />
-      <RelatedLinks page="/tools/llms-check" />
     </MarketingShell>
-  )
-}
-
-function PreviewOtherEngines() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Live AI probes · 4 engines</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        See how ChatGPT, Claude, Gemini, and Perplexity actually describe your brand, with
-        paraphrase & citation tagging per line.
-      </p>
-    </div>
-  )
-}
-
-function PreviewSentiment() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Sentiment + prompt trend</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        Week-over-week sentiment delta and the prompts that drove the biggest shifts.
-      </p>
-    </div>
   )
 }

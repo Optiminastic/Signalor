@@ -7,7 +7,6 @@ import { ForBrandsPricing } from '@/features/site/components/landing/for-brands-
 import { ForBrandsSections } from '@/features/site/components/landing/for-brands-sections'
 import { HomeFaq } from '@/features/site/components/landing/home-faq'
 import { JsonLd } from '@/features/site/components/seo/json-ld'
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import { FOR_BRANDS_FAQ } from '@/features/site/lib/landing-for-brands-content'
 import { breadcrumbJsonLd, buildMetadata, faqJsonLd } from '@/features/site/lib/seo'
 
@@ -43,7 +42,6 @@ export default function ForBrandsPage(): JSX.Element {
       <div className="border-border mx-auto max-w-6xl border-x">
         <HomeFaq items={[...FOR_BRANDS_FAQ]} />
       </div>
-      <RelatedLinks page="/for-brands" />
     </MarketingShell>
   )
 }

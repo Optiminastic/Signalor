@@ -69,12 +69,12 @@ const LogoComp = ({ size = 36, compact = false, animated = true, className }: Lo
           hydration mismatches from browser translation/extensions rewriting these
           short text nodes (e.g. "AI") — see issue #19. */}
       <span suppressHydrationWarning>SignalorAI</span>
-      <span className="text-primary rounded-full" suppressHydrationWarning>
+      {/* <span className="text-primary rounded-full" suppressHydrationWarning>
         .
       </span>
       <span className="font-semibold" suppressHydrationWarning>
         AI
-      </span>
+      </span> */}
     </div>
   )
 }

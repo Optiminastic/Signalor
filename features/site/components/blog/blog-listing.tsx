@@ -4,7 +4,13 @@ import { useMemo, useState } from 'react'
 
 import { BlogPostCard } from '@/features/site/components/blog/blog-post-card'
 import { FeaturedBlogCard } from '@/features/site/components/blog/featured-blog-card'
-import { BLOG_CATEGORIES, type BlogCategory } from '@/features/site/lib/landing-blog-content'
+import { GridCornerHandles } from '@/features/site/components/landing/home-grid'
+import { HomeFaq } from '@/features/site/components/landing/home-faq'
+import {
+  BLOG_CATEGORIES,
+  BLOG_FAQ,
+  type BlogCategory,
+} from '@/features/site/lib/landing-blog-content'
 import { cn } from '@/features/site/lib/utils'
 import type { SanityBlogPost } from '@/features/site/sanity/lib/queries'
 
@@ -30,68 +36,93 @@ export function BlogListing({ posts }: BlogListingProps): React.ReactElement {
   const rest = filtered.slice(FEATURED_COUNT)
 
   return (
-    <section className="bg-background px-6 pt-20 pb-24 lg:px-8 lg:pt-28">
-      <div className="mx-auto max-w-6xl">
-        {/* ─── Header ────────────────────────────────────────────────── */}
-        <p className="text-muted-foreground text-sm">Blog</p>
-        <h1 className="text-foreground/80 mt-3 max-w-2xl text-4xl leading-[1.1] font-medium tracking-tight sm:text-5xl">
-          News, insights and more from <span className="text-foreground font-bold">SignalorAI</span>
-        </h1>
+    <section className="@container">
+      {/* Hairline-grid frame — 1px vertical rails run the full height of the
+          page, with square handles marking every rail/rule intersection. */}
+      <div className="border-border relative mx-auto max-w-5xl border-x">
+        <GridCornerHandles top bottom />
 
-        {/* ─── Category filters ──────────────────────────────────────── */}
-        <div className="mt-10 flex flex-wrap items-center gap-1.5">
-          {FILTERS.map(filter => {
-            const isActive = filter === active
-            return (
-              <button
-                key={filter}
-                type="button"
-                onClick={() => setActive(filter)}
-                aria-pressed={isActive}
-                className={cn(
-                  'rounded-full px-4 py-1.5 text-sm font-medium transition',
-                  isActive
-                    ? 'text-foreground border border-black/10 bg-white shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground',
-                )}
-              >
-                {filter}
-              </button>
-            )
-          })}
+        {/* ─── Header ──────────────────────────────────────────────────── */}
+        <div className="px-6 pt-16 pb-10 md:pt-24">
+          <div className="max-w-md">
+            <span className="text-muted-foreground">Blog</span>
+            <h1 className="text-muted-foreground mt-4 text-4xl font-semibold text-balance">
+              News, insights and more from{' '}
+              <strong className="text-foreground font-semibold">SignalorAI</strong>
+            </h1>
+          </div>
+
+          {/* ─── Category filters ──────────────────────────────────────── */}
+          <div className="mt-12 -ml-0.5 flex justify-between gap-4 max-md:-mx-6 md:mt-16">
+            <div className="-ml-0.5 flex snap-x snap-mandatory overflow-x-auto py-3 max-md:px-6">
+              {FILTERS.map(filter => {
+                const isActive = filter === active
+                return (
+                  <button
+                    key={filter}
+                    type="button"
+                    onClick={() => setActive(filter)}
+                    aria-pressed={isActive}
+                    className="text-muted-foreground group snap-center px-1"
+                  >
+                    <span
+                      className={cn(
+                        'flex w-fit items-center gap-2 rounded-md px-3 py-1 text-sm transition-colors',
+                        isActive
+                          ? 'bg-card ring-border text-primary font-medium shadow-sm ring-1 shadow-black/6.5'
+                          : 'hover:text-foreground group-hover:bg-foreground/5',
+                      )}
+                    >
+                      <span className="capitalize">{filter}</span>
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
         </div>
 
         {filtered.length === 0 ? (
-          <div className="mt-20 text-center">
-            <p className="text-foreground text-2xl font-bold tracking-tight">No posts yet</p>
+          <div className="border-border relative border-t px-6 py-20 text-center">
+            <GridCornerHandles top />
+            <p className="text-foreground text-xl font-semibold">No posts yet</p>
             <p className="text-muted-foreground mt-2 text-sm">
               Check back soon, posts will appear here once published.
             </p>
           </div>
         ) : (
           <>
-            {/* ─── Featured ────────────────────────────────────────── */}
+            {/* ─── Featured ──────────────────────────────────────────── */}
             {featured.length > 0 && (
-              <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2">
-                {featured.map(post => (
-                  <FeaturedBlogCard key={post.slug} post={post} />
-                ))}
+              <div className="border-border relative border-t px-6 py-12 md:py-16">
+                <GridCornerHandles top />
+                <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:gap-12">
+                  {featured.map(post => (
+                    <FeaturedBlogCard key={post.slug} post={post} />
+                  ))}
+                </div>
               </div>
             )}
 
-            {/* ─── More articles ───────────────────────────────────── */}
+            {/* ─── More articles ─────────────────────────────────────── */}
             {rest.length > 0 && (
-              <div className="mt-24">
-                <h2 className="text-foreground text-2xl font-bold tracking-tight">More Articles</h2>
-                <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-                  {rest.map(post => (
-                    <BlogPostCard key={post.slug} post={post} />
-                  ))}
+              <div className="border-border relative border-t px-6 py-12 md:py-16">
+                <GridCornerHandles top />
+                <div className="space-y-8">
+                  <h2 className="text-foreground text-2xl font-semibold">More Articles</h2>
+                  <div className="grid gap-6 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 lg:grid-cols-3">
+                    {rest.map(post => (
+                      <BlogPostCard key={post.slug} post={post} />
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
           </>
         )}
+
+        {/* ─── FAQ (shared landing design) ───────────────────────────── */}
+        <HomeFaq items={BLOG_FAQ} />
       </div>
     </section>
   )

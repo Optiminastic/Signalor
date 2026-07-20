@@ -6,7 +6,6 @@ import { LandingFaq } from '@/features/site/components/landing/landing-faq'
 import { PromptTrackingFeaturesGrid } from '@/features/site/components/landing/prompt-tracking-features-grid'
 import { PromptTrackingHero } from '@/features/site/components/landing/prompt-tracking-hero'
 import { PromptTrackingWhySection } from '@/features/site/components/landing/prompt-tracking-why-section'
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import {
   CONTENT_SIGNALS_CAPABILITY_ROWS,
   CONTENT_SIGNALS_FAQ,
@@ -60,7 +59,6 @@ export default function ContentSignalsPage() {
         description="How SignalorAI grades structure, schema, and trust on your site."
         items={[...CONTENT_SIGNALS_FAQ]}
       />
-      <RelatedLinks page="/ai-visibility" />
     </MarketingShell>
   )
 }

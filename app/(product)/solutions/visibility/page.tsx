@@ -22,7 +22,6 @@ import {
 } from '@/features/site/components/icons'
 import { LandingFaq } from '@/features/site/components/landing/landing-faq'
 import { JsonLd } from '@/features/site/components/seo/json-ld'
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import {
   SolutionsBenefitsList,
   SolutionsBottomCTA,
@@ -449,8 +448,6 @@ export default function VisibilitySolutionPage() {
         primaryCta={{ label: 'Start free analysis', href: '/sign-up' }}
         secondaryCta={{ label: 'See pricing', href: '/pricing' }}
       />
-
-      <RelatedLinks page="/solutions/visibility" />
     </MarketingShell>
   )
 }

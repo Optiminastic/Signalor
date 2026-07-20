@@ -8,6 +8,7 @@ import {
   faqJsonLd,
   SITE_URL,
 } from '@/features/site/lib/seo'
+import { LLMS_CHECK_FAQ } from '@/features/site/lib/tool-faqs'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Free llms.txt Checker & LLM Readiness Score',
@@ -32,29 +33,6 @@ export const metadata: Metadata = buildMetadata({
     'free AI readiness tool',
   ],
 })
-
-const FAQ = [
-  {
-    question: 'What is llms.txt and why does it matter?',
-    answer:
-      'llms.txt is a plain-text manifest that tells AI models which pages contain your most important content, similar to how robots.txt guides search crawlers. Publishing a well-structured llms.txt helps ChatGPT, Claude, and other language models locate your best content faster and increases the chance of accurate citations.',
-  },
-  {
-    question: 'Which AI crawlers are checked in robots.txt?',
-    answer:
-      'The checker parses robots.txt for GPTBot (ChatGPT), ClaudeBot (Claude / Anthropic), PerplexityBot (Perplexity), Google-Extended (Google AI Overviews / Gemini), OAI-SearchBot, and other known LLM user-agent strings. Blocked crawlers can silently prevent AI citations even when your content is excellent.',
-  },
-  {
-    question: 'What on-page signals does the LLM checker verify?',
-    answer:
-      'The checker scans for Organization schema, Article schema, canonical tags, Open Graph metadata, title and meta description presence, sitemap reachability, and HTTPS enforcement, the signals AI systems rely on to establish trust before citing a page.',
-  },
-  {
-    question: 'Does passing the LLM check guarantee AI citations?',
-    answer:
-      "It removes the technical blockers that silently prevent AI engines from reading and citing your content. Earning citations also requires strong content quality, topical authority, and clear entity definitions, all areas SignalorAI's full GEO audit covers.",
-  },
-]
 
 const llmsCheckJsonLd = {
   '@context': 'https://schema.org',
@@ -88,7 +66,7 @@ export default function LlmsCheckLayout({ children }: { children: React.ReactNod
         ])}
       />
       <JsonLd id="ld-llms-check-tool" data={llmsCheckJsonLd} />
-      <JsonLd id="ld-llms-check-faq" data={faqJsonLd(FAQ)} />
+      <JsonLd id="ld-llms-check-faq" data={faqJsonLd(LLMS_CHECK_FAQ)} />
       {children}
     </>
   )
