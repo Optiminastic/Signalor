@@ -2,9 +2,9 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import { SchemaValidatorInline } from '@/features/site/components/tools/schema-validator-inline'
 import { ToolPage } from '@/features/site/components/tools/tool-page'
+import { SCHEMA_VALIDATOR_FAQ } from '@/features/site/lib/tool-faqs'
 
 export default function SchemaValidatorToolPage() {
   return (
@@ -22,6 +22,7 @@ export default function SchemaValidatorToolPage() {
         template and ready-to-paste JSON-LD fix snippets ranked by projected GEO score improvement.
       </p>
       <ToolPage
+        faq={SCHEMA_VALIDATOR_FAQ}
         theme="violet"
         eyebrow="[ free tool · schema validator ]"
         title="Check JSON-LD coverage in"
@@ -50,39 +51,7 @@ export default function SchemaValidatorToolPage() {
               'Download a JSON summary of all findings for your engineering or SEO team.',
           },
         ]}
-        previewEyebrow="[ what's inside the full report ]"
-        previewTitle="Unlock"
-        previewTitleAccent="site-wide coverage"
-        previewDescription="The free scan shows one URL. Sign up or upgrade to scan every URL, roll up coverage per template, and get ready-to-paste fix snippets."
-        previewRows={[
-          { content: <PreviewSiteRollup />, locked: true },
-          { content: <PreviewFixSuggestions />, locked: true },
-        ]}
       />
-      <RelatedLinks page="/tools/schema-validator" />
     </MarketingShell>
-  )
-}
-
-function PreviewSiteRollup() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Site-wide coverage</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        Roll-up per template: which URLs ship Organization, which are missing Product, where FAQ is
-        inconsistent.
-      </p>
-    </div>
-  )
-}
-
-function PreviewFixSuggestions() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Fix suggestions</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        Ready-to-paste JSON-LD snippets for each missing field, ranked by GEO score impact.
-      </p>
-    </div>
   )
 }

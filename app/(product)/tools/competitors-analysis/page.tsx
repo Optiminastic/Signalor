@@ -2,9 +2,9 @@
 
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import { CompetitorsInline } from '@/features/site/components/tools/competitors-inline'
 import { ToolPage } from '@/features/site/components/tools/tool-page'
+import { COMPETITORS_FAQ } from '@/features/site/lib/tool-faqs'
 
 export default function CompetitorsAnalysisToolPage() {
   return (
@@ -22,6 +22,7 @@ export default function CompetitorsAnalysisToolPage() {
         where rivals are cited but you are not.
       </p>
       <ToolPage
+        faq={COMPETITORS_FAQ}
         theme="emerald"
         eyebrow="[ free tool · competitors analysis ]"
         title="See who wins comparison queries in"
@@ -49,39 +50,7 @@ export default function CompetitorsAnalysisToolPage() {
             description: 'Run unlimited checks on public brands without an account.',
           },
         ]}
-        previewEyebrow="[ what's inside the full report ]"
-        previewTitle="Go beyond search ,"
-        previewTitleAccent="live AI benchmarks"
-        previewDescription="The free tool shows search-autocomplete co-mentions. Sign up or upgrade to benchmark AI citations per engine, per prompt."
-        previewRows={[
-          { content: <PreviewEngineSplit />, locked: true },
-          { content: <PreviewPromptGaps />, locked: true },
-        ]}
       />
-      <RelatedLinks page="/tools/competitors-analysis" />
     </MarketingShell>
-  )
-}
-
-function PreviewEngineSplit() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Per-engine breakdown</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        See who wins on ChatGPT, Claude, Gemini, and Perplexity separately, the engines rarely
-        agree.
-      </p>
-    </div>
-  )
-}
-
-function PreviewPromptGaps() {
-  return (
-    <div>
-      <p className="text-foreground text-sm font-semibold">Prompt-level gaps</p>
-      <p className="text-muted-foreground mt-1 text-xs">
-        Prompts where competitors are cited and you are not, ready to drop into a content brief.
-      </p>
-    </div>
   )
 }

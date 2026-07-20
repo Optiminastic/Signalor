@@ -8,6 +8,7 @@ import {
   faqJsonLd,
   SITE_URL,
 } from '@/features/site/lib/seo'
+import { COMPETITORS_FAQ } from '@/features/site/lib/tool-faqs'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Free AI Competitor Analysis | Who Wins in Your Category',
@@ -32,29 +33,6 @@ export const metadata: Metadata = buildMetadata({
     'free competitor analysis tool',
   ],
 })
-
-const FAQ = [
-  {
-    question: 'How are competitors identified?',
-    answer:
-      "Competitors are discovered from live Google autocomplete queries, the 'vs', 'alternatives to', and 'compared to' phrases real buyers type when evaluating your category. This gives you the rivals that matter in active purchase decisions, not a static CRM list.",
-  },
-  {
-    question: 'What is co-mention frequency?',
-    answer:
-      "Co-mention frequency is how often a competitor appears alongside your brand in buyer comparison searches. A rival that appears in 60% of your brand's comparison queries is a higher-priority target than one appearing in 10%.",
-  },
-  {
-    question: 'How is AI competitor analysis different from traditional SEO competitor tracking?',
-    answer:
-      'Traditional tools track keyword rankings and backlinks. AI competitor analysis tracks which brands generative engines like ChatGPT, Gemini, Perplexity, and Claude actually cite, recommend, and compare when buyers ask category questions, a fundamentally different signal set.',
-  },
-  {
-    question: 'Can I see per-engine AI citation breakdowns?',
-    answer:
-      'The free tool shows search-autocomplete co-mentions. Signing up or upgrading adds per-engine AI citation benchmarks, revealing which rivals win on ChatGPT vs. Gemini vs. Perplexity, since the engines frequently disagree on category leaders.',
-  },
-]
 
 const competitorsToolJsonLd = {
   '@context': 'https://schema.org',
@@ -87,7 +65,7 @@ export default function CompetitorsAnalysisLayout({ children }: { children: Reac
         ])}
       />
       <JsonLd id="ld-competitors-tool" data={competitorsToolJsonLd} />
-      <JsonLd id="ld-competitors-faq" data={faqJsonLd(FAQ)} />
+      <JsonLd id="ld-competitors-faq" data={faqJsonLd(COMPETITORS_FAQ)} />
       {children}
     </>
   )

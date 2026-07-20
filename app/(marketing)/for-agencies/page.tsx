@@ -7,7 +7,6 @@ import { ForAgenciesPricing } from '@/features/site/components/landing/for-agenc
 import { ForAgenciesSections } from '@/features/site/components/landing/for-agencies-sections'
 import { HomeFaq } from '@/features/site/components/landing/home-faq'
 import { JsonLd } from '@/features/site/components/seo/json-ld'
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import { FOR_AGENCIES_FAQ } from '@/features/site/lib/landing-for-agencies-content'
 import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@/features/site/lib/seo'
 
@@ -98,7 +97,6 @@ export default function ForAgenciesPage(): JSX.Element {
       <div className="border-border mx-auto max-w-6xl border-x">
         <HomeFaq items={[...FOR_AGENCIES_FAQ]} />
       </div>
-      {/* <RelatedLinks page="/for-agencies" /> */}
     </MarketingShell>
   )
 }

@@ -6,7 +6,6 @@ import { IntegrationDetailCta } from '@/features/site/components/landing/integra
 import { IntegrationPlatformHero } from '@/features/site/components/landing/integration-platform-hero'
 import { LandingFaq } from '@/features/site/components/landing/landing-faq'
 import { JsonLd } from '@/features/site/components/seo/json-ld'
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import {
   INTEGRATION_DETAIL_FAQ,
   SHOPIFY_INTEGRATION_PAGE,
@@ -48,7 +47,6 @@ export default function ShopifyIntegrationPage() {
         description="Security, tokens, and how Shopify data flows into GEO scoring."
         items={[...INTEGRATION_DETAIL_FAQ]}
       />
-      <RelatedLinks page="/integration/shopify" />
     </MarketingShell>
   )
 }

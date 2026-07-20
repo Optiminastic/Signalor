@@ -1,84 +1,82 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "@/features/site/components/icons";
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight } from '@/features/site/components/icons'
 
-import { Button } from "@/features/site/components/ui/button";
-import { cn } from "@/features/site/lib/utils";
-import { LANDING_PRIMARY_CTA_CLASS } from "@/features/site/components/landing/constants";
-import { HeroBackgroundGrid } from "@/features/site/components/landing/hero-background-grid";
+import { Button } from '@/features/site/components/ui/button'
+import { cn } from '@/features/site/lib/utils'
+import { LANDING_PRIMARY_CTA_CLASS } from '@/features/site/components/landing/constants'
 import {
   PROMPT_TRACKING_HERO,
   PROMPT_TRACKING_HUB_CARDS,
-} from "@/features/site/lib/landing-prompt-tracking-content";
-import type { LucideIcon } from "@/features/site/components/icons";
+} from '@/features/site/lib/landing-prompt-tracking-content'
+import type { LucideIcon } from '@/features/site/components/icons'
 
 type HeroContent = {
-  titleLine1: string;
+  titleLine1: string
   /** @deprecated Legacy "AI" badge text — no longer rendered now that the hero uses a leading icon. */
-  titleBadge?: string;
+  titleBadge?: string
   /** Page-relevant glyph shown alongside the headline as a bare accent icon (no box). */
-  titleIcon?: LucideIcon;
-  titleLine2: string;
-  titleAccent: string;
-  subhead: string;
-  primaryCta: string;
-  secondaryCta: string;
-  footnote: string;
-};
+  titleIcon?: LucideIcon
+  titleLine2: string
+  titleAccent: string
+  subhead: string
+  primaryCta: string
+  secondaryCta: string
+  footnote: string
+}
 type HubCard = {
-  slug: string;
-  href: string;
-  title: string;
-  description: string;
-  Icon: LucideIcon;
+  slug: string
+  href: string
+  title: string
+  description: string
+  Icon: LucideIcon
   /** Optional real brand logo (image path). When set, shown instead of `Icon`. */
-  logo?: string;
-  cta: string;
-};
+  logo?: string
+  cta: string
+}
 
 export function PromptTrackingHero({
   hero = PROMPT_TRACKING_HERO,
   cards = PROMPT_TRACKING_HUB_CARDS,
 }: {
-  hero?: HeroContent;
-  cards?: readonly HubCard[];
+  hero?: HeroContent
+  cards?: readonly HubCard[]
 }) {
-  const h = hero;
-  const TitleIcon = h.titleIcon;
+  const h = hero
+  const TitleIcon = h.titleIcon
   return (
-    <section className="relative bg-background px-6 pb-16 pt-16 lg:px-12 lg:pb-24 lg:pt-20">
-      <HeroBackgroundGrid />
+    <section className="bg-background relative px-6 pt-16 pb-16 lg:px-12 lg:pt-20 lg:pb-24">
       <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:items-center lg:gap-8 xl:gap-12">
-        <div className="relative z-10 min-w-0 max-w-xl text-left lg:max-w-none">
-          <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-[3.25rem] xl:text-6xl">
+        <div className="relative z-10 max-w-xl min-w-0 text-left lg:max-w-none">
+          <h1 className="text-foreground text-4xl leading-[1.08] font-bold tracking-tight sm:text-5xl lg:text-[3.25rem] xl:text-6xl">
             <span className="block">
-              {h.titleLine1}{" "}
+              {h.titleLine1}{' '}
               {TitleIcon ? (
                 <>
                   <TitleIcon
-                    className="inline-block h-8 w-8 align-[-0.18em] text-primary sm:h-9 sm:w-9 lg:h-10 lg:w-10"
+                    className="text-primary inline-block h-8 w-8 align-[-0.18em] sm:h-9 sm:w-9 lg:h-10 lg:w-10"
                     strokeWidth={1.75}
                     aria-hidden
-                  />{" "}
+                  />{' '}
                 </>
               ) : null}
               {h.titleLine2}
             </span>
-            <span className="relative inline-block whitespace-nowrap text-primary">
+            <span className="text-primary relative inline-block whitespace-nowrap">
               {h.titleAccent}
               <span
-                className="absolute -bottom-1 left-0 right-0 border-b-2 border-dashed border-primary/50"
+                className="border-primary/50 absolute right-0 -bottom-1 left-0 border-b-2 border-dashed"
                 aria-hidden
               />
             </span>
           </h1>
 
-          <p className="mt-5 max-w-lg text-base font-light leading-relaxed text-accent-foreground sm:text-lg">
+          <p className="text-accent-foreground mt-5 max-w-lg text-base leading-relaxed font-light sm:text-lg">
             {h.subhead}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button asChild className={cn(LANDING_PRIMARY_CTA_CLASS, "px-5")}>
+            <Button asChild className={cn(LANDING_PRIMARY_CTA_CLASS, 'px-5')}>
               <Link href="/sign-up">
                 {h.primaryCta}
                 <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden />
@@ -89,12 +87,12 @@ export function PromptTrackingHero({
             </Button>
           </div>
 
-          <p className="mt-5 text-xs font-medium text-muted-foreground">{h.footnote}</p>
+          <p className="text-muted-foreground mt-5 text-xs font-medium">{h.footnote}</p>
         </div>
 
         <div className="relative z-10 grid min-w-0 gap-3 sm:grid-cols-2 lg:max-w-xl lg:justify-self-end">
-          {cards.map((card) => {
-            const CardIcon = card.Icon;
+          {cards.map(card => {
+            const CardIcon = card.Icon
             return (
               <Link
                 key={card.slug}
@@ -112,16 +110,16 @@ export function PromptTrackingHero({
                       className="h-6 w-6 object-contain"
                     />
                   ) : (
-                    <CardIcon className="h-5 w-5 text-primary" strokeWidth={1.75} aria-hidden />
+                    <CardIcon className="text-primary h-5 w-5" strokeWidth={1.75} aria-hidden />
                   )}
                 </span>
-                <span className="mt-3 text-lg font-semibold tracking-tight text-foreground">
+                <span className="text-foreground mt-3 text-lg font-semibold tracking-tight">
                   {card.title}
                 </span>
-                <span className="mt-1.5 text-sm font-light leading-snug text-muted-foreground">
+                <span className="text-muted-foreground mt-1.5 text-sm leading-snug font-light">
                   {card.description}
                 </span>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                <span className="text-primary mt-4 inline-flex items-center gap-1 text-sm font-semibold">
                   {card.cta}
                   <ArrowRight
                     className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
@@ -129,10 +127,10 @@ export function PromptTrackingHero({
                   />
                 </span>
               </Link>
-            );
+            )
           })}
         </div>
       </div>
     </section>
-  );
+  )
 }

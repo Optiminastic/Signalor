@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation'
 import { MarketingShell } from '@/features/landing/components/MarketingShell'
 
 import { ArrowLeft, ArrowRight, Clock } from '@/features/site/components/icons'
-import { HeroBackgroundGrid } from '@/features/site/components/landing/hero-background-grid'
 import { JsonLd } from '@/features/site/components/seo/json-ld'
 import { ScreenHR } from '@/features/site/components/ui/intersection-diamonds'
 import type { BlogPost } from '@/features/site/lib/landing-blog-content'
@@ -330,7 +329,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ blog_
 
       {/* ─── Hero ───────────────────────────────────────────────────── */}
       <section className="bg-background relative px-6 pt-14 pb-12 lg:px-12 lg:pt-16 lg:pb-14">
-        <HeroBackgroundGrid />
         <div className="relative z-10 mx-auto max-w-7xl">
           <Link
             href="/blog"

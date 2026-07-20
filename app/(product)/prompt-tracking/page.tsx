@@ -7,7 +7,6 @@ import { PromptTrackingFeaturesGrid } from '@/features/site/components/landing/p
 import { PromptTrackingHero } from '@/features/site/components/landing/prompt-tracking-hero'
 import { PromptTrackingWhySection } from '@/features/site/components/landing/prompt-tracking-why-section'
 import { JsonLd } from '@/features/site/components/seo/json-ld'
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import { PROMPT_TRACKING_HUB_FAQ } from '@/features/site/lib/landing-prompt-tracking-content'
 import { breadcrumbJsonLd, buildMetadata, faqJsonLd, SITE_URL } from '@/features/site/lib/seo'
 
@@ -114,7 +113,6 @@ export default function PromptTrackingPage() {
         description="How surfaces, libraries, and plans fit together inside SignalorAI."
         items={[...PROMPT_TRACKING_HUB_FAQ]}
       />
-      <RelatedLinks page="/prompt-tracking" />
     </MarketingShell>
   )
 }

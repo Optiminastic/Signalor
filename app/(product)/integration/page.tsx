@@ -6,7 +6,6 @@ import { IntegrationHero } from '@/features/site/components/landing/integration-
 import { IntegrationMidSection } from '@/features/site/components/landing/integration-mid-section'
 import { LandingFaq } from '@/features/site/components/landing/landing-faq'
 import { JsonLd } from '@/features/site/components/seo/json-ld'
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import { INTEGRATION_HUB_FAQ } from '@/features/site/lib/landing-integration-content'
 import { breadcrumbJsonLd, buildMetadata, faqJsonLd } from '@/features/site/lib/seo'
 
@@ -45,7 +44,6 @@ export default function IntegrationPage() {
         description="How connectors work with SignalorAI workspaces, data scope, and billing-friendly defaults."
         items={[...INTEGRATION_HUB_FAQ]}
       />
-      <RelatedLinks page="/integration" />
     </MarketingShell>
   )
 }

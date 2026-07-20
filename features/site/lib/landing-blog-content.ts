@@ -90,6 +90,39 @@ export const BLOG_STATS = [
   { label: 'Newsletter', value: '12k+', detail: 'GEO operators and agency leads' },
 ]
 
+export interface BlogFaqItem {
+  question: string
+  answer: string
+}
+
+export const BLOG_FAQ: BlogFaqItem[] = [
+  {
+    question: 'How often do you publish new posts?',
+    answer:
+      'We ship new playbooks, research, and guides most weeks. Everything is written by operators shipping SignalorAI, so posts land when we have something concrete and tested to share, not on a filler schedule.',
+  },
+  {
+    question: 'What topics does the SignalorAI blog cover?',
+    answer:
+      'Generative Engine Optimization (GEO), AI search visibility, citation source attribution, llms.txt, Schema.org and JSON-LD, and the tactics that actually move how ChatGPT, Claude, Gemini, and Perplexity cite your brand.',
+  },
+  {
+    question: 'Are the tactics here specific to SignalorAI, or general?',
+    answer:
+      'Most posts are tool-agnostic, you can apply them with any stack. Where a SignalorAI feature makes a workflow faster we say so plainly, rather than gating the insight behind the product.',
+  },
+  {
+    question: 'Can I reference or share these articles?',
+    answer:
+      'Yes. Feel free to link to and quote our posts with attribution. If you would like to syndicate a full piece or collaborate on research, reach out and we will sort it out.',
+  },
+  {
+    question: 'Do you have a newsletter?',
+    answer:
+      'Yes, one email a week with a single shippable GEO tactic, a real citation win, a prompt trend, or a schema fix you can apply the same day. No fluff, and you can unsubscribe anytime.',
+  },
+]
+
 export const BLOG_NEWSLETTER = {
   title: 'New GEO tactics every Thursday',
   description:

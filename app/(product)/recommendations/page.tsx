@@ -6,7 +6,6 @@ import { LandingFaq } from '@/features/site/components/landing/landing-faq'
 import { PromptTrackingFeaturesGrid } from '@/features/site/components/landing/prompt-tracking-features-grid'
 import { PromptTrackingHero } from '@/features/site/components/landing/prompt-tracking-hero'
 import { PromptTrackingWhySection } from '@/features/site/components/landing/prompt-tracking-why-section'
-import { RelatedLinks } from '@/features/site/components/seo/related-links'
 import {
   INTEGRATIONS_CAPABILITY_ROWS,
   INTEGRATIONS_FAQ,
@@ -61,7 +60,6 @@ export default function IntegrationsFeaturePage() {
         description="How SignalorAI connects to the tools your team already uses."
         items={[...INTEGRATIONS_FAQ]}
       />
-      <RelatedLinks page="/recommendations" />
     </MarketingShell>
   )
 }

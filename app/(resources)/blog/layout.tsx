@@ -1,7 +1,14 @@
 import type { Metadata } from 'next'
 
 import { JsonLd } from '@/features/site/components/seo/json-ld'
-import { breadcrumbJsonLd, buildMetadata, SITE_BRAND, SITE_URL } from '@/features/site/lib/seo'
+import { BLOG_FAQ } from '@/features/site/lib/landing-blog-content'
+import {
+  breadcrumbJsonLd,
+  buildMetadata,
+  faqJsonLd,
+  SITE_BRAND,
+  SITE_URL,
+} from '@/features/site/lib/seo'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Blog, GEO playbooks, AI visibility research',
@@ -32,6 +39,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
         ])}
       />
       <JsonLd id="ld-blog" data={blogJsonLd} />
+      <JsonLd id="ld-blog-faq" data={faqJsonLd(BLOG_FAQ)} />
       {children}
     </>
   )

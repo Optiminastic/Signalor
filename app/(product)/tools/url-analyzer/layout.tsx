@@ -8,6 +8,7 @@ import {
   faqJsonLd,
   SITE_URL,
 } from '@/features/site/lib/seo'
+import { URL_ANALYZER_FAQ } from '@/features/site/lib/tool-faqs'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Free GEO Score & AI Visibility Checker | URL Analyzer',
@@ -32,29 +33,6 @@ export const metadata: Metadata = buildMetadata({
     'llms.txt validator free',
   ],
 })
-
-const FAQ = [
-  {
-    question: 'What does the GEO score measure?',
-    answer:
-      'The GEO score is a 0-100 composite that covers six pillars: Structure, Schema, Trust, Content, Citations, and Crawlability. Higher scores correlate with more frequent brand citations across ChatGPT, Claude, Gemini, and Perplexity.',
-  },
-  {
-    question: 'Which AI engines does the URL analyzer check?',
-    answer:
-      'The free summary checks schema, llms.txt, robots.txt AI-bot directives, and on-page trust signals. Upgrading adds live probes across ChatGPT, Claude, Gemini, and Perplexity so you see actual AI-generated summaries of your page.',
-  },
-  {
-    question: 'Is the URL analyzer really free?',
-    answer:
-      'Yes, you can run unlimited GEO audits on public URLs without creating an account. The free report shows the headline score, pillar breakdown, and top three fixes. Signing up unlocks the full fix queue, per-engine AI probes, and scheduled monitoring.',
-  },
-  {
-    question: 'How is a GEO audit different from a traditional SEO audit?',
-    answer:
-      'Traditional SEO audits optimize for Google rankings using crawlability, backlinks, and page speed. A GEO audit focuses on why AI engines like ChatGPT and Gemini choose to cite, or skip, a page: schema completeness, entity clarity, trust signals, and structured content that language models can extract and attribute.',
-  },
-]
 
 const urlAnalyzerJsonLd = {
   '@context': 'https://schema.org',
@@ -88,7 +66,7 @@ export default function UrlAnalyzerLayout({ children }: { children: React.ReactN
         ])}
       />
       <JsonLd id="ld-url-analyzer-tool" data={urlAnalyzerJsonLd} />
-      <JsonLd id="ld-url-analyzer-faq" data={faqJsonLd(FAQ)} />
+      <JsonLd id="ld-url-analyzer-faq" data={faqJsonLd(URL_ANALYZER_FAQ)} />
       {children}
     </>
   )
