@@ -59,14 +59,9 @@ export const INTEGRATIONS: Integration[] = [
     description: 'Connect your Framer site via the SignalorAI plugin.',
     accent: '#0055FF',
   },
-  {
-    slug: 'nextjs',
-    name: 'Next.js',
-    group: 'Platforms',
-    logo: '/logos/nextjs.svg',
-    description: 'Drop in the SignalorAI SDK to instrument your app.',
-    accent: '#111827',
-  },
+  // Code repos (Next.js, Astro, any framework) connect once through the dedicated
+  // GitHub connector — it powers auto-fix PRs regardless of framework, so it isn't
+  // a per-framework catalog entry. See GithubIntegrationCard.
   // ── Analytics ──────────────────────────────────────────────
   {
     slug: 'google-analytics',

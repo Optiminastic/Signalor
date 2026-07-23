@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 
+import { GithubIntegrationCard } from '@/features/catalyst/components/integrations/GithubIntegrationCard'
 import { IntegrationCard } from '@/features/catalyst/components/integrations/IntegrationCard'
 import { IntegrationsSummary } from '@/features/catalyst/components/integrations/IntegrationsSummary'
 import { ShopifyConnectModal } from '@/features/catalyst/components/integrations/ShopifyConnectModal'
@@ -9,6 +10,8 @@ import { INTEGRATION_GROUPS, INTEGRATIONS } from '@/features/catalyst/integratio
 import type { IntegrationGroup, IntegrationWithStatus } from '@/features/catalyst/integrations-data'
 import { isConnectable, useIntegrationConnect } from '@/hooks/useIntegrationConnect'
 import { useIntegrations } from '@/hooks/useIntegrations'
+import { useOrgGithubConnection, type OrgGithubConnection } from '@/hooks/useOrgGithubConnection'
+import { useSession } from '@/lib/auth-client'
 
 // Where a connected integration's manage gear links. GA opens property selection
 // so a user can switch which GA4 property feeds the brand without reconnecting.
@@ -70,12 +73,33 @@ function IntegrationsHeader({
   )
 }
 
+/** GitHub is one org-level connection (not a per-framework toggle), so it lives in
+ *  its own "Code" section above the catalog-driven groups. */
+function GithubSection({ gh }: { gh: OrgGithubConnection }): JSX.Element {
+  return (
+    <section>
+      <h2 className="mb-3 text-[11px] font-semibold tracking-wider text-[var(--cat-ink-3)] uppercase">
+        Code
+      </h2>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <GithubIntegrationCard gh={gh} />
+      </div>
+    </section>
+  )
+}
+
 export function IntegrationsView(): JSX.Element {
+  const { data: session } = useSession()
+  const email = session?.user?.email ?? ''
   const { connected } = useIntegrations()
   const { toggle, busySlug, error } = useIntegrationConnect()
+  const github = useOrgGithubConnection({ email })
   const [shopifyOpen, setShopifyOpen] = useState(false)
   const items = INTEGRATIONS.map(i => ({ ...i, connected: connected.has(i.slug) }))
-  const connectedCount = items.filter(i => i.connected).length
+
+  // GitHub is a first-class connector counted alongside the catalog integrations.
+  const connectedCount = items.filter(i => i.connected).length + (github.connected ? 1 : 0)
+  const total = items.length + 1
 
   // Shopify connect opens the custom-app token modal (works without OAuth env);
   // disconnect and every other provider go through the normal toggle.
@@ -87,7 +111,7 @@ export function IntegrationsView(): JSX.Element {
   return (
     <div className="w-full">
       {shopifyOpen && <ShopifyConnectModal onClose={() => setShopifyOpen(false)} />}
-      <IntegrationsHeader connected={connectedCount} total={items.length} />
+      <IntegrationsHeader connected={connectedCount} total={total} />
 
       {error && (
         <p className="mb-3 rounded-md bg-[#E5484D]/8 px-3 py-2 text-[12.5px] text-[#E5484D]">
@@ -95,9 +119,10 @@ export function IntegrationsView(): JSX.Element {
         </p>
       )}
 
-      <IntegrationsSummary connected={connectedCount} total={INTEGRATIONS.length} />
+      <IntegrationsSummary connected={connectedCount} total={total} />
 
       <div className="space-y-5">
+        <GithubSection gh={github} />
         {INTEGRATION_GROUPS.map(group => (
           <GroupSection
             key={group}
