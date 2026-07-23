@@ -124,9 +124,12 @@ export function TaskDetailView(): JSX.Element {
           {task && (
             <div className="cat-stagger flex flex-col gap-2">
               <TaskDetailStats task={task} />
+              {/* Auto-fix is the hero of this page (Sentry Seer-style): full-width
+                  and above the details, so the fix flow reads top-to-bottom before
+                  the supporting context. It renders nothing until a fix is active. */}
+              <TaskFixResultCard fix={fix} />
               <div className="grid grid-cols-1 items-start gap-2 xl:grid-cols-3">
                 <div className="flex flex-col gap-2 xl:col-span-2">
-                  <TaskFixResultCard fix={fix} />
                   <TaskDescriptionCard task={task} />
                   {task.actionGuide && <TaskFixGuide guide={task.actionGuide} />}
                 </div>

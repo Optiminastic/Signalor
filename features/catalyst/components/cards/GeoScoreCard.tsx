@@ -1,22 +1,43 @@
 'use client'
 
-import { Info } from 'lucide-react'
-import { useState } from 'react'
+import { ArrowRight, Info } from 'lucide-react'
+import Link from 'next/link'
+import { useMemo, useState } from 'react'
 
 import { Badge } from '@/features/catalyst/components/Badge'
 import { Card } from '@/features/catalyst/components/Card'
-import { CardHead } from '@/features/catalyst/components/CardHead'
 import { AnimatedScore } from '@/features/catalyst/components/cards/AnimatedScore'
-import { Delta } from '@/features/catalyst/components/Delta'
-import { LineChart } from '@/features/catalyst/components/LineChart'
+import { GeoRankTable, type RankItem } from '@/features/catalyst/components/cards/GeoRankTable'
+import { GeoTrendLine } from '@/features/catalyst/components/cards/GeoTrendLine'
 import { RangeTabs, type Range } from '@/features/catalyst/components/RangeTabs'
 import { GREEN, NEG } from '@/features/catalyst/constants'
 import { useActiveProject } from '@/hooks/useActiveProject'
 import { useBrandPath } from '@/hooks/useBrandPath'
-import { scoreReason, useGeoScore } from '@/hooks/useGeoScore'
+import { useCompetitorMatrix, type MatrixRow } from '@/hooks/useCompetitorMatrix'
+import { scoreReason, useGeoScore, type GeoScore } from '@/hooks/useGeoScore'
 
-/** Colored info dot (green up / red down) that reveals the score-change reason
- *  on hover or keyboard focus. */
+/** Mean visibility across the engines a brand was checked on (0–100). */
+function rowVisibility(cells: Record<string, number>): number {
+  const values = Object.values(cells)
+  if (values.length === 0) return 0
+  return Math.round(values.reduce((sum, v) => sum + v, 0) / values.length)
+}
+
+/** Rank every brand by mean visibility, best-first, tagging engines present. */
+function buildRanking(rows: MatrixRow[], engines: string[]): RankItem[] {
+  return rows
+    .map(row => ({
+      name: row.name,
+      domain: row.domain,
+      isBrand: row.isBrand,
+      visibility: rowVisibility(row.cells),
+      present: engines.filter(engine => (row.cells[engine] ?? 0) > 0),
+    }))
+    .sort((a, b) => b.visibility - a.visibility)
+    .map((item, index) => ({ ...item, rank: index + 1 }))
+}
+
+/** Colored info dot (green up / red down) revealing the score-change reason. */
 function ScoreReasonInfo({ reason, positive }: { reason: string; positive: boolean }): JSX.Element {
   return (
     <span className="group relative inline-flex">
@@ -37,34 +58,67 @@ function ScoreReasonInfo({ reason, positive }: { reason: string; positive: boole
   )
 }
 
+function CardHeader({ rank }: { rank: number | null }): JSX.Element {
+  return (
+    <div className="flex items-start justify-between gap-3">
+      <div>
+        <h3 className="text-[13.5px] font-semibold text-[var(--cat-ink)]">
+          LLM Visibility Score &amp; Ranking
+        </h3>
+        <p className="mt-0.5 text-[11.5px] text-[var(--cat-ink-3)]">
+          Your visibility and rank across AI answers
+        </p>
+      </div>
+      {rank !== null && (
+        <div className="shrink-0 text-right">
+          <span className="text-[15px] font-bold text-[var(--cat-ink)]">#{rank}</span>
+          <p className="text-[10px] tracking-wide text-[var(--cat-ink-3)] uppercase">Your rank</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ScoreRow({ data }: { data: GeoScore | undefined }): JSX.Element {
+  return (
+    <div className="mt-2 flex items-center gap-1.5">
+      <AnimatedScore value={data?.score} />
+      {data && <span className="text-[18px] font-bold text-[var(--cat-ink-2)]">%</span>}
+      <Badge positive={data?.positive ?? true}>{data ? data.delta : '—'}</Badge>
+      {data && <ScoreReasonInfo reason={scoreReason(data)} positive={data.positive} />}
+    </div>
+  )
+}
+
 export function GeoScoreCard(): JSX.Element {
   const { slug } = useActiveProject()
   const brandPath = useBrandPath()
   const [range, setRange] = useState<Range>('1W')
   const { data } = useGeoScore(slug, range)
+  const matrix = useCompetitorMatrix(slug)
+
+  const ranking = useMemo(
+    () => buildRanking(matrix.data?.rows ?? [], matrix.data?.engines ?? []),
+    [matrix.data],
+  )
+  const yourRank = ranking.find(item => item.isBrand)?.rank ?? null
 
   return (
     <Card>
-      <CardHead title="GEO Score" action="Details" href={brandPath('geo')} />
-      <div className="flex items-center gap-2.5">
-        <AnimatedScore value={data?.score} />
-        <Badge positive={data?.positive ?? true}>{data ? data.delta : '—'}</Badge>
-        {data && <ScoreReasonInfo reason={scoreReason(data)} positive={data.positive} />}
-      </div>
+      <CardHeader rank={yourRank} />
+      <ScoreRow data={data} />
       <RangeTabs value={range} onChange={setRange} />
-      <LineChart data={data?.points ?? []} />
-      <div className="mt-3 flex flex-col gap-2.5">
-        {(data?.engines ?? []).map(engine => (
-          <div key={engine.key} className="flex items-center gap-2.5 text-[13px]">
-            <engine.icon size={16} className="text-[var(--cat-ink-2)]" />
-            <span className="font-medium text-[var(--cat-ink)]">{engine.name}</span>
-            <span className="ml-auto font-semibold text-[var(--cat-ink)]">{engine.value}</span>
-            <span className="w-[64px] text-right">
-              <Delta positive={engine.positive}>{engine.mentions} mentions</Delta>
-            </span>
-          </div>
-        ))}
+      <GeoTrendLine data={data?.points ?? []} />
+      <div className="mt-3">
+        <GeoRankTable items={ranking} />
       </div>
+      <Link
+        href={brandPath('competitors')}
+        className="mt-2 inline-flex items-center gap-1 self-start text-[11.5px] font-medium text-[var(--cat-ink-2)] transition hover:text-[var(--cat-ink)]"
+      >
+        View full rankings
+        <ArrowRight size={13} />
+      </Link>
     </Card>
   )
 }
