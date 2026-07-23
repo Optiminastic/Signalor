@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { AnalysisToast } from '@/features/catalyst/components/analysis/AnalysisToast'
 import { useActiveProject } from '@/hooks/useActiveProject'
 import { getRunStatus, startAnalysis } from '@/lib/api/analyzer'
+import { ApiError } from '@/lib/api/client'
 
 const TOAST_ID = 'new-analysis'
 const POLL_MS = 2500
@@ -36,7 +37,15 @@ export function useNewAnalysis(): UseNewAnalysisResult {
       if (res.id) setRunId(res.id)
       else toast.error('Could not start analysis - no run id returned.', { id: TOAST_ID })
     },
-    onError: () => toast.error('Could not start analysis. Please try again.', { id: TOAST_ID }),
+    onError: (err: unknown) => {
+      // Surface the backend's real reason (24h cooldown, plan limits) rather than
+      // a generic failure — these carry an actionable message the user needs.
+      const message =
+        err instanceof ApiError && err.message
+          ? err.message
+          : 'Could not start analysis. Please try again.'
+      toast.error(message, { id: TOAST_ID })
+    },
   })
 
   const statusQuery = useQuery({

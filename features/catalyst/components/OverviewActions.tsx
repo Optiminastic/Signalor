@@ -7,8 +7,10 @@ import { useState, type ReactNode } from 'react'
 import { CONTROL_CHIP, CONTROL_RING } from '@/features/catalyst/components/control-styles'
 import { EngineLogo } from '@/features/catalyst/components/EngineLogo'
 import { PrimaryButton } from '@/features/catalyst/components/PrimaryButton'
+import { BRAND } from '@/features/catalyst/constants'
 import { engineLogo } from '@/features/catalyst/engine-logos'
 import { useActiveProject } from '@/hooks/useActiveProject'
+import { useAnalysisCooldown } from '@/hooks/useAnalysisCooldown'
 import { useNewAnalysis } from '@/hooks/useNewAnalysis'
 
 const PANEL = `absolute right-0 z-50 mt-2 min-w-[190px] rounded-md bg-[var(--cat-card)] p-1 shadow-lg ${CONTROL_RING}`
@@ -130,9 +132,48 @@ function SelectChip({
 const RANGES = ['Last 7 days', 'Last month', 'Last 3 months', 'Last year']
 const FILTERS = ['All engines', 'ChatGPT', 'Claude', 'Gemini', 'Google', 'Perplexity']
 
+/** A small ring that fills as the 24h cooldown window elapses (0→1). */
+function CountdownRing({ progress }: { progress: number }): JSX.Element {
+  const radius = 7
+  const circumference = 2 * Math.PI * radius
+  return (
+    <svg width={16} height={16} viewBox="0 0 18 18" className="shrink-0 -rotate-90">
+      <circle cx="9" cy="9" r={radius} fill="none" stroke="var(--cat-border)" strokeWidth="2" />
+      <circle
+        cx="9"
+        cy="9"
+        r={radius}
+        fill="none"
+        stroke={BRAND}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray={circumference}
+        strokeDashoffset={circumference * (1 - progress)}
+      />
+    </svg>
+  )
+}
+
+/** Shown in place of Re-analyze while the brand is inside its 24h window. */
+function NextCheckBadge({ label, progress }: { label: string; progress: number }): JSX.Element {
+  return (
+    <span title="Analysis runs once every 24 hours" className={`${CONTROL_CHIP} cursor-default`}>
+      <CountdownRing progress={progress} />
+      <span className="text-[var(--cat-ink-2)]">
+        Next check in <span className="font-semibold text-[var(--cat-ink)]">{label}</span>
+      </span>
+    </span>
+  )
+}
+
 function ReAnalyzeButton(): JSX.Element {
   const { email, activeOrg } = useActiveProject()
   const { trigger, isRunning } = useNewAnalysis()
+  const cooldown = useAnalysisCooldown()
+
+  if (cooldown.onCooldown && !isRunning) {
+    return <NextCheckBadge label={cooldown.label} progress={cooldown.progress} />
+  }
 
   return (
     <PrimaryButton
