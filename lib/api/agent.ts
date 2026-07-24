@@ -40,6 +40,8 @@ export const agentPlanSchema = z.object({
     website: z.string().default(''),
     brand_name: z.string().default(''),
     score: z.number().nullable(),
+    /** Composite score if every open task were completed (real, headroom-clamped). */
+    projected_score: z.number().nullable().optional().default(null),
     last_analyzed_at: z.string().nullable(),
     next_analysis_at: z.string().nullable(),
   }),

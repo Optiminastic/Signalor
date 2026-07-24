@@ -4,7 +4,6 @@ import { useParams } from 'next/navigation'
 
 import { TransitionLink } from '@/components/TransitionLink'
 import { ActionCtaButton } from '@/features/catalyst/components/agent/ActionCtaButton'
-import { TaskTypeIcon } from '@/features/catalyst/components/agent/TaskTypeIcon'
 import { DataState } from '@/features/catalyst/components/DataState'
 import { TaskAutoFixPanel } from '@/features/catalyst/components/tasks/detail/TaskAutoFixPanel'
 import { TaskDescriptionBody } from '@/features/catalyst/components/tasks/detail/TaskDescriptionCard'
@@ -13,7 +12,9 @@ import { TaskDetailStats } from '@/features/catalyst/components/tasks/detail/Tas
 import { TaskFixGuideBody } from '@/features/catalyst/components/tasks/detail/TaskFixGuide'
 import { TaskSection } from '@/features/catalyst/components/tasks/detail/TaskSection'
 import { TaskShareMenu } from '@/features/catalyst/components/tasks/detail/TaskShareMenu'
-import { formatStatus, TASK_TYPE_LABEL, taskTypeOf } from '@/features/catalyst/tasks-data'
+import { TaskGlyph } from '@/features/catalyst/components/tasks/TaskGlyph'
+import { LOGO_SIZE } from '@/features/catalyst/constants'
+import { formatStatus } from '@/features/catalyst/tasks-data'
 import { useAgentMutations } from '@/hooks/useAgentPlan'
 import { useBrandPath } from '@/hooks/useBrandPath'
 import { useTaskAutoFix, type TaskAutoFix } from '@/hooks/useTaskAutoFix'
@@ -91,12 +92,7 @@ function DetailHeader({ task }: { task: TaskDetail }): JSX.Element {
       <div className="min-w-0 flex-1">
         <BackLink />
         <h1 className="mt-1 flex items-center gap-2.5 text-[19px] font-bold tracking-tight text-[var(--cat-ink)]">
-          <span
-            title={TASK_TYPE_LABEL[taskTypeOf(task)]}
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-[var(--cat-hover)] text-[var(--cat-ink-2)]"
-          >
-            <TaskTypeIcon type={taskTypeOf(task)} size={17} />
-          </span>
+          <TaskGlyph title={task.title} description={task.description} size={LOGO_SIZE.header} />
           {task.isTopFix && <span className="shrink-0 text-[#e04a3d]">★</span>}
           <span className="truncate">{task.title}</span>
         </h1>

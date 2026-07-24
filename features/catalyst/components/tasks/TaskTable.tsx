@@ -3,16 +3,18 @@ import type { TaskItem } from '@/features/catalyst/tasks-data'
 import { ChevronsUpDown } from '@/lib/icons'
 
 // Project is dropped — the dashboard is scoped to one brand, so it was the same
-// value on every row. Description and Due Date collapse on narrower widths so the
-// table fits without a horizontal scroll. Keep in sync with TaskRow's cells.
-const COLS: { label: string; className?: string }[] = [
-  { label: 'Task', className: 'pr-3 pl-3' },
-  { label: 'Description', className: 'hidden xl:table-cell' },
-  { label: 'Assignee' },
-  { label: 'Due Date', className: 'hidden lg:table-cell' },
-  { label: 'Priority' },
-  { label: 'Progress' },
-  { label: 'Auto-fix' },
+// value on every row. The table is fixed-layout (never scrolls horizontally):
+// Task flexes to fill, the rest have capped widths, and Description / Due Date
+// collapse on narrower widths. Column widths here MUST stay in sync with TaskRow's
+// cells, which truncate to fit.
+const COLS: { label: string; className: string }[] = [
+  { label: 'Task', className: 'px-3' },
+  { label: 'Description', className: 'hidden px-3 xl:table-cell' },
+  { label: 'Assignee', className: 'px-3 w-[150px]' },
+  { label: 'Due Date', className: 'hidden px-3 lg:table-cell w-[120px]' },
+  { label: 'Priority', className: 'px-3 w-[128px]' },
+  { label: 'Progress', className: 'px-3 w-[128px]' },
+  { label: 'Auto-fix', className: 'px-3 w-[120px]' },
 ]
 
 function TaskTableHead(): JSX.Element {
@@ -22,7 +24,7 @@ function TaskTableHead(): JSX.Element {
         {COLS.map(col => (
           <th
             key={col.label}
-            className={`py-2.5 text-left text-[12px] font-medium text-[var(--cat-ink-2)] ${col.className ?? 'px-3'}`}
+            className={`py-2.5 text-left text-[12px] font-medium text-[var(--cat-ink-2)] ${col.className}`}
           >
             <span className="inline-flex items-center gap-1">
               {col.label}
@@ -53,8 +55,8 @@ export function TaskTable({
   busy,
 }: TaskTableProps): JSX.Element {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[640px] border-collapse text-[13px]">
+    <div className="w-full">
+      <table className="w-full table-fixed border-collapse text-[13px]">
         <TaskTableHead />
         <tbody>
           {rows.map(row => (

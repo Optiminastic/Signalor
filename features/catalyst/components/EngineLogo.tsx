@@ -17,21 +17,15 @@ interface EngineLogoProps {
 export function EngineLogo({ name, size = 18, color }: EngineLogoProps): JSX.Element {
   const logo = engineLogo(name)
   if (logo) {
-    const glyph = Math.round(size * 0.6)
     return (
-      <span
+      /* eslint-disable-next-line @next/next/no-img-element */
+      <img
+        src={logo}
+        alt={name}
         title={name}
-        className="grid shrink-0 place-items-center overflow-hidden rounded-[5px] border border-[var(--cat-border)] bg-white"
+        className="shrink-0 rounded object-contain"
         style={{ width: size, height: size }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={logo}
-          alt={name}
-          className="object-contain"
-          style={{ width: glyph, height: glyph }}
-        />
-      </span>
+      />
     )
   }
   const dot = Math.max(8, Math.round(size * 0.5))

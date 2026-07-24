@@ -27,18 +27,15 @@ export function BrandFavicon({ domain, name, color, size = 40 }: BrandFaviconPro
   }
 
   return (
-    <span
-      className="grid shrink-0 place-items-center overflow-hidden rounded-md border border-[var(--cat-border)] bg-white"
+    /* eslint-disable-next-line @next/next/no-img-element */
+    <img
+      src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`}
+      alt=""
+      width={size}
+      height={size}
+      onError={() => setFailed(true)}
+      className="shrink-0 rounded object-contain"
       style={{ width: size, height: size }}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`}
-        alt=""
-        width={size - 14}
-        height={size - 14}
-        onError={() => setFailed(true)}
-      />
-    </span>
+    />
   )
 }

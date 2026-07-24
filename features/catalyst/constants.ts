@@ -32,6 +32,17 @@ export const POS_BG = '#E7F7EF'
 export const NEG = '#E5484D'
 export const NEG_BG = '#FDECEC'
 
+/* Logo sizing scale (px). Keeps brand favicons and engine/model logos visually
+   consistent across the app. `base` is the default content logo (list rows,
+   cards, opportunities, rankings, citations, share-of-voice); `chip` is for
+   dense inline clusters (e.g. stacked engine icons beside a brand name);
+   `header` is a large brand identity (page/section headers). */
+export const LOGO_SIZE = {
+  chip: 16,
+  base: 20,
+  header: 28,
+} as const
+
 /* -------------------------------------------------------------------- types */
 export interface NavEntry {
   icon: TablerIcon

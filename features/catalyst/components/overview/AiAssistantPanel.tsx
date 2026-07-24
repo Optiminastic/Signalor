@@ -4,10 +4,12 @@ import { useState } from 'react'
 
 import { TransitionLink } from '@/components/TransitionLink'
 import { ActionCtaButton } from '@/features/catalyst/components/agent/ActionCtaButton'
+import { TaskTypeIcon } from '@/features/catalyst/components/agent/TaskTypeIcon'
+import { TASK_TYPE_LABEL, taskTypeOf } from '@/features/catalyst/tasks-data'
 import { useAgentPlan } from '@/hooks/useAgentPlan'
 import { useBrandPath } from '@/hooks/useBrandPath'
 import type { AgentAction, AgentPlan } from '@/lib/api/agent'
-import { ChevronDown, Sparkles } from '@/lib/icons'
+import { ChevronDown, Sparkles, Timer, TrendingUp } from '@/lib/icons'
 
 const MAX_SUGGESTIONS = 4
 const PRIORITY_ORDER: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 }
@@ -43,11 +45,11 @@ interface PanelHeaderProps {
 function PanelHeader({ count, tasksHref, open, onToggle }: PanelHeaderProps): JSX.Element {
   return (
     <div className="flex items-center gap-2.5">
-      <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-[rgba(224,74,61,0.25)] bg-[var(--cat-card)] text-[#e04a3d]">
-        <Sparkles size={12} strokeWidth={2} />
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[rgba(224,74,61,0.1)] text-[#e04a3d] ring-1 ring-[rgba(224,74,61,0.16)] ring-inset">
+        <Sparkles size={14} strokeWidth={2.2} />
       </span>
       <p className="min-w-0 truncate text-[13px] text-[var(--cat-ink-2)]">
-        <span className="font-semibold text-[var(--cat-ink)]">AI Assistant</span>
+        <span className="font-semibold text-[var(--cat-ink)]">Priority Actions</span>
         <span className="mx-2 text-[var(--cat-ink-3)]">·</span>
         There {count === 1 ? 'is 1 suggestion' : `are ${count} suggestions`} to lift your AI
         visibility.
@@ -74,30 +76,46 @@ function PanelHeader({ count, tasksHref, open, onToggle }: PanelHeaderProps): JS
   )
 }
 
+function CardTopRow({ action }: { action: AgentAction }): JSX.Element {
+  const type = taskTypeOf(action)
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span
+        title={TASK_TYPE_LABEL[type]}
+        className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-[var(--cat-hover)] text-[var(--cat-ink-2)] transition-colors group-hover:bg-[rgba(224,74,61,0.1)] group-hover:text-[#e04a3d]"
+      >
+        <TaskTypeIcon type={type} size={15} />
+      </span>
+      {action.impact > 0 && (
+        <span className="inline-flex items-center gap-1 rounded-full bg-[#E7F7EF] px-2 py-0.5 text-[11px] font-semibold text-[#1e8a5c] tabular-nums">
+          <TrendingUp size={11} /> +{action.impact}
+        </span>
+      )}
+    </div>
+  )
+}
+
 function SuggestionCard({ action }: { action: AgentAction }): JSX.Element {
   const brandPath = useBrandPath()
   return (
-    <div className="group relative flex flex-col gap-2.5 rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] p-3">
-      <p className="line-clamp-3 text-[12px] leading-relaxed text-[var(--cat-ink-3)]">
-        {action.priority === 'critical' && (
-          <span
-            title="Critical"
-            className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-[#e04a3d] align-middle"
-          />
-        )}
-        <TransitionLink
-          href={brandPath(`tasks/${action.action_id}`)}
-          className="font-semibold text-[var(--cat-ink)] decoration-[var(--cat-ink-3)] underline-offset-2 group-hover:underline after:absolute after:inset-0"
-        >
-          {action.title}
-        </TransitionLink>
-        {action.description && <> - {action.description}</>}
-      </p>
-      <div className="relative mt-auto flex items-center justify-between gap-2">
+    <div className="group relative flex flex-col gap-2 rounded-lg border border-[var(--cat-border)] bg-[var(--cat-card)] p-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--cat-ink-3)] hover:shadow-[0_4px_14px_rgba(16,24,40,0.08)]">
+      <CardTopRow action={action} />
+      <TransitionLink
+        href={brandPath(`tasks/${action.action_id}`)}
+        className="line-clamp-2 text-[13px] leading-snug font-semibold text-[var(--cat-ink)] decoration-[var(--cat-ink-3)] underline-offset-2 group-hover:underline after:absolute after:inset-0"
+      >
+        {action.title}
+      </TransitionLink>
+      {action.description && (
+        <p className="line-clamp-2 text-[12px] leading-relaxed text-[var(--cat-ink-3)]">
+          {action.description}
+        </p>
+      )}
+      <div className="relative mt-auto flex items-center justify-between gap-2 border-t border-[var(--cat-border-soft)] pt-2.5">
         <ActionCtaButton action={action} quiet />
-        {action.impact > 0 && (
-          <span className="text-[11px] font-semibold text-[#2FBE7E] tabular-nums">
-            +{action.impact}
+        {action.effort.minutes > 0 && (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--cat-ink-3)] tabular-nums">
+            <Timer size={12} /> {action.effort.minutes}m
           </span>
         )}
       </div>
@@ -106,7 +124,7 @@ function SuggestionCard({ action }: { action: AgentAction }): JSX.Element {
 }
 
 /**
- * Dashboard "AI Assistant" — surfaces the brand's top high-priority tasks as
+ * Dashboard "Priority Actions" — surfaces the brand's top high-priority tasks as
  * actionable suggestion cards, straight from the Growth Agent plan. Hidden until
  * a completed analysis exists and there is at least one open task.
  */

@@ -1,5 +1,6 @@
 'use client'
 
+import { Favicon } from '@/components/Favicon'
 import { TransitionLink } from '@/components/TransitionLink'
 import { Card } from '@/features/catalyst/components/Card'
 import { CardHead } from '@/features/catalyst/components/CardHead'
@@ -54,8 +55,13 @@ function OpportunityRow({ opp }: { opp: Opportunity }): JSX.Element {
     <div className="rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] p-2.5 transition-colors hover:bg-[var(--cat-hover)]">
       <div className="flex items-start justify-between gap-2">
         <div className="flex min-w-0 items-start gap-2.5">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-[var(--cat-hover)] text-[var(--cat-ink-2)]">
-            <CategoryGlyph category={opp.category} />
+          <span className="grid h-5 w-5 shrink-0 place-items-center text-[var(--cat-ink-2)]">
+            <Favicon
+              url={opp.submitUrl}
+              size={20}
+              className="h-5 w-5 rounded object-contain"
+              fallback={<CategoryGlyph category={opp.category} />}
+            />
           </span>
           <div className="min-w-0">
             <p className="truncate text-[13px] font-medium text-[var(--cat-ink)]">{opp.name}</p>

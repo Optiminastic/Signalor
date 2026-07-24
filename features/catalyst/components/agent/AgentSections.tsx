@@ -20,7 +20,7 @@ interface AgentSectionsProps {
 export function AgentSections({ plan, isLoading, isError }: AgentSectionsProps): JSX.Element {
   const groups = plan?.groups.filter(g => g.actions.length > 0) ?? []
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <GroupHeading>Today’s actions</GroupHeading>
       <DataState
         isLoading={isLoading}

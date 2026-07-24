@@ -1,6 +1,7 @@
 import { Card } from '@/features/catalyst/components/Card'
 import { CardHead } from '@/features/catalyst/components/CardHead'
 import { BrandFavicon } from '@/features/catalyst/components/competitors/BrandFavicon'
+import { LOGO_SIZE } from '@/features/catalyst/constants'
 import type { Citations } from '@/lib/api/analyzer'
 
 type Domain = Citations['domains'][number]
@@ -27,7 +28,12 @@ function DomainRow({ domain, max }: { domain: Domain; max: number }): JSX.Elemen
   const width = Math.max(6, Math.round((domain.total / max) * 100))
   return (
     <div className="flex items-center gap-2.5 py-2 first:pt-0 last:pb-0">
-      <BrandFavicon domain={domain.domain} name={domain.domain} color="#111827" size={26} />
+      <BrandFavicon
+        domain={domain.domain}
+        name={domain.domain}
+        color="#111827"
+        size={LOGO_SIZE.base}
+      />
       <div className="min-w-0 flex-1">
         <p className="flex items-center gap-1.5">
           <span className="truncate text-[13px] font-medium text-[var(--cat-ink)]">

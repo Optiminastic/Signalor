@@ -10,9 +10,9 @@ import { useSearchParams } from 'next/navigation'
 
 import { TransitionLink } from '@/components/TransitionLink'
 import { AgentSections } from '@/features/catalyst/components/agent/AgentSections'
-import { AgentStatStrip } from '@/features/catalyst/components/agent/AgentStatStrip'
 import { CompetitorIntel } from '@/features/catalyst/components/agent/CompetitorIntel'
 import { AnswerEngineInsights } from '@/features/catalyst/components/agent/insights/AnswerEngineInsights'
+import { PlanProjection } from '@/features/catalyst/components/agent/PlanProjection'
 import { RunPlanButton } from '@/features/catalyst/components/agent/RunPlanButton'
 import { TasksView } from '@/features/catalyst/components/tasks/TasksView'
 import { useAgentPlan } from '@/hooks/useAgentPlan'
@@ -42,8 +42,8 @@ function PlanTab(): JSX.Element {
   const { plan, isLoading, isError, noRun } = useAgentPlan()
   if (noRun) return <NoRun />
   return (
-    <div className="cat-stagger flex flex-col gap-4">
-      <AgentStatStrip plan={plan} />
+    <div className="cat-stagger flex flex-col gap-3">
+      <PlanProjection plan={plan} />
       <AgentSections plan={plan} isLoading={isLoading} isError={isError} />
     </div>
   )
