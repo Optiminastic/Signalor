@@ -129,6 +129,14 @@ middleware.ts             # Next.js edge middleware (auth gating)
 - Marketing site (home, feature pages, blog, tools, content pages, nav mega menu): `DESIGN.md` Part A - page templates, tokens, class recipes, and the anti-AI checklist are mandatory.
 - `/catalyst` dashboard: `DESIGN.md` Part B.
 
+### Dashboard components — reuse before you build
+
+Before creating or changing any `/dashboard` (catalyst) UI, read
+`features/catalyst/COMPONENTS.md` — the reuse index mapping "I need X → use Y
+(here)" for every card, chart, meter, control, token, and data hook. Most bad UI
+PRs come from hand-rolling a primitive that already exists. Search that list
+first; do not reinvent a card, button, meter, chart, or dropdown.
+
 ### Progress / score / visibility bars — always use the segmented tick meter
 
 For ANY progress, score, percentage, or visibility indicator, use the **segmented

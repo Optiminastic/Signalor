@@ -3,7 +3,7 @@
 import { Card } from '@/features/catalyst/components/Card'
 import { CardHead } from '@/features/catalyst/components/CardHead'
 import { BrandFavicon } from '@/features/catalyst/components/competitors/BrandFavicon'
-import { GREEN } from '@/features/catalyst/constants'
+import { GREEN, LOGO_SIZE } from '@/features/catalyst/constants'
 import { engineLabel, engineLogo } from '@/features/catalyst/engine-logos'
 import { useActiveProject } from '@/hooks/useActiveProject'
 import { useBrandPath } from '@/hooks/useBrandPath'
@@ -62,7 +62,7 @@ function HeatRow({ row, engines, max }: RowProps): JSX.Element {
         className={`rounded-sm py-1 pr-3 pl-1.5 ${row.isBrand ? 'bg-[rgba(224,74,61,0.06)]' : ''}`}
       >
         <span className="flex items-center gap-2">
-          <BrandFavicon domain={row.domain} name={row.name} color="#111827" size={24} />
+          <BrandFavicon domain={row.domain} name={row.name} color="#111827" size={LOGO_SIZE.base} />
           <span className="truncate text-[13px] font-medium text-[var(--cat-ink)]">{row.name}</span>
           {row.isBrand && <UserRound size={13} className="shrink-0 text-[#e04a3d]" />}
         </span>

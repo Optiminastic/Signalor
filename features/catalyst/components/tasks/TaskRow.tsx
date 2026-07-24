@@ -4,9 +4,9 @@ import { AutoFixControl } from '@/features/catalyst/components/autofix/AutoFixCo
 import { AssigneeStack } from '@/features/catalyst/components/tasks/AssigneeStack'
 import { PriorityTag } from '@/features/catalyst/components/tasks/PriorityTag'
 import { ProgressCell } from '@/features/catalyst/components/tasks/ProgressCell'
+import { TaskGlyph } from '@/features/catalyst/components/tasks/TaskGlyph'
 import type { TaskItem } from '@/features/catalyst/tasks-data'
 import { useBrandPath } from '@/hooks/useBrandPath'
-import { Check, GripVertical } from '@/lib/icons'
 
 export interface TaskRowProps {
   row: TaskItem
@@ -30,7 +30,7 @@ function AssignControl({
       value={row.assigneeEmail}
       disabled={busy}
       onChange={e => onAssign(row.taskId, e.target.value)}
-      className="h-8 max-w-[170px] rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-2 text-[12px] font-medium text-[var(--cat-ink-2)] outline-none disabled:opacity-60"
+      className="h-8 w-full rounded-md border border-[var(--cat-border)] bg-[var(--cat-card)] px-2 text-[12px] font-medium text-[var(--cat-ink-2)] outline-none disabled:opacity-60"
     >
       <option value="">Unassigned</option>
       {assignableEmails.map(email => (
@@ -42,32 +42,12 @@ function AssignControl({
   )
 }
 
-function TaskNameCell({
-  row,
-  done,
-  busy,
-  onToggleDone,
-}: Pick<TaskRowProps, 'row' | 'busy' | 'onToggleDone'> & { done: boolean }): JSX.Element {
+function TaskNameCell({ row }: Pick<TaskRowProps, 'row'>): JSX.Element {
   return (
-    <span className="flex items-center gap-1.5" style={{ paddingLeft: row.child ? 22 : 0 }}>
-      <GripVertical size={14} className="shrink-0 text-[var(--cat-ink-3)]" />
-      <button
-        type="button"
-        disabled={busy}
-        onClick={e => {
-          e.stopPropagation()
-          onToggleDone(row.taskId, !done)
-        }}
-        aria-label={done ? 'Mark task not done' : 'Mark task done'}
-        className={`grid h-[15px] w-[15px] shrink-0 place-items-center rounded-sm border disabled:opacity-50 ${
-          done
-            ? 'border-[#e04a3d] bg-[#e04a3d] text-white'
-            : 'border-[var(--cat-border)] hover:border-[#e04a3d]'
-        }`}
-      >
-        {done && <Check size={11} strokeWidth={3} />}
-      </button>
+    <span className="flex min-w-0 items-center gap-2.5" style={{ paddingLeft: row.child ? 22 : 0 }}>
+      <TaskGlyph title={row.name} description={row.description} />
       <span
+        title={row.name}
         className={`truncate ${row.child ? 'text-[var(--cat-ink)]' : 'font-semibold text-[var(--cat-ink)]'}`}
       >
         {row.name}
@@ -102,7 +82,6 @@ function AutoFixCell({ recommendationId }: { recommendationId?: number }): JSX.E
  * controls (done toggle, assign, auto-fix) stop the click from navigating. */
 export function TaskRow(props: TaskRowProps): JSX.Element {
   const { row } = props
-  const done = row.progress === 100
   const brandPath = useBrandPath()
   const navigate = useViewTransitionNavigate()
   return (
@@ -110,11 +89,13 @@ export function TaskRow(props: TaskRowProps): JSX.Element {
       onClick={() => navigate(brandPath(`tasks/${row.taskId}`))}
       className="cursor-pointer border-t border-[var(--cat-border-soft)] transition-colors hover:bg-[var(--cat-hover)]"
     >
-      <td className="py-2.5 pr-3 pl-1">
-        <TaskNameCell row={row} done={done} busy={props.busy} onToggleDone={props.onToggleDone} />
+      <td className="px-3 py-2.5">
+        <TaskNameCell row={row} />
       </td>
-      <td className="hidden max-w-[240px] px-3 py-2.5 xl:table-cell">
-        <span className="block truncate text-[var(--cat-ink-2)]">{row.description}</span>
+      <td className="hidden px-3 py-2.5 xl:table-cell">
+        <span title={row.description} className="block truncate text-[var(--cat-ink-2)]">
+          {row.description}
+        </span>
       </td>
       <td className="px-3 py-2.5" onClick={e => e.stopPropagation()}>
         <AssigneeCell {...props} />
@@ -122,13 +103,13 @@ export function TaskRow(props: TaskRowProps): JSX.Element {
       <td className="hidden px-3 py-2.5 whitespace-nowrap text-[var(--cat-ink-2)] lg:table-cell">
         {row.due}
       </td>
-      <td className="px-3 py-2.5">
+      <td className="px-3 py-2.5 whitespace-nowrap">
         <PriorityTag priority={row.priority} />
       </td>
-      <td className="px-3 py-2.5">
+      <td className="px-3 py-2.5 whitespace-nowrap">
         <ProgressCell value={row.progress} />
       </td>
-      <td className="px-3 py-2.5" onClick={e => e.stopPropagation()}>
+      <td className="px-3 py-2.5 whitespace-nowrap" onClick={e => e.stopPropagation()}>
         <AutoFixCell recommendationId={row.recommendationId} />
       </td>
     </tr>

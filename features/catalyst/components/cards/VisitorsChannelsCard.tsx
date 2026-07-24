@@ -5,6 +5,7 @@ import { Card } from '@/features/catalyst/components/Card'
 import { CardHead } from '@/features/catalyst/components/CardHead'
 import { EngineLogo } from '@/features/catalyst/components/EngineLogo'
 import { Metric } from '@/features/catalyst/components/Metric'
+import { LOGO_SIZE } from '@/features/catalyst/constants'
 import { useActiveProject } from '@/hooks/useActiveProject'
 import { useBrandPath } from '@/hooks/useBrandPath'
 import { useOverview, type OverviewEngine } from '@/hooks/useOverview'
@@ -13,7 +14,7 @@ import { useOverview, type OverviewEngine } from '@/hooks/useOverview'
 function SovRow({ engine }: { engine: OverviewEngine }): JSX.Element {
   return (
     <div className="flex items-center gap-2.5 py-[7px]">
-      <EngineLogo name={engine.name} size={18} color={engine.color} />
+      <EngineLogo name={engine.name} size={LOGO_SIZE.base} color={engine.color} />
       <span className="w-[82px] shrink-0 truncate text-[13px] font-medium text-[var(--cat-ink)]">
         {engine.name}
       </span>

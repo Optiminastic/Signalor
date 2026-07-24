@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 import { EngineLogo } from '@/features/catalyst/components/EngineLogo'
+import { LOGO_SIZE } from '@/features/catalyst/constants'
 import { engineLabel } from '@/features/catalyst/engine-logos'
 import { Globe } from '@/lib/icons'
 
@@ -26,7 +27,7 @@ function BrandLogo({ name, domain }: { name: string; domain: string }): JSX.Elem
   const [failed, setFailed] = useState(false)
   if (!domain || failed) {
     return (
-      <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[var(--cat-hover)] text-[10px] font-semibold text-[var(--cat-ink-2)]">
+      <span className="grid h-5 w-5 shrink-0 place-items-center rounded bg-[var(--cat-hover)] text-[10px] font-semibold text-[var(--cat-ink-2)]">
         {name.charAt(0).toUpperCase() || <Globe size={12} />}
       </span>
     )
@@ -36,10 +37,10 @@ function BrandLogo({ name, domain }: { name: string; domain: string }): JSX.Elem
     <img
       src={faviconUrl(domain)}
       alt=""
-      width={24}
-      height={24}
+      width={LOGO_SIZE.base}
+      height={LOGO_SIZE.base}
       onError={() => setFailed(true)}
-      className="h-6 w-6 shrink-0 rounded-md border border-[var(--cat-border)] bg-white object-contain"
+      className="h-5 w-5 shrink-0 rounded object-contain"
     />
   )
 }
@@ -50,7 +51,7 @@ function EngineIcons({ engines }: { engines: string[] }): JSX.Element {
   return (
     <div className="flex shrink-0 items-center gap-1">
       {shown.map(key => (
-        <EngineLogo key={key} name={engineLabel(key)} size={15} />
+        <EngineLogo key={key} name={engineLabel(key)} size={LOGO_SIZE.chip} />
       ))}
       {extra > 0 && <span className="text-[10px] text-[var(--cat-ink-3)]">+{extra}</span>}
     </div>

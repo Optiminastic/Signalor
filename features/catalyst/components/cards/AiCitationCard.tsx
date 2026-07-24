@@ -5,7 +5,7 @@ import { Card } from '@/features/catalyst/components/Card'
 import { CardHead } from '@/features/catalyst/components/CardHead'
 import { EngineLogo } from '@/features/catalyst/components/EngineLogo'
 import { GaugeRing } from '@/features/catalyst/components/visibility/GaugeRing'
-import { BRAND } from '@/features/catalyst/constants'
+import { BRAND, LOGO_SIZE } from '@/features/catalyst/constants'
 import { useActiveProject } from '@/hooks/useActiveProject'
 import { useBrandPath } from '@/hooks/useBrandPath'
 import { useCitations } from '@/hooks/useCitations'
@@ -66,7 +66,7 @@ function CoverageSummary({ pct, cited, total, engines }: CoverageProps): JSX.Ele
         {engines.length > 0 && (
           <div className="mt-2 flex items-center gap-1.5">
             {engines.map(e => (
-              <EngineLogo key={e.key} name={e.name} size={22} />
+              <EngineLogo key={e.key} name={e.name} size={LOGO_SIZE.base} />
             ))}
           </div>
         )}
